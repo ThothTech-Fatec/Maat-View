@@ -1,6 +1,7 @@
 
 <span id="topo">
     
+![banner thtc 3 (1)](https://github.com/user-attachments/assets/e5615012-b476-4314-a626-632330fea4dd)
 
 
 <p align="center">
@@ -55,13 +56,13 @@ Imagine uma empresa que busca melhorar seu ambiente organizacional por meio de a
 
 
  
- ### <a href="./Relatórios/Sprint 1.md">1️⃣SPRINT 1 - 14/04/2024</a>
+ ### <a href="./Relatórios/Sprint 1.md">1️⃣SPRINT 1 - 18/09/2024</a>
 
- ### <a href="./Relatórios/Sprint 2.md">2️⃣SPRINT 2 - 05/05/2024</a>
+ ### <a href="./Relatórios/Sprint 2.md">2️⃣SPRINT 2 - 02/09/2024</a>
 
- ### <a href="./Relatórios/Sprint 3.md"> 3️⃣SPRINT 3 - 26/05/2024</a>
+ ### <a href="./Relatórios/Sprint 3.md"> 3️⃣SPRINT 3 - 23/10/2024</a>
 
- ### <a href="./Relatórios/Sprint 4.md"> 4️⃣SPRINT 4 - 16/06/2024</a>
+ ### <a href="./Relatórios/Sprint 4.md"> 4️⃣SPRINT 4 - 13/11/2024</a>
 
 
 <span id="tecnologia">
@@ -70,9 +71,34 @@ Imagine uma empresa que busca melhorar seu ambiente organizacional por meio de a
 
 
 
+ * <p>
+       <img align="left" title="figma-logo" height="30px" src="https://github.com/user-attachments/assets/98b7ce5f-9f1f-405a-94d8-fdf7a11ad6fd"/> 
+    Python
+ </p>
+
+* <p>
+       <img align="left" title="flask" height="30px" src="https://user-images.githubusercontent.com/76211125/227565311-a366f66f-78db-44b0-8616-54146e9d7e28.png"/>
+    Flask 
+ </p>
 
  * <p>
-       <img align="left" title="figma-logo" height="30px" src="https://user-images.githubusercontent.com/76211125/227502784-c94d5e2d-2e39-449b-ba85-053b9106b979.png"/>  Figma 
+      <img align="left" title="html5-logo" height="30px" src="https://user-images.githubusercontent.com/76211125/227503111-49bb0b02-2f06-4696-82e6-fbd8d0daed21.png"/>
+     HTML5 
+ </p>
+
+ * <p>
+      <img align="left" title="css3-logo" height="30px" src="https://user-images.githubusercontent.com/76211125/227503103-bb7005d7-5f2f-46e4-adb5-92ef19ce677d.png"/>
+   CSS3 
+ </p>
+
+  * <p>
+       <img align="left" title="bootstrap" height="30px" src="https://user-images.githubusercontent.com/76211125/227509792-60a17912-2bf2-4700-a23c-886a32bd8811.png"/>
+    Bootstrap 
+ </p>
+ 
+ * <p>
+       <img align="left" title="figma-logo" height="30px" src="https://user-images.githubusercontent.com/76211125/227502784-c94d5e2d-2e39-449b-ba85-053b9106b979.png"/>  
+     Figma 
  </p>
 
  * <p>
