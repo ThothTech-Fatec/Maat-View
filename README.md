@@ -48,7 +48,14 @@ Imagine uma empresa que busca melhorar seu ambiente organizacional por meio de a
 
 | Sprint | Tarefas |  User Story   | Item |  Tempo Estimado   | Status   | Dificuldade | 
 | :----: | :----: | :----: | :----: | :----: | :----: | :----: |
-
+| 0 | 1 | Eu como cliente, quero um sistema com nivel de Admin, com acesso a todas as informações inseridas. Cadastro de novos usuários e classificação dos mesmos como Líder, Liderado ou Líder e Liderado. Cadastro de pesquisas de Autoavaliação, Avaliação de Liderança e Avaliação de Liderado. Cadastro de categorias para as perguntas, que servirão para definir o grupo que a pergunta se enquadra e organizar os Dashboards  | Níveis | 18h | ❌ | 9 |
+| 0 | 2 | Eu como cliente, quero um sistema com nivel de Líderes, com acesso às próprias informações e informações de liderados. Caso o líder tenha um superior, também poderá responder a pesquisa de Avaliação de Liderança, além de responder as pesquisas de Autoavaliação e Avaliação de Liderado | Níveis | 12h | ❌ | 7 |
+| 0 | 3 | Eu como cliente, quero um sistema com nivel de Liderado, com acesso às próprias informações. Acesso para responder a pesquisa de Autoavaliação. | Níveis | 7h | ❌ | 5 |
+| 0 | 4 | Eu como cliente, quero um sistema que permita que o Admin cadastre perguntas nos formatos: Texto longo, Escolha Única (texto e número) e Múltipla Escolha. O Admin pode escolher em qual categoria a pergunta se enquadra. | Pesquisa | 14h | ❌ | 8 |
+| 0 | 5 | Eu como cliente, quero um sistema com um limite de inserção de 20 perguntas por Pesquisa, sendo 5 de cada formato, sendo possível inserir até 10 opções nos formatos de escolha múltipla e única. O Admin pode escolher se a pergunta deve aparecer na pesquisa de Autoavaliação, Avaliação de Liderança ou Avaliação de Liderado | Pesquisa | 8h | ❌ | 6 |
+| 0 | 6 | Eu como cliente, quero um Dashboard Pessoal que deve se basear nas respostas dadas às perguntas de Autoavaliação, com as informações separadas de acordo com as categorias definidas pelo Admin. Todo usuário terá acesso ao próprio Dashboard Pessoal. | Dashboard | 6h | ❌ | 5 |
+| 0 | 7 | Eu como cliente, quero um Dashboard dos Liderados, que será apresentado para seus respectivos líderes e perfil Admin. Estes devem trazer as informações tanto de respostas fornecidas pelo liderado durante a Autoavaliação, quanto de respostas dadas pelo líder na Avaliação de Liderado, sobrepostas para comparação. | Dashboard | 10h |❌   | 7 |
+| 0 | 8 | Eu como cliente, quero um Dashboard Geral que ficará disponível apenas para o perfil Admin, que terá acesso ao Dashboard com as informações que o usuário preencheu em sua Autoavaliação, Dashboard com as informações que o seu líder preencheu em Avaliação de Liderado e também o Dashboard com as informações que o liderado preencheu em Avaliação de Líder, sobrepostas para comparação. | Dashboard | 12h | ❌ | 8 |
 
 <span id="sprint">
     
@@ -73,12 +80,7 @@ Imagine uma empresa que busca melhorar seu ambiente organizacional por meio de a
 
  * <p>
        <img align="left" title="figma-logo" height="30px" src="https://github.com/user-attachments/assets/98b7ce5f-9f1f-405a-94d8-fdf7a11ad6fd"/> 
-    Python
- </p>
-
-* <p>
-       <img align="left" title="flask" height="30px" src="https://user-images.githubusercontent.com/76211125/227565311-a366f66f-78db-44b0-8616-54146e9d7e28.png"/>
-    Flask 
+    JavaScript
  </p>
 
  * <p>
