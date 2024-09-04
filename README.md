@@ -1,7 +1,7 @@
 
 <span id="topo">
     
-![banner thtc 3 (2)](https://github.com/user-attachments/assets/ee462dd5-9ffe-4c88-94a1-b061aa749f07)
+![banner thtc 3 (3)](https://github.com/user-attachments/assets/ab0aa165-a75b-4efa-be39-15e77adc9f66)
 
 
 <p align="center">
