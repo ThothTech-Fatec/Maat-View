@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';  // Opcional, pode ser o estilo que você desejar
-import App from './App'; 
+import App from './app'; 
 
 
 const root = ReactDOM.createRoot(

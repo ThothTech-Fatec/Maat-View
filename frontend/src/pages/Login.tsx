@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import logo from '../static/logo.png';
+
+ 
+
+
+
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -35,37 +41,48 @@ const Login: React.FC = () => {
             console.log('Token recebido:', data.token);
             navigate('/dashboard');
         } catch (err) {
-            setError('Erro no login. Verifique suas credenciais.');
+            setError('Erro no login.');
             console.error('Erro na requisição:', err);
         }
     };
 
     return (
+    <body>
+    <div className='container'>
+
         <div>
-            <h2>Login</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+
+            <img src={logo} alt="Logo" style={{ display: 'block', margin: '0 auto 20px auto', width: '250px' }} />
+            <h1 className='poppins-regular'>Maat-View</h1>
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email:</label>
+                <div className='caixatexto'>
+                    
                     <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        placeholder='Insira seu email.'
+                        
                         required
                     />
                 </div>
-                <div>
-                    <label>Senha:</label>
+                <div className='caixatexto'>
+                    
                     <input
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        placeholder='Insira sua senha.'
                         required
                     />
                 </div>
-                <button type="submit">Entrar</button>
+                <button className='entrar' type="submit">Entrar</button>
             </form>
+            {error && <p className="error-message">{error}</p>}
         </div>
+        
+    </div>
+    </body>
     );
 };
 
