@@ -104,7 +104,7 @@ Imagine uma empresa que busca melhorar seu ambiente organizacional por meio de a
  </p>
 
  * <p>
-      <img align="left" title="github-dark" height="30px" src="https://user-images.githubusercontent.com/76211125/227561942-1503fb74-eb8e-41d1-936e-bf22bc2d70eb.png#gh-dark-mode-only"/>
+      <img align="left" title="github-dark" height="30px" src="https://github.com/ThothTech-Fatec/Maat-View/blob/main/Static/Github.png"/>
      GitHub 
  </p>
 
@@ -117,9 +117,13 @@ Imagine uma empresa que busca melhorar seu ambiente organizacional por meio de a
    <img align="left" title="vscode" height="30px" src="https://user-images.githubusercontent.com/76211125/227505063-5839c5e0-9524-41ff-9d24-ce6cbaf217a6.png"/>
    Visual Studio Code 
  </p>
- 
 
-    
+* <p>
+   <img align="left" title="vscode" height="30px" src="https://github.com/ThothTech-Fatec/Maat-View/blob/main/Static/React.png"/>
+   React 
+ </p>
+
+
 ## 🎓TIME
 <span id="time" width="100%" height="auto">
 
