@@ -2,10 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../static/logo.png';
 
- 
-
-
-
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -47,42 +43,38 @@ const Login: React.FC = () => {
     };
 
     return (
-    <body>
-    <div className='container'>
-
-        <div>
-
-            <img src={logo} alt="Logo" style={{ display: 'block', margin: '0 auto 20px auto', width: '250px' }} />
-            <h1 className='poppins-regular'>Maat-View</h1>
-            <form onSubmit={handleSubmit}>
-                <div className='caixatexto'>
-                    
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder='Insira seu email.'
-                        
-                        required
-                    />
+        <body className='login-body'>
+            <div className='container'>
+                <div style={{marginBottom: 150}}>
+                    <img src={logo} alt="Logo" style={{ display: 'block', width: '250px' }} />
+                    <h1 className='outfitTitle' style={{ alignItems: 'center', justifyContent: 'center', display: 'flex',  }}>Maat-View</h1>
+                    <div className="form-container">
+                        <form onSubmit={handleSubmit}>
+                            <div className='caixatexto'>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder='Insira seu email.'
+                                    required
+                                />
+                            </div>
+                            <div className='caixatexto'>
+                                <input
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder='Insira sua senha.'
+                                    required
+                                />
+                            </div>
+                            <button className='entrar' type="submit">Entrar</button>
+                        </form>
+                    </div>
+                    {error && <p className="error-message" style={{ marginTop: 10 }}>{error}</p>}
                 </div>
-                <div className='caixatexto'>
-                    
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder='Insira sua senha.'
-                        required
-                    />
-                </div>
-                <button className='entrar' type="submit">Entrar</button>
-            </form>
-            {error && <p className="error-message">{error}</p>}
-        </div>
-        
-    </div>
-    </body>
+            </div>
+        </body>
     );
 };
 

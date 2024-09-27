@@ -1,15 +1,19 @@
 html{
     height: 100%; 
     margin: 0; 
-    overflow: hidden; /* Remove a rolagem */
-    border: 15px solid white;
-    box-sizing: border-box;
+    overflow: hidden;
 }
 
 body {
-    background-color:#459EB5 ;
     margin: 0;
-    font-family: Arial, sans-serif;
+}
+.login-body {
+    background-color: #459EB5;
+    border: 15px solid white; 
+    height: 100vh; 
+    margin: 0;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
 .login-container {
@@ -20,27 +24,36 @@ body {
     border-radius: 5px;
 }
 .container {
-    height: 100%; /* A altura da sua div pode ser ajustada conforme necessário */
-    display: flex; /* Para centralizar o conteúdo, se desejado */
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Centraliza verticalmente */
+    height: 100%;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
     position: absolute;
-    top: 40%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
+.form-container {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+}
 .caixatexto {
-    margin-bottom: 15px; 
+    margin-bottom: 15px;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
 }
 
 .caixatexto input {
-    width: 220px; /* Largura da caixa de texto */
-    height: 30px; /* Altura fixa para evitar que aumente com a fonte */
-    padding: 5px; /* Ajuste o padding conforme necessário */
+    width: 220px;
+    height: 30px;
+    padding: 5px;
     border: 2px solid #ccc; 
     border-radius: 10px; 
-    font-size: 13.5px; /* Aumenta o tamanho da letra dentro do input */
-    box-sizing: border-box; /* Inclui padding e borda no cálculo da largura */
+    font-size: 13.5px; 
+    box-sizing: border-box; 
 }
 
 .caixatexto input:focus {
@@ -48,34 +61,35 @@ body {
     outline: none; 
 }
 .entrar {
-    background-color: #ffffff; /* Cor de fundo do botão */
-    color: gray; /* Cor do texto */
-    border: none; /* Remove a borda padrão */
-    border-radius: 10px; /* Bordas arredondadas */
-    padding: 10px 20px; /* Espaçamento interno (vertical e horizontal) */
-    font-size: 12px; /* Tamanho da fonte */
-    cursor: pointer; /* Muda o cursor ao passar o mouse */
-    transition: background-color 0.5s, transform 0.2s; /* Animações de transição */
-    display: flex; /* Faz com que o botão seja tratado como um bloco */
-    margin: 20px auto;
+    background-color: #ffffff;
+    color: gray;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.5s, transform 0.2s;
+    margin: 20px 0;
+    width: 100px; 
+    align-self: center; 
 }
 
 .entrar:hover {
-    background-color: gainsboro; /* Cor de fundo ao passar o mouse */
+    background-color: gainsboro;
     color: #459EB5;
     
 }
 
 .entrar:focus {
-    outline: none; /* Remove o contorno padrão ao focar */
+    outline: none;
 }
 .error-message {
     color: red;
-    position: absolute; /* Remove do fluxo normal do layout */
-    left: 50%; /* Move para o meio da tela */
-    transform: translateX(-50%); /* Ajusta a posição para realmente centralizar */
-    margin-top: 10px; /* Adiciona um espaço acima, se necessário */
-    text-align: center; /* Centraliza o texto */
+    position: absolute;
+    left: 50%; 
+    transform: translateX(-50%); 
+    margin-top: 10px; 
+    text-align: center;
 }
 .poppins-regular {
     font-family: "Poppins";
@@ -88,4 +102,16 @@ body {
     font-weight: 200;
     font-style: normal;
     color: white;
+  }
+.outfitTitle {
+    font-family: "Outfit";
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+  }
+  .outfitTexto {
+    font-family: "Outfit";
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
   }

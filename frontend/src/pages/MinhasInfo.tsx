@@ -1,7 +1,7 @@
 import React from 'react';
 import ResponsiveMenu from '../components/ResponsiveMenu'; 
 
-const Dashboard: React.FC = () => {
+const MinhasInfo: React.FC = () => {
     return (
         <div>
             <ResponsiveMenu />
@@ -10,4 +10,4 @@ const Dashboard: React.FC = () => {
     );
 };
 
-export default Dashboard;
+export default MinhasInfo;
