@@ -34,6 +34,7 @@ Imagine uma empresa que busca melhorar seu ambiente organizacional por meio de a
     
 <h2 aling="center"> 🧩MVP </h2>
 
+![Captura de tela 2024-09-29 211843](https://github.com/user-attachments/assets/5e87ffe3-1c8b-4d5d-a685-4396864f758f)
 
 
 
@@ -48,7 +49,7 @@ Imagine uma empresa que busca melhorar seu ambiente organizacional por meio de a
 
 | Sprint | Tarefas |  User Story   | Item |  Tempo Estimado   | Status   | Dificuldade | 
 | :----: | :----: | :----: | :----: | :----: | :----: | :----: |
-| 1 | 1 | Eu como cliente, quero um sistema de login para os usuários cadastrados | login | 4h | :white_check_mark: | 3 |
+| 1 | 1 | Eu como cliente, quero um sistema de login para os usuários cadastrados | Login | 4h | :white_check_mark: | 3 |
 | 2 | 2 | Eu como cliente, quero um sistema com nivel de Admin, com acesso a todas as informações inseridas. Cadastro de novos usuários e classificação dos mesmos como Líder, Liderado ou Líder e Liderado. Cadastro de pesquisas de Autoavaliação, Avaliação de Liderança e Avaliação de Liderado. Cadastro de categorias para as perguntas, que servirão para definir o grupo que a pergunta se enquadra e organizar os Dashboards  | Níveis | 18h | ❌ | 9 |
 | 2 | 3 | Eu como cliente, quero um sistema com nivel de Líderes, com acesso às próprias informações e informações de liderados. Caso o líder tenha um superior, também poderá responder a pesquisa de Avaliação de Liderança, além de responder as pesquisas de Autoavaliação e Avaliação de Liderado | Níveis | 12h | ❌ | 7 |
 | 2 | 4 | Eu como cliente, quero um sistema com nivel de Liderado, com acesso às próprias informações. Acesso para responder a pesquisa de Autoavaliação. | Níveis | 7h | ❌ | 5 |
