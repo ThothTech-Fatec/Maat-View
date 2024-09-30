@@ -68,4 +68,8 @@ Nesta primeira Sprint, o foco foi o desenvolvimento da interface do sistema de l
 -
 
 ## 👨‍💻Trabalho desenvolvido
--
+https://github.com/user-attachments/assets/0186d96d-4d6a-454d-9638-e437c58f44d0
+
+https://github.com/user-attachments/assets/ef8bcc4f-2fe6-41fb-9572-45f4a58cfe27 
+
+
