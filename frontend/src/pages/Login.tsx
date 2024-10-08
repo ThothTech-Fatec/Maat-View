@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../static/logo.png';
 
-
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -11,9 +10,6 @@ const Login: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        console.log('Tentando fazer login com:', { email, password });
-        console.log('API URL:', process.env.REACT_APP_API_URL);
 
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
@@ -24,18 +20,20 @@ const Login: React.FC = () => {
                 body: JSON.stringify({ email, password }),
             });
 
-            console.log('Resposta da API:', response);
-
             if (!response.ok) {
-                const errorData = await response.json(); 
+                const errorData = await response.json();
                 console.error('Erro do backend:', errorData);
                 throw new Error('Falha na autenticação');
             }
 
-
             const data = await response.json();
             console.log('Token recebido:', data.token);
-            navigate('/dashboard');
+
+            localStorage.setItem('authToken', data.token);
+            localStorage.setItem('userEmail', data.email);
+            localStorage.setItem('userRole', data.role); 
+
+            navigate('/minhas_info');
         } catch (err) {
             setError('Erro no login.');
             console.error('Erro na requisição:', err);
@@ -47,7 +45,7 @@ const Login: React.FC = () => {
             <div className='container'>
                 <div style={{marginBottom: 150}}>
                     <img src={logo} alt="Logo" style={{ display: 'block', width: '250px' }} />
-                    <h1 className='outfitTitle' style={{ alignItems: 'center', justifyContent: 'center', display: 'flex',  }}>Maat-View</h1>
+                    <h1 className='outfitTitle' style={{ alignItems: 'center', justifyContent: 'center', display: 'flex' }}>Maat-View</h1>
                     <div className="form-container">
                         <form onSubmit={handleSubmit}>
                             <div className='caixatexto'>

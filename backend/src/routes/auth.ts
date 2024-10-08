@@ -4,11 +4,21 @@ import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
-// Simulação de banco de dados para teste
 const users = [
   {
-    email: 'teste@exemplo.com',
-    password: await bcrypt.hash('123456', 10), // Criptografando a senha uma vez
+    email: 'admin@exemplo.com',
+    password: await bcrypt.hash('123456', 10),
+    role: 'admin', 
+  },
+  {
+    email: 'lider@exemplo.com',
+    password: await bcrypt.hash('123456', 10),
+    role: 'lider',
+  },
+  {
+    email: 'liderado@exemplo.com',
+    password: await bcrypt.hash('123456', 10),
+    role: 'liderado',
   },
 ];
 
@@ -17,7 +27,6 @@ router.post('/login', async (req: Request, res: Response) => {
 
     const { email, password } = req.body;
 
-    // Verificar se o usuário existe
     const user = users.find((user) => user.email === email);
     console.log('Usuário encontrado:', user);
 
@@ -32,10 +41,14 @@ router.post('/login', async (req: Request, res: Response) => {
         return res.status(401).json({ message: 'Credenciais inválidas.' });
     }
 
-    // Gerar um token JWT para o usuário
-    const token = jwt.sign({ email: user.email }, 'secreta', { expiresIn: '1h' });
+    const token = jwt.sign({ email: user.email, role: user.role }, 'secreta', { expiresIn: '1h' });
 
-    return res.status(200).json({ message: 'Autenticação bem-sucedida!', token });
+    return res.status(200).json({ 
+        message: 'Autenticação bem-sucedida!', 
+        token,
+        email: user.email, 
+        role: user.role 
+    });
 });
 
 export default router;
