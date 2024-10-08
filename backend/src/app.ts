@@ -1,4 +1,4 @@
-// backend/src/app.ts
+
 import express from 'express';
 import cors from 'cors';
 import authRoutes from './routes/auth.js';
@@ -11,7 +11,7 @@ app.use(cors({
     credentials: true,
 }));
 app.use(express.json());
-app.use('/api', authRoutes); // Use o roteador de autenticação
+app.use('/api', authRoutes);
 
 const PORT = process.env.PORT || 5000;
 
