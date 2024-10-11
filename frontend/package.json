@@ -2,12 +2,11 @@
   "name": "frontend",
   "version": "1.0.0",
   "main": "./out/app.js",
-"scripts": {
+  "scripts": {
     "start": "react-scripts start",
     "start:backend": "node ../backend/src/app.js",
     "dev": "concurrently \"npm run start\" \"npm run start:backend\""
-},
-
+  },
   "author": "Thothtech",
   "license": "ISC",
   "description": "",
@@ -17,6 +16,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.2",
+    "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",

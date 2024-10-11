@@ -1,8 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/Admin/Dashboard';
 import MinhasInfo from './pages/MinhasInfo';
+import CadastroUser from './pages/Admin/CadastroUser';
+import Unauthorized from './pages/Unauthorized';
+
 
 const App: React.FC = () => {
     return (
@@ -12,6 +15,9 @@ const App: React.FC = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/minhas_info" element={<MinhasInfo />} />
+                <Route path="/cadastro_de_user" element={<CadastroUser />} />
+                <Route path="/unauthorized" element={<Unauthorized />} />
+
                 {}
             </Routes>
         </Router>

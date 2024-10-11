@@ -1,10 +1,11 @@
 import React from 'react';
-import ResponsiveMenu from '../components/ResponsiveMenu'; 
+import AdminResponsiveMenu from '../../components/ADMResponsiveMenu'; 
+import RenderMenu from '../../components/Render_Menu';
 
 const Dashboard: React.FC = () => {
     return (
         <div>
-            <ResponsiveMenu />
+            <RenderMenu />
             
         </div>
     );
