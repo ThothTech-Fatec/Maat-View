@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../Menu.css';
 
-const ResponsiveMenu: React.FC = () => {
+const AdminResponsiveMenu: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -45,4 +45,4 @@ const ResponsiveMenu: React.FC = () => {
     );
 };
 
-export default ResponsiveMenu;
+export default AdminResponsiveMenu;

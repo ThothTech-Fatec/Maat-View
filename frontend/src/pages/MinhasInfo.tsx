@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import ResponsiveMenu from '../components/ResponsiveMenu'; 
+import AdminResponsiveMenu from '../components/ADMResponsiveMenu'; 
+import LideradoResponsiveMenu from '../components/LIDERADOResponsiveMenu';
+import LiderResponsiveMenu from '../components/LIDERResponsiveMenu';
+import renderMenu from '../components/Render_Menu';
+import RenderMenu from '../components/Render_Menu';
 
 const MinhasInfo: React.FC = () => {
     const [email, setEmail] = useState<string | null>(null);
@@ -17,10 +21,11 @@ const MinhasInfo: React.FC = () => {
             setRole(storedRole);
         }
     }, []);
-
+    
+        
     return (
         <div>
-            <ResponsiveMenu />
+            <RenderMenu />
             <div className='container'>
                 <div className='Bordada outfitTexto'>
                     <h2 style={{textAlign: 'center'}}>Minhas Informações</h2>
