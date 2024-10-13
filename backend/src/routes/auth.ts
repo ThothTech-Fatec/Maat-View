@@ -58,4 +58,18 @@ router.post('/login', async (req: Request, res: Response) => {
   }
 });
 
+// Rota para obter todos os usuários
+router.get('/users', async (_req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.query('SELECT nome, email, cargo FROM Users'); // Obtenha todos os usuários
+
+    // Se desejar, você pode formatar a resposta conforme necessário
+    return res.status(200).json(rows); // Retorne todos os usuários encontrados
+  } catch (error) {
+    console.error('Erro ao buscar usuários:', error);
+    return res.status(500).json({ message: 'Erro no servidor.' });
+  }
+});
+
+
 export default router;
