@@ -64,15 +64,13 @@ create table Respostas (
 
 
 
-
-
 -- Inserir um Admin
 INSERT INTO Users (nome, email, senha, cargo, lider_id)
-VALUES ('Admin User', 'admin@email.com', 'admin123', 'Admin', NULL);
+VALUES ('Admin User', 'admin@email.com', '$2a$10$ddNpc6kVtPXVtsrnxYoTp.6mzgEuKGTS4PdoRdtuY7vJea/2TJlyu', 'Admin', NULL);
 
 -- Inserir um Liderado
 INSERT INTO Users (nome, email, senha, cargo, lider_id)
-VALUES ('Liderado User', 'liderado@email.com', 'liderado123', 'Liderado', NULL);
+VALUES ('Liderado User', 'liderado@email.com', '$2a$10$I1QNViM5N1c8d3ro6uD4F.MaxZ0FBy59Ye1bjrs1TNtkA/1orKYIa', 'Liderado', NULL);
 
 -- Criar a pesquisa
 INSERT INTO Pesquisas (titulo, sobre, cat_pes, alvo_cargo)
