@@ -37,6 +37,36 @@ body {
     transform: translate(-50%, -50%);
 }
 
+.content-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: flex-start; /* Alinha o conteúdo no topo */
+    margin-left: 292px; 
+    padding: 20px;
+    flex-grow: 1; 
+    box-sizing: border-box;
+    overflow: auto; 
+}
+
+.userTable {
+    width: 100%; /* Ajusta a largura da tabela para ocupar 100% do container */
+    max-width: 1250px;
+    border-collapse: collapse; /* Remove espaços entre as células */
+}
+
+.userTable th,
+.userTable td {
+    border: 1px solid #ccc; /* Adiciona bordas às células */
+    padding: 10px; /* Espaçamento interno nas células */
+    text-align: left; /* Alinhamento à esquerda */
+}
+
+.userTable th {
+    background-color: #f0f0f0; /* Cor de fundo dos cabeçalhos */
+}
+
 .AutoCenter {
     flex-direction: column; 
     justify-content: center;
@@ -94,6 +124,13 @@ body {
     }
     .resizeTextA {
         height: 10.5%;
+    }
+}
+
+@media (max-width: 768px) {
+    .content-container {
+        margin-left: 0;
+        width: 100%;
     }
 }
 
@@ -155,4 +192,11 @@ body {
     font-optical-sizing: auto;
     font-weight: 200;
     font-style: normal;
+}
+
+.contentTitle{
+    font-family: "Outfit";
+    font-size: 50px;
+    font-style: normal;
+    margin-bottom: 50px;
 }
