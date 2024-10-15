@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import ResponsiveMenu from '../../components/ADMResponsiveMenu'; 
-import AdminRole from '../../hocs/Hoc_Admin';
 import RenderMenu from '../../components/Render_Menu';
 
-
 interface User {
-    nome: string;
-    email: string;
-    cargo: string;
+    id: number; 
+    nome: string; 
+    email: string; 
+    cargo: string; 
+    cpf: string;
 }
 
 const ExibeUser: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
+    const [error, setError] = useState<string | null>(null); // Adiciona um estado para erro
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -24,11 +24,31 @@ const ExibeUser: React.FC = () => {
                 setUsers(data); 
             } catch (error) {
                 console.error('Erro:', error);
+                setError('Erro ao buscar usuários.'); // Atualiza o estado de erro
             }
         };
 
         fetchUsers();
     }, []);
+
+    const handleDelete = async (userId: number) => {
+        const confirmDelete = window.confirm('Você realmente deseja apagar este usuário?');
+        if (confirmDelete) {
+            try {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/${userId}`, {
+                    method: 'DELETE',
+                });
+                if (!response.ok) {
+                    throw new Error('Erro ao apagar o usuário');
+                }
+                setUsers(users.filter(user => user.id !== userId));
+            } catch (error) {
+                console.error('Erro:', error);
+                setError('Erro ao apagar o usuário.'); // Atualiza o estado de erro
+            }
+        }
+    };
+
     return (
         <div>
             <RenderMenu />
@@ -36,20 +56,27 @@ const ExibeUser: React.FC = () => {
                 <div className='contentTitle'>
                     USUARIOS
                 </div>
+                {error && <div className='error-message'>{error}</div>} {/* Mensagem de erro */}
                 <table className='userTable'>
                     <thead>
                         <tr>
                             <th>Nome</th>
                             <th>Email</th>
                             <th>Cargo</th>
+                            <th>CPF</th> {/* Nova coluna para CPF */}
+                            <th>Ações</th> {/* Adiciona uma coluna para ações */}
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map((user, index) => (
-                            <tr key={index}>
+                        {users.map((user) => (
+                            <tr key={user.id}>
                                 <td>{user.nome}</td>
                                 <td>{user.email}</td>
                                 <td>{user.cargo}</td>
+                                <td>{user.cpf}</td> {/* Exibe o CPF */}
+                                <td>
+                                    <button onClick={() => handleDelete(user.id)} className='deleteButton'>Deletar</button> {/* Botão de delete */}
+                                </td>
                             </tr>
                         ))}
                     </tbody>
