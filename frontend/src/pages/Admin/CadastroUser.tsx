@@ -1,12 +1,8 @@
-import ResponsiveMenu from '../../components/ADMResponsiveMenu'; 
-import AdminRole from '../../hocs/Hoc_Admin';
-import RenderMenu from '../../components/Render_Menu';
 import React, { useState } from 'react';
-import '../../static/CadastroUsuario.css'; // Arquivo CSS para estilização
-
-
-
-
+import axios from 'axios';
+import ResponsiveMenu from '../../components/ADMResponsiveMenu';
+import RenderMenu from '../../components/Render_Menu';
+import '../../static/CadastroUsuario.css';
 
 const CadastroUsuario: React.FC = () => {
     const [nome, setNome] = useState('');
@@ -16,17 +12,44 @@ const CadastroUsuario: React.FC = () => {
     const [confirmaSenha, setConfirmaSenha] = useState('');
     const [nivelAcesso, setNivelAcesso] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const formatCpf = (value: string) => {
+        const onlyDigits = value.replace(/\D/g, '');
+        if (onlyDigits.length <= 11) {
+            return onlyDigits
+                .replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        }
+        return value;
+    };
+
+    const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const formattedValue = formatCpf(e.target.value);
+        if (formattedValue.length <= 14) {
+            setCpf(formattedValue);
+        }
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Lógica para cadastro de usuário aqui
-        console.log({
-            nome,
-            cpf,
-            email,
-            senha,
-            confirmaSenha,
-            nivelAcesso
-        });
+
+        if (senha !== confirmaSenha) {
+            alert("As senhas não coincidem!");
+            return;
+        }
+
+        const usuario = { nome, cpf, email, senha, cargo: nivelAcesso }; // Incluindo CPF e cargo
+
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/usuarios`, usuario);
+            if (response.status === 201) {
+                alert("Usuário cadastrado com sucesso!");
+                handleClear();
+            }
+        } catch (error) {
+            console.error("Erro ao cadastrar usuário:", error);
+            alert("Erro ao cadastrar usuário. Tente novamente.");
+        }
     };
 
     const handleClear = () => {
@@ -61,7 +84,7 @@ const CadastroUsuario: React.FC = () => {
                                 type="text"
                                 id="cpf"
                                 value={cpf}
-                                onChange={(e) => setCpf(e.target.value)}
+                                onChange={handleCpfChange}
                                 required
                             />
                         </div>
