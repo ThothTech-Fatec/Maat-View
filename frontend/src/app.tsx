@@ -6,6 +6,8 @@ import MinhasInfo from './pages/MinhasInfo';
 import CadastroUser from './pages/Admin/CadastroUser';
 import ExibeUser from './pages/Admin/ExibeUser';
 import Unauthorized from './pages/Unauthorized';
+import CadastroAsk from './pages/Admin/CadastroAsk';
+
 
 
 const App: React.FC = () => {
@@ -17,6 +19,7 @@ const App: React.FC = () => {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/minhas_info" element={<MinhasInfo />} />
                 <Route path="/cadastro_de_user" element={<CadastroUser />} />
+                <Route path="/cadastro_de_ask" element={<CadastroAsk />} />
                 <Route path="/exibe_user" element={<ExibeUser />} />
                 <Route path="/unauthorized" element={<Unauthorized />} />
 
