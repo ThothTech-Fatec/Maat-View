@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../Menu.css';
+import '../static/Menu.css';
 
 const LiderResponsiveMenu: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);

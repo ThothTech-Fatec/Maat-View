@@ -1,0 +1,100 @@
+/* Container geral do formulário */
+.form-container2 {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 680px;
+    margin: 30px auto;
+    font-family: 'Poppins', sans-serif;
+    
+}
+
+h2 {
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Layout das colunas usando Flexbox com mais espaçamento lateral */
+.form-row2 {
+    display: flex;
+    justify-content: space-between;
+    gap: 10%; /* Aumentado para dar mais espaçamento lateral entre as colunas */
+}
+@media (max-width: 768px ) {
+    .form-row2{
+        flex-direction: column;
+    }
+}
+.form-column2 {
+    flex: 1;
+    margin-right: 7%;
+}
+
+/* Estilos gerais dos campos de input e select */
+.form-group2 {
+    margin-bottom: 25px; /* Espaçamento entre os campos */
+}
+
+.form-group2 label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px; /* Espaço entre o label e o campo */
+}
+
+input, select {
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+}
+
+/* Botões */
+.form-buttons2 {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+button2 {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+}
+
+.btn-clear {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: rgb(120, 122, 122);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-clear:hover {
+    background-color: #CCCCCC;
+}
+
+.btn-submit {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #459EB5;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #096E5F;
+}
