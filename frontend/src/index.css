@@ -112,8 +112,7 @@ body {
     background-color: #ffffff; 
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    
 }
 
 @media (max-width: 500px) {
@@ -199,4 +198,57 @@ body {
     font-size: 50px;
     font-style: normal;
     margin-bottom: 50px;
+}
+.Bordada2 {
+    border: 2px solid #000000;
+    height: 50%; 
+    width: 300%;
+    margin-left: 100%;  
+    border-radius: 10px; 
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
+    background-color: #ffffff; 
+    display: flex;
+    flex-direction: column;
+}
+@media (max-width: 1024px) {
+    .Bordada2 {
+        width: 100%; 
+        height: 36%;
+        padding: 10px; 
+    }
+    .resizeTextA {
+        height: 10.5%;
+    }
+}
+
+@media (max-width: 768px) {
+    .content-container {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+.cadastrotitle{
+    margin-top: 2%;
+    margin-left: 4%;
+}
+p{
+    margin-left: 4%;
+    margin-top: 4%;
+}
+.form-group {
+    margin-bottom: 2%; 
+}
+
+p {
+    margin-left: 4%; 
+    margin-top: 4%; 
+    margin-bottom: 0;
+}
+
+input {
+    width: 30%; 
+    height: 25px;
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    margin-left: 4%; 
 }
