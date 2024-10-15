@@ -29,7 +29,6 @@ const ExibeUser: React.FC = () => {
 
         fetchUsers();
     }, []);
-
     return (
         <div>
             <RenderMenu />
