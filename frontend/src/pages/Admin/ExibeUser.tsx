@@ -70,12 +70,12 @@ const ExibeUser: React.FC = () => {
                     <tbody>
                         {users.map((user) => (
                             <tr key={user.id}>
-                                <td>{user.nome}</td>
-                                <td>{user.email}</td>
-                                <td>{user.cargo}</td>
-                                <td>{user.cpf}</td> {/* Exibe o CPF */}
-                                <td>
-                                    <button onClick={() => handleDelete(user.id)} className='deleteButton'>Deletar</button> {/* Botão de delete */}
+                                <td data-label="Nome">{user.nome}</td>
+                                <td data-label="Email">{user.email}</td>
+                                <td data-label="Cargo">{user.cargo}</td>
+                                <td data-label="CPF">{user.cpf}</td>
+                                <td data-label="Ações">
+                <button onClick={() => handleDelete(user.id)} className='deleteButton'>Deletar</button>
                                 </td>
                             </tr>
                         ))}

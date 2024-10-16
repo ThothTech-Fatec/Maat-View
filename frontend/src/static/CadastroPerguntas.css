@@ -1,0 +1,54 @@
+.Bordada3 {
+    height: 100%; 
+    width: 100%;
+    border-radius: 10px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff; 
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f9fa;
+}
+.form-group-ask {
+    width: 70%;
+    
+}
+
+ .container3 {
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+    margin: 30px auto;
+    font-family: 'Outfit';
+    margin-top: 5%;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    right: 0%;
+
+}
+
+.form-row3 {
+    display: flex;
+    justify-content: space-between;
+    gap: 10%; /* Aumentado para dar mais espaçamento lateral entre as colunas */
+    margin: 5%;
+}
+.form-column3 {
+    flex: 1;
+    margin-right: 7%;
+}
+
+#sobrepesq{     
+    width: 100%;    
+    height: 100px;    
+    padding: 10px;   
+
+}
+
+#textperg{
+    width: 100%;    
+    height: 100px;    
+    padding: 10px;   
+}
+

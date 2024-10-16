@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ResponsiveMenu from '../../components/ADMResponsiveMenu';
 import RenderMenu from '../../components/Render_Menu';
@@ -11,7 +11,10 @@ const CadastroUsuario: React.FC = () => {
     const [senha, setSenha] = useState('');
     const [confirmaSenha, setConfirmaSenha] = useState('');
     const [nivelAcesso, setNivelAcesso] = useState('');
+    const [lider, setLider] = useState(''); // Novo estado para armazenar o líder selecionado
+    const [lideres, setLideres] = useState([]); // Novo estado para armazenar a lista de líderes
 
+    // Formatar CPF
     const formatCpf = (value: string) => {
         const onlyDigits = value.replace(/\D/g, '');
         if (onlyDigits.length <= 11) {
@@ -30,6 +33,17 @@ const CadastroUsuario: React.FC = () => {
         }
     };
 
+    // Buscar líderes da API
+    useEffect(() => {
+        if (nivelAcesso === 'Liderado') {
+            // Buscar todos os líderes da API quando o cargo selecionado for "Liderado"
+            axios.get(`${process.env.REACT_APP_API_URL}/api/lideres`)
+                .then(response => setLideres(response.data))
+                .catch(error => console.error("Erro ao buscar líderes:", error));
+        }
+    }, [nivelAcesso]);
+
+    // Função para enviar o formulário
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -38,7 +52,7 @@ const CadastroUsuario: React.FC = () => {
             return;
         }
 
-        const usuario = { nome, cpf, email, senha, cargo: nivelAcesso }; // Incluindo CPF e cargo
+        const usuario = { nome, cpf, email, senha, cargo: nivelAcesso, liderId: nivelAcesso === 'Liderado' ? lider : null };
 
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/usuarios`, usuario);
@@ -59,6 +73,7 @@ const CadastroUsuario: React.FC = () => {
         setSenha('');
         setConfirmaSenha('');
         setNivelAcesso('');
+        setLider(''); // Limpar seleção de líder
     };
 
     return (
@@ -108,13 +123,34 @@ const CadastroUsuario: React.FC = () => {
                                 value={nivelAcesso}
                                 onChange={(e) => setNivelAcesso(e.target.value)}
                                 required
-                                style={{ marginLeft: '4%', width: '75%' }}
+                                style={{ marginLeft: '4%', width: '80%' }}
                             >
                                 <option value="" disabled hidden>Defina o nível de acesso</option>
                                 <option value="Líder">Líder</option>
-                                <option value="Usuário">Liderado</option>
+                                <option value="Liderado">Liderado</option>
                             </select>
                         </div>
+
+                        {nivelAcesso === 'Liderado' && (
+                            <div className="form-group2">
+                                <label htmlFor="lider">Selecione o Líder:</label>
+                                <select
+                                    id="lider"
+                                    value={lider}
+                                    onChange={(e) => setLider(e.target.value)}
+                                    required
+                                    style={{ marginLeft: '4%', width: '80%', marginBottom: '3%' }}
+                                >
+                                    <option value="" disabled hidden>Escolha um líder</option>
+                                    {lideres.map((lider: any) => (
+                                        <option key={lider.id} value={lider.id}>
+                                            {lider.nome}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
+
                         <div className="form-group2">
                             <label htmlFor="senha">Digite uma senha:</label>
                             <input
