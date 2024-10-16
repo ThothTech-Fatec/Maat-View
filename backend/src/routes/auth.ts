@@ -74,4 +74,16 @@ authRoutes.delete('/users/:id', async (req: Request, res: Response) => {
   }
 });
 
+// Rota para buscar apenas os líderes
+authRoutes.get('/lideres', async (_req: Request, res: Response) => {
+    try {
+        const [rows] = await pool.query('SELECT id, nome FROM Users WHERE cargo = ?', ['Líder']);
+        return res.status(200).json(rows);
+    } catch (error) {
+        console.error('Erro ao buscar líderes:', error);
+        return res.status(500).json({ message: 'Erro no servidor.' });
+    }
+});
+
+
 export default authRoutes;
