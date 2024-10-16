@@ -11,7 +11,7 @@ interface User {
 
 const ExibeUser: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
-    const [error, setError] = useState<string | null>(null); // Adiciona um estado para erro
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -24,7 +24,7 @@ const ExibeUser: React.FC = () => {
                 setUsers(data); 
             } catch (error) {
                 console.error('Erro:', error);
-                setError('Erro ao buscar usuários.'); // Atualiza o estado de erro
+                setError('Erro ao buscar usuários.'); 
             }
         };
 
@@ -44,7 +44,7 @@ const ExibeUser: React.FC = () => {
                 setUsers(users.filter(user => user.id !== userId));
             } catch (error) {
                 console.error('Erro:', error);
-                setError('Erro ao apagar o usuário.'); // Atualiza o estado de erro
+                setError('Erro ao apagar o usuário.');
             }
         }
     };
@@ -56,15 +56,15 @@ const ExibeUser: React.FC = () => {
                 <div className='contentTitle'>
                     USUARIOS
                 </div>
-                {error && <div className='error-message'>{error}</div>} {/* Mensagem de erro */}
+                {error && <div className='error-message'>{error}</div>} 
                 <table className='userTable'>
                     <thead>
                         <tr>
                             <th>Nome</th>
                             <th>Email</th>
                             <th>Cargo</th>
-                            <th>CPF</th> {/* Nova coluna para CPF */}
-                            <th>Ações</th> {/* Adiciona uma coluna para ações */}
+                            <th>CPF</th> 
+                            <th>Ações</th> 
                         </tr>
                     </thead>
                     <tbody>
@@ -75,7 +75,14 @@ const ExibeUser: React.FC = () => {
                                 <td data-label="Cargo">{user.cargo}</td>
                                 <td data-label="CPF">{user.cpf}</td>
                                 <td data-label="Ações">
-                <button onClick={() => handleDelete(user.id)} className='deleteButton'>Deletar</button>
+                                    {user.cargo !== 'Admin' && (
+                                        <button onClick={() => handleDelete(user.id)} className='deleteButton'>
+                                            Deletar
+                                        </button>
+                                    )}
+                                    {user.cargo =='Admin' && (
+                                        <p style={{marginLeft: '45%'}}>X</p>
+                                    )}
                                 </td>
                             </tr>
                         ))}
