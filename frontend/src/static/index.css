@@ -56,7 +56,8 @@ body {
     border-collapse: collapse;
     overflow-x: auto;
     border: 1px solid #ccc;
-    word-wrap: break-word; /* Permite que o texto quebre para a próxima linha */
+    word-wrap: break-word; 
+    font-family: 'Outfit';
 }
 
 .userTable th,
@@ -64,7 +65,7 @@ body {
     border: 1px solid #ccc; 
     padding: 10px;
     text-align: left;
-    word-break: break-word; /* Garante que o conteúdo da célula quebre corretamente */
+    word-break: break-word; 
 }
 
 .userTable th {
@@ -74,44 +75,46 @@ body {
 @media (max-width: 768px) {
     .userTable {
         display: block;
-        width: 100%; /* Garante que a tabela ocupe 100% da largura disponível */
-        overflow-x: auto; /* Adiciona rolagem horizontal para a tabela */
+        width: 100%; 
+        overflow-x: auto; 
         border: none;
-        margin: 0 auto; /* Centraliza a tabela horizontalmente */
+        margin: 0 auto; 
         margin-left: 35%;
     }
 
     .userTable thead {
-        display: none; /* Oculta o cabeçalho da tabela em telas pequenas */
+        display: none; 
     }
 
     .userTable tr {
         display: block;
         margin-bottom: 10px;
         border: 1px solid #ccc;
-        width: 100%; /* Garante que cada linha ocupe 100% */
+        width: 100%; 
     }
 
     .userTable td {
         display: block;
         text-align: left;
-        padding-left: 50%; /* Define espaço à esquerda para o rótulo */
+        padding-left: 50%; 
         position: relative;
         border: 1px solid #ccc;
         box-sizing: border-box;
-        width: 100%; /* Garante que a célula ocupe 100% da largura da tabela */
+        width: 100%; 
     }
 
     .userTable td::before {
-        content: attr(data-label); /* Usa o atributo data-label para exibir os rótulos */
+        content: attr(data-label); 
         position: absolute;
         left: 10px;
         width: calc(50% - 20px);
         white-space: nowrap;
         font-weight: bold;
         text-align: left;
+        height: auto;
     }
 }
+
 
 @media (max-width: 500px) {
     .userTable {
@@ -123,6 +126,7 @@ body {
 
     .userTable td::before {
         left: 5px;
+        height: auto;
     }
 }
 
@@ -154,6 +158,28 @@ body {
     border-radius: 10px;
     font-size: 13.5px;
     box-sizing: border-box;
+}
+
+.deleteButton {
+    margin-left: 25%;
+    background-color: #ff6666;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 3px 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.3s ease;
+}
+
+.deleteButton:hover {
+    background-color: #ff4d4d;
+}
+
+@media(max-width:1060px){
+    .deleteButton{
+        margin-left: 0%;
+    }
 }
 
 .caixatexto input:focus {
