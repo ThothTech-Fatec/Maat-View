@@ -32,7 +32,7 @@ const AdminResponsiveMenu: React.FC = () => {
                     <li><a href="/minhas_info" onClick={toggleMenu}>Minhas Informações</a></li>
                     <li><a href="/dashboard" onClick={toggleMenu}>Dashboard</a></li>
                     <li><a href="/cadastro_de_user" onClick={toggleMenu}>Cadastro de Usuário</a></li>
-                    <li><a href="/cadastro_de_ask" onClick={toggleMenu}>Cadastro de Pergunta</a></li>
+                    <li><a href="/cadastro_de_ask" onClick={toggleMenu}>Cadastro de Pesquisa</a></li>
                     <li><a href="/exibe_user" onClick={toggleMenu}>Exibe Usuários</a></li>
                     <li><a href="/exibe_search" onClick={toggleMenu}>Exibe Pesquisas</a></li>
                     <li><a href="/atualizar_senha" onClick={toggleMenu}>Atualizar Senha</a></li>
