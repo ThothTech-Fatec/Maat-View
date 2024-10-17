@@ -4,6 +4,6 @@ import { cadastrarPesquisa } from '../controllers/pesqController.js';
 
 const router = express.Router();
 
-router.post('/usuarios', cadastrarUsuario);
+router.post('/cadastropesquisas', cadastrarPesquisa );
 
 export default router;

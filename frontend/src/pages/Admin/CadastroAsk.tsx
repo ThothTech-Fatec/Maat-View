@@ -1,200 +1,209 @@
-    import React, { useState, useEffect } from 'react';
-    import ResponsiveMenu from '../../components/ADMResponsiveMenu'; 
-    import AdminRole from '../../hocs/Hoc_Admin';
-    import RenderMenu from '../../components/Render_Menu';
-    import '../../static/CadastroPerguntas.css';
+import React, { useState, useEffect } from 'react';
+import ResponsiveMenu from '../../components/ADMResponsiveMenu'; 
+import AdminRole from '../../hocs/Hoc_Admin';
+import RenderMenu from '../../components/Render_Menu';
+import '../../static/CadastroPerguntas.css';
+import axios from 'axios';
 
-    const CadastroAsk: React.FC = () => {
-        // Estado para armazenar o formato da pergunta
-        const [titlePes, setTitlePes] = useState('')
-        const [sobrepesq, setSobrePesq] = useState('')
-        const [catpesq,setCatPesq] = useState('')
-        const [catperg , setCatPerg] = useState('')
-        const [sobreperg , setSobrePerg] = useState('')
-        const [pergFormat, setPergFormat] = useState('')
-        const [showQuestionForm, setShowQuestionForm] = useState(false);
-        const [isSubmitted, setIsSubmitted] = useState(false);
-        const [buttonsVisible, setButtonsVisible] = useState(true);
-        const [buttonEdit , setButtonEdit] = useState(false)
-        
+const CadastroAsk: React.FC = () => {
+    const [titlePes, setTitlePes] = useState('')
+    const [sobrepesq, setSobrePesq] = useState('')
+    const [catpesq,setCatPesq] = useState('')
+    const [catperg , setCatPerg] = useState('')
+    const [sobreperg , setSobrePerg] = useState('')
+    const [pergFormat, setPergFormat] = useState('')
+    const [showQuestionForm, setShowQuestionForm] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [buttonsVisible, setButtonsVisible] = useState(true);
+    const [buttonEdit , setButtonEdit] = useState(false)
 
-   
-        useEffect(() => {
-            const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-                // Mensagem padrão que será exibida quando o usuário tentar sair
-                e.preventDefault();
-                // Apenas a chamada ao preventDefault() é suficiente
-            };
-    
-            window.addEventListener('beforeunload', handleBeforeUnload);
-    
-            return () => {
-                window.removeEventListener('beforeunload', handleBeforeUnload);
-            };
-        }, []);
-
-        
-        // Função para lidar com a mudança do formato da pergunta
-        const handleFormatChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-            setPergFormat(e.target.value),setCatPesq(e.target.value);
-        };
-
-        const handleClear1 = () => {
-            setTitlePes('');
-            setSobrePesq('');
-            setCatPesq('');
-            setIsSubmitted(false);
-            setButtonsVisible(true);
-            setButtonEdit(false);
-        };
-
-        const handleClear2 =() =>{
-            setSobrePerg('')
-            setCatPerg('')
-            setPergFormat('')
-        }
-
-
-
-
-
-        const handleSubmitPesquisa = (e: React.FormEvent) => {
+    // Função move para fora do useEffect
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+        if (titlePes || sobrepesq || catpesq || catperg || sobreperg || pergFormat || showQuestionForm) {
             e.preventDefault();
+            e.returnValue = ''; 
+        }
+    };
 
-            // Verifica se todos os campos estão preenchidos
+    useEffect(() => {
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [titlePes, sobrepesq, catpesq, catperg , sobreperg, pergFormat, showQuestionForm]);
+
+    const handleFormatChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setPergFormat(e.target.value),setCatPesq(e.target.value);
+    };
+
+    const handleClear1 = () => {
+        setTitlePes('');
+        setSobrePesq('');
+        setCatPesq('');
+        setIsSubmitted(false);
+        setButtonsVisible(true);
+        setButtonEdit(false);
+    };
+
+    const handleClear2 =() =>{
+        setSobrePerg('')
+        setCatPerg('')
+        setPergFormat('')
+    }
+
+    const handleSubmitPesquisa = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const pesquisas = { titlePes, sobrepesq, catpesq };
+        
+        try {
             if (titlePes && sobrepesq && catpesq) {
-                // Se todos os campos estiverem preenchidos, exibe o formulário de perguntas
-                setShowQuestionForm(true)
-                setIsSubmitted(true)
-                setButtonsVisible(false)
-                setButtonEdit(true)
+                const userConfirmed = window.confirm(
+                    "Deseja cadastrar a Pesquisa? Não será possível realizar alterações."
+                );
+
+                if (userConfirmed) {
+                    const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/cadastropesquisas`, pesquisas);
+
+                    if (response.status === 201 || response.status === 200) {
+                        alert('Pesquisa cadastrada com sucesso!');
+
+                        // Remove o listener após submissão
+                        window.removeEventListener('beforeunload', handleBeforeUnload);
+
+                        handleClear2();
+                        setShowQuestionForm(true);
+                        setIsSubmitted(true);
+                        setButtonsVisible(false);
+                        setButtonEdit(true);
+                    }
+                }
             } else {
                 alert('Por favor, preencha todos os campos da pesquisa.');
             }
-        };
-
-
-        const handleEdit = () => {
-            setIsSubmitted(false); // Permitir edição
-            setButtonsVisible(true); // Mostrar botões de "Cadastrar" e "Limpar"
-            setButtonEdit(false);
-            setShowQuestionForm(false); // Ocultar botão de "Editar"
-        };
-
-        return (
-            <div>
-                <RenderMenu />
-                <div className='container3'>
-                    <div className='Bordada3'>
-                        <h2 className='cadastrotitle' style={{marginLeft:"7.5%",marginTop:'3%'}}>Cadastro de Pesquisas</h2>
-                        <form className='form-row3' onSubmit={handleSubmitPesquisa}>
-                            <div className='form-column3'>
-                                <div className='form-group-ask'>
-                                    <p>Título da Pesquisa:</p>
-                                    <input type='text' id='titlepes' name='titlepes'  onChange={(e) => setTitlePes(e.target.value)} required value={titlePes} disabled={isSubmitted}/>
-                                </div>
-                                <div className='form-group-ask'>
-                                    <p>Sobre a Pesquisa:</p>
-                                    <textarea id='sobrepesq' name='sobrepesq' onChange={(e) => setSobrePesq(e.target.value)} required value={sobrepesq}  disabled={isSubmitted}/>
-                                </div>
-                                <div className='form-group-ask'>
-                                    <p>Categoria da Pesquisa:</p>
-                                    <select id="catpesq" name="catpesq" style={{ width: '100%', marginLeft: '4%' }} onChange={(e) => setCatPesq(e.target.value)} required value={catpesq}  disabled={isSubmitted} >
-                                        <option value="" disabled hidden>Defina a Categoria da Pesquisa</option>
-                                        <option value="Auto Avaliação">Auto-Avaliação</option>
-                                        <option value="Avaliação de Liderado">Avaliação de Liderado</option>
-                                        <option value="Avaliação de Líder">Avaliação de Líder</option>
-                                    </select>
-
-                                    {buttonsVisible && (
-                                        <>
-
-                                    <button className='btn-submit2' style={{ margin: '4%', marginTop: '6%' }} >Cadastrar Pesquisa</button>
-
-                                    <button type="button" className="btn-clear" onClick={handleClear1}> Limpar</button>
-
-                        </>
-                                    )}
-                                    {buttonEdit && (
-                                        <>
-
-                            <button type="button"  style={{ margin: '4%', marginTop: '6%' }} className='btn-submit2' onClick={handleEdit} >Editar Pesquisa</button>
-                            
-                                        </>
-                                    )}
-
-
-                </div>
-
-                {showQuestionForm && (
-                    <>
-                            
-                                <h2 className='cadastrotitle' style={{marginTop: '10%',marginLeft:'2.5%'}}>Cadastro de Perguntas</h2>
-                                <div className='form-group-ask'>
-                                    <p>Categoria da Pergunta:</p>
-                                    <input type='text' id='catperg' name='catperg'  onChange={(e) => setCatPerg(e.target.value)} required value={catperg}  />
-                                </div>  
-                                
-                                <div className='form-group-ask'>
-                                    <p>Formato da Pergunta:</p>
-                                    <select id="pergformat" name="pergformat" style={{ width: '100%', marginLeft: '4%' }} onChange={(e) => setPergFormat(e.target.value)} required value={pergFormat}  >
-                                        <option value="" disabled hidden>Defina o Formato da Pergunta</option>
-                                        <option value="Texto Longo">Texto Longo</option>
-                                        <option value="Escolha Única">Escolha Única</option>
-                                        <option value="Multipla Escolha">Multipla Escolha</option>
-                                    </select>
-                                </div>
-                                
-                                {/* Método para se caso o formato for Multipla Escolha ou Escolha Única, ira aparecer as opções*/}
-                                {(pergFormat === 'Escolha Única' || pergFormat === 'Multipla Escolha') && (
-                                    <div style={{marginLeft:'4%'}}>
-                                        <h3>Opções:</h3>
-                                        <div className='options-row'>
-                                            <div className='options-column'>
-                                                {[...Array(5)].map((_, index) => (
-                                                    <div className='form-group-ask-options' key={index}>
-                                                        <p>Opção {index + 1}:</p>
-                                                        <textarea 
-                                                            id={`option${index + 1}`} 
-                                                            name={`option${index + 1}`} 
-                                                            required={index < 2} // Apenas as opções 1 e 2 são obrigatórias
-                                                        />
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            <div className='options-column'>
-                                                {[...Array(5)].map((_, index) => (
-                                                    <div className='form-group-ask-options' key={index + 5}>
-                                                        <p>Opção {index + 6}:</p>
-                                                        <textarea 
-                                                            id={`option${index + 6}`} 
-                                                            name={`option${index + 6}`} 
-                                                        />
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-
-                                <div className='form-group-ask'>
-                                    <p>Texto da Pergunta:</p>
-                                    <textarea id='textperg' name='formtperg' required onChange={(e) => setSobrePerg(e.target.value)}  value={sobreperg}/>
-                                </div>
-
-                                <button className='btn-submit2' style={{ margin: '3%', marginTop: '3%' }}>Cadastrar Pergunta</button>
-
-                                <button type="button" className="btn-clear" onClick={handleClear2}>
-                            Limpar
-                        </button>
-                                </>
-                )}
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        );
+        } catch (error) {
+            console.error('Erro ao cadastrar/atualizar pesquisa:', error);
+            alert('Erro ao cadastrar/atualizar a pesquisa. Tente novamente.');
+        }
+    };
+    const handleSubmitPergunta = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const pergunta = {
+        titlePes,
+        tituloPergunta: catperg, 
+        sobrePergunta: sobreperg,
+        formatoPergunta: pergFormat,
+        categoriaPergunta: catpesq 
     };
 
-    export default AdminRole(CadastroAsk);
+    try {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/cadastrarpergunta`, pergunta);
+
+        if (response.status === 201) {
+            alert('Pergunta cadastrada com sucesso!');
+            handleClear2();
+        }
+    } catch (error) {
+        console.error('Erro ao cadastrar pergunta:', error);
+        alert('Erro ao cadastrar a pergunta. Tente novamente.');
+    }
+};
+
+    return (
+        <div>
+            <RenderMenu />
+            <div className='container3'>
+                <div className='Bordada3'>
+                    <h2 className='cadastrotitle' style={{marginLeft:"7.5%",marginTop:'3%'}}>Cadastro de Pesquisas</h2>
+                    <form className='form-row3' onSubmit={handleSubmitPesquisa}>
+                        <div className='form-column3'>
+                            <div className='form-group-ask'>
+                                <p>Título da Pesquisa:</p>
+                                <input type='text' id='titlepes' name='titlepes'  onChange={(e) => setTitlePes(e.target.value)} required value={titlePes} disabled={isSubmitted}/>
+                            </div>
+                            <div className='form-group-ask'>
+                                <p>Sobre a Pesquisa:</p>
+                                <textarea id='sobrepesq' name='sobrepesq' onChange={(e) => setSobrePesq(e.target.value)} required value={sobrepesq}  disabled={isSubmitted}/>
+                            </div>
+                            <div className='form-group-ask'>
+                                <p>Categoria da Pesquisa:</p>
+                                <select id="catpesq" name="catpesq" style={{ width: '100%', marginLeft: '4%' }} onChange={(e) => setCatPesq(e.target.value)} required value={catpesq}  disabled={isSubmitted} >
+                                    <option value="" disabled hidden>Defina a Categoria da Pesquisa</option>
+                                    <option value="Auto Avaliação">Auto-Avaliação</option>
+                                    <option value="Avaliação de Liderado">Avaliação de Liderado</option>
+                                    <option value="Avaliação de Líder">Avaliação de Líder</option>
+                                </select>
+
+                                {buttonsVisible && (
+                                    <>
+                                        <button className='btn-submit2' style={{ margin: '4%', marginTop: '6%' }} >Cadastrar Pesquisa</button>
+                                        <button type="button" className="btn-clear" onClick={handleClear1}> Limpar</button>
+                                    </>
+                                )}
+                            </div>
+
+                            {showQuestionForm && (
+                                <form onSubmit={handleSubmitPergunta}>
+                                    <h2 className='cadastrotitle' style={{marginTop: '10%',marginLeft:'2.5%'}}>Cadastro de Perguntas</h2>
+                                    <div className='form-group-ask'>
+                                        <p>Categoria da Pergunta:</p>
+                                        <input type='text' id='catperg' name='catperg'  onChange={(e) => setCatPerg(e.target.value)} required value={catperg}  />
+                                    </div>  
+                                    <div className='form-group-ask'>
+                                        <p>Formato da Pergunta:</p>
+                                        <select id="pergformat" name="pergformat" style={{ width: '100%', marginLeft: '4%' }} onChange={(e) => setPergFormat(e.target.value)} required value={pergFormat}  >
+                                            <option value="" disabled hidden>Defina o Formato da Pergunta</option>
+                                            <option value="Texto Longo">Texto Longo</option>
+                                            <option value="Escolha Única">Escolha Única</option>
+                                            <option value="Multipla Escolha">Multipla Escolha</option>
+                                        </select>
+                                    </div>
+                                    {(pergFormat === 'Escolha Única' || pergFormat === 'Multipla Escolha') && (
+                                        <div style={{marginLeft:'4%'}}>
+                                            <h3>Opções:</h3>
+                                            <div className='options-row'>
+                                                <div className='options-column'>
+                                                    {[...Array(5)].map((_, index) => (
+                                                        <div className='form-group-ask-options' key={index}>
+                                                            <p>Opção {index + 1}:</p>
+                                                            <textarea 
+                                                                id={`option${index + 1}`} 
+                                                                name={`option${index + 1}`} 
+                                                                required={index < 2} 
+                                                            />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <div className='options-column'>
+                                                    {[...Array(5)].map((_, index) => (
+                                                        <div className='form-group-ask-options' key={index + 5}>
+                                                            <p>Opção {index + 6}:</p>
+                                                            <textarea 
+                                                                id={`option${index + 6}`} 
+                                                                name={`option${index + 6}`} 
+                                                            />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                    <div className='form-group-ask'>
+                                        <p>Texto da Pergunta:</p>
+                                        <textarea id='textperg' name='formtperg' required onChange={(e) => setSobrePerg(e.target.value)}  value={sobreperg}/>
+                                    </div>
+                                    <button className='btn-submit2' style={{ margin: '3%', marginTop: '3%' }}>Cadastrar Pergunta</button>
+                                    <button type="button" className="btn-clear" onClick={handleClear2}>
+                                        Limpar
+                                    </button>
+                                </form>
+                            )}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default AdminRole(CadastroAsk);
