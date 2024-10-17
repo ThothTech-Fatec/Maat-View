@@ -19,8 +19,7 @@ CREATE TABLE Pesquisas (
     id INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(50) NOT NULL,
     sobre VARCHAR(255) NOT NULL,
-    cat_pes VARCHAR(30) UNIQUE NOT NULL,
-    alvo_cargo ENUM('Auto Avaliação', 'Avaliação de Liderado', 'Avaliação de Líder') NOT NULL
+    cat_pes ENUM('Auto Avaliação', 'Avaliação de Liderado', 'Avaliação de Líder') NOT NULL
 );
 
 -- Criar a tabela de Categorias de Perguntas
@@ -82,8 +81,8 @@ INSERT INTO Users (nome, email, senha, cargo, lider_id, cpf)
 VALUES ('Liderado User', 'liderado@email.com', '$2a$10$I1QNViM5N1c8d3ro6uD4F.MaxZ0FBy59Ye1bjrs1TNtkA/1orKYIa', 'Liderado', NULL, '009.876.543-21');
 
 -- Criar a pesquisa
-INSERT INTO Pesquisas (titulo, sobre, cat_pes, alvo_cargo)
-VALUES ('Pesquisa de Clima e Cultura', 'Avaliação do clima organizacional e liderança', 'Clima', 'Auto Avaliação');
+INSERT INTO Pesquisas (titulo, sobre, cat_pes)
+VALUES ('Pesquisa de Clima e Cultura', 'Avaliação do clima organizacional e liderança', 'Auto Avaliação');
 
 -- Inserir categorias de perguntas
 INSERT INTO Categoria_Perguntas (categoria) VALUES ('Desempenho'), ('Satisfação'), ('Desenvolvimento');
@@ -157,4 +156,3 @@ VALUES
  (SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'),
  (SELECT id FROM Opções WHERE texto = 'Trabalho em Equipe'));
 
-select * from Respostas;

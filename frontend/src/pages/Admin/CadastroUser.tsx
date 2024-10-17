@@ -3,6 +3,7 @@ import axios from 'axios';
 import ResponsiveMenu from '../../components/ADMResponsiveMenu';
 import RenderMenu from '../../components/Render_Menu';
 import '../../static/CadastroUsuario.css';
+import AdminRole from '../../hocs/Hoc_Admin';
 
 const CadastroUsuario: React.FC = () => {
     const [nome, setNome] = useState('');
@@ -187,4 +188,4 @@ const CadastroUsuario: React.FC = () => {
     );
 };
 
-export default CadastroUsuario;
+export default AdminRole(CadastroUsuario);

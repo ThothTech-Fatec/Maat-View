@@ -6,6 +6,8 @@ import dotenv from 'dotenv';
 import cors from 'cors'; // Importando o pacote cors
 import pool from '../config/database.js';
 
+import { ResultSetHeader } from 'mysql2'; // Certifique-se de importar o tipo correto
+
 dotenv.config(); // Carrega as variáveis de ambiente
 
 const authRoutes = express.Router();
@@ -51,7 +53,7 @@ authRoutes.post('/login', async (req: Request, res: Response) => {
 // Rota para obter todos os usuários
 authRoutes.get('/users', async (_req: Request, res: Response) => {
   try {
-      const [rows] = await pool.query('SELECT id, nome, email, cargo, cpf FROM Users'); // Adicione cpf aqui
+      const [rows] = await pool.query('SELECT id, nome, email, cargo, cpf FROM Users'); 
       return res.status(200).json(rows);
   } catch (error) {
       console.error('Erro ao buscar usuários:', error);

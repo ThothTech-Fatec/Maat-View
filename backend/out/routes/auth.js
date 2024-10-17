@@ -1,15 +1,14 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import mysql from 'mysql2/promise';
+import dotenv from 'dotenv';
+import cors from 'cors'; // Importando o pacote cors
+import pool from '../config/database.js';
+dotenv.config(); // Carrega as variáveis de ambiente
 const authRoutes = express.Router();
-// Configuração de conexão com o banco de dados
-const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'fatec',
-    database: 'maatview',
-});
+const app = express();
+app.use(cors()); // Habilita CORS
+app.use(express.json()); // Para interpretar o corpo das requisições como JSON
 // Rota de login
 authRoutes.post('/login', async (req, res) => {
     try {
@@ -42,11 +41,37 @@ authRoutes.post('/login', async (req, res) => {
 // Rota para obter todos os usuários
 authRoutes.get('/users', async (_req, res) => {
     try {
-        const [rows] = await pool.query('SELECT nome, email, cargo FROM Users');
+        const [rows] = await pool.query('SELECT id, nome, email, cargo, cpf FROM Users');
         return res.status(200).json(rows);
     }
     catch (error) {
         console.error('Erro ao buscar usuários:', error);
+        return res.status(500).json({ message: 'Erro no servidor.' });
+    }
+});
+// Rota para deletar um usuário
+authRoutes.delete('/users/:id', async (req, res) => {
+    const userId = req.params.id; // Pega o ID do usuário da URL
+    try {
+        const [result] = await pool.query('DELETE FROM Users WHERE id = ?', [userId]);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Usuário não encontrado.' });
+        }
+        return res.status(200).json({ message: 'Usuário deletado com sucesso.' });
+    }
+    catch (error) {
+        console.error('Erro ao deletar usuário:', error);
+        return res.status(500).json({ message: 'Erro no servidor.' });
+    }
+});
+// Rota para buscar apenas os líderes
+authRoutes.get('/lideres', async (_req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT id, nome FROM Users WHERE cargo = ?', ['Líder']);
+        return res.status(200).json(rows);
+    }
+    catch (error) {
+        console.error('Erro ao buscar líderes:', error);
         return res.status(500).json({ message: 'Erro no servidor.' });
     }
 });
