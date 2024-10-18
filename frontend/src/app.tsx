@@ -7,6 +7,7 @@ import CadastroUser from './pages/Admin/CadastroUser';
 import ExibeUser from './pages/Admin/ExibeUser';
 import Unauthorized from './pages/Unauthorized';
 import CadastroAsk from './pages/Admin/CadastroAsk';
+import ExibePesq from './pages/Admin/ExibePesq';
 
 
 
@@ -22,6 +23,8 @@ const App: React.FC = () => {
                 <Route path="/cadastro_de_ask" element={<CadastroAsk />} />
                 <Route path="/exibe_user" element={<ExibeUser />} />
                 <Route path="/unauthorized" element={<Unauthorized />} />
+                <Route path="/exibe_search" element={<ExibePesq />} />
+
 
                 {}
             </Routes>

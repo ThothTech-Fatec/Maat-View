@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import pool from '../config/database.js';
 
+
 // Função para cadastrar pesquisa
 export const cadastrarPesquisa = async (req: Request, res: Response) => {
     try {
@@ -35,12 +36,12 @@ export const cadastrarPergunta = async (req: Request, res: Response) => {
 
         // Inserir a pergunta no banco de dados e vincular à pesquisa
         await pool.query(
-            'INSERT INTO Perguntas (titulo, sobre, formato) VALUES (?, ?, ?)', 
+            'INSERT INTO Perguntas (cat_id, sobre, formato) VALUES (?, ?, ?)', 
             [categoriaPergunta, sobrePergunta, formatoPergunta]  
         );
 
         // Buscar o ID da pergunta inserida
-        const [pergunta]: [any[], any] = await pool.query('SELECT id FROM Perguntas WHERE titulo = ?', [categoriaPergunta]);
+        const [pergunta]: [any[], any] = await pool.query('SELECT id FROM Perguntas WHERE sobre = ?', [sobrePergunta]);
 
         if (pergunta.length === 0) {
             return res.status(404).json({ message: 'Pergunta não encontrada após inserção.' });
