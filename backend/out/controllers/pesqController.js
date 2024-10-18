@@ -15,7 +15,7 @@ export const cadastrarPesquisa = async (req, res) => {
 /// Função para cadastrar perguntas e vincular à pesquisa
 export const cadastrarPergunta = async (req, res) => {
     try {
-        const { titlePes, sobrePergunta, formatoPergunta, categoriaPergunta, options } = req.body;
+        const { titlePes, categoriaPergunta, sobrePergunta, formatoPergunta, options } = req.body;
         // Buscar o ID da pesquisa pelo título
         const [rows] = await pool.query('SELECT id FROM Pesquisas WHERE titulo = ?', [titlePes]);
         if (rows.length === 0) {
@@ -23,9 +23,9 @@ export const cadastrarPergunta = async (req, res) => {
         }
         const pesquisaId = rows[0].id;
         // Inserir a pergunta no banco de dados e vincular à pesquisa
-        await pool.query('INSERT INTO Perguntas (titulo, sobre, formato) VALUES (?, ?, ?)', [categoriaPergunta, sobrePergunta, formatoPergunta]);
+        await pool.query('INSERT INTO Perguntas (cat_id, sobre, formato) VALUES (?, ?, ?)', [categoriaPergunta, sobrePergunta, formatoPergunta]);
         // Buscar o ID da pergunta inserida
-        const [pergunta] = await pool.query('SELECT id FROM Perguntas WHERE titulo = ?', [categoriaPergunta]);
+        const [pergunta] = await pool.query('SELECT id FROM Perguntas WHERE sobre = ?', [sobrePergunta]);
         if (pergunta.length === 0) {
             return res.status(404).json({ message: 'Pergunta não encontrada após inserção.' });
         }

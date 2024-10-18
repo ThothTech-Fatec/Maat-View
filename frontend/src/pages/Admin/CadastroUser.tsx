@@ -74,7 +74,7 @@ const CadastroUsuario: React.FC = () => {
         setSenha('');
         setConfirmaSenha('');
         setNivelAcesso('');
-        setLider(''); // Limpar seleção de líder
+        setLider(''); 
     };
 
     return (

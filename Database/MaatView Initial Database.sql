@@ -2,6 +2,7 @@ CREATE DATABASE maatview;
 
 USE maatview;
 
+
 -- Criar a tabela de Usuários com CPF
 CREATE TABLE Users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -31,7 +32,6 @@ CREATE TABLE Categoria_Perguntas (
 -- Criar a tabela de Perguntas
 CREATE TABLE Perguntas (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    titulo VARCHAR(50) NOT NULL,
     sobre VARCHAR(255) NOT NULL,
     formato ENUM('Texto Longo', 'Escolha Única', 'Múltipla Escolha') NOT NULL,
     cat_id INT,
@@ -156,3 +156,6 @@ VALUES
  (SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'),
  (SELECT id FROM Opções WHERE texto = 'Trabalho em Equipe'));
 
+
+
+select * from Categoria_Perguntas;

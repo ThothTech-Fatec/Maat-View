@@ -76,6 +76,30 @@ authRoutes.delete('/users/:id', async (req: Request, res: Response) => {
   }
 });
 
+authRoutes.get('/pesquisas', async (_req: Request, res: Response) => {
+    try {
+        const [rows] = await pool.query('SELECT id, titulo, sobre, cat_pes FROM Pesquisas'); 
+        return res.status(200).json(rows);
+    } catch (error) {
+        console.error('Erro ao buscar pesquisas:', error);
+        return res.status(500).json({ message: 'Erro no servidor.' });
+    }
+  });
+
+  authRoutes.delete('/pesquisas/:id', async (req: Request, res: Response) => {
+    const pes_id = req.params.id; // Pega o ID do usuário da URL
+    try {
+        const [result] = await pool.query<mysql.ResultSetHeader>('DELETE FROM Pesquisas WHERE id = ?', [pes_id]);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Pesquisa não encontrado.' });
+        }
+        return res.status(200).json({ message: 'Pesquisa deletado com sucesso.' });
+    } catch (error) {
+        console.error('Erro ao deletar pesquisa:', error);
+        return res.status(500).json({ message: 'Erro no servidor.' });
+    }
+  });
+
 // Rota para buscar apenas os líderes
 authRoutes.get('/lideres', async (_req: Request, res: Response) => {
     try {
