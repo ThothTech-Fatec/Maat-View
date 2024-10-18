@@ -11,6 +11,7 @@ const CadastroAsk: React.FC = () => {
     const [catpesq,setCatPesq] = useState('')
     const [catperg , setCatPerg] = useState('')
     const [sobreperg , setSobrePerg] = useState('')
+    const [options, setOptions] = useState<string[]>(['', '', '', '', '', '', '', '', '', '']);
     const [pergFormat, setPergFormat] = useState('')
     const [showQuestionForm, setShowQuestionForm] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
@@ -86,28 +87,38 @@ const CadastroAsk: React.FC = () => {
             alert('Erro ao cadastrar/atualizar a pesquisa. Tente novamente.');
         }
     };
-    const handleSubmitPergunta = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const pergunta = {
-        titlePes,
-        tituloPergunta: catperg, 
-        sobrePergunta: sobreperg,
-        formatoPergunta: pergFormat,
-        categoriaPergunta: catpesq 
+
+    const handleOptionChange = (index: number, value: string) => {
+        const newOptions = [...options];
+        newOptions[index] = value;
+        setOptions(newOptions);
     };
 
-    try {
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/cadastrarpergunta`, pergunta);
 
-        if (response.status === 201) {
-            alert('Pergunta cadastrada com sucesso!');
-            handleClear2();
+    const handleSubmitPergunta = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const filledOptions = options.filter(option => option.trim() !== '');
+        const pergunta = {
+            titlePes,
+            categoriaPergunta: catperg, 
+            sobrePergunta: sobreperg,
+            formatoPergunta: pergFormat,
+            options: filledOptions.length > 0 ? filledOptions : null
+        };
+    
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/cadastrarpergunta`, pergunta);
+    
+            if (response.status === 201) {
+                alert('Pergunta cadastrada com sucesso!');
+                handleClear2();
+                window.removeEventListener('beforeunload', handleBeforeUnload);
+            }
+        } catch (error) {
+            console.error('Erro ao cadastrar pergunta:', error);
+            alert('Erro ao cadastrar a pergunta. Tente novamente.');
         }
-    } catch (error) {
-        console.error('Erro ao cadastrar pergunta:', error);
-        alert('Erro ao cadastrar a pergunta. Tente novamente.');
-    }
-};
+    };
 
     return (
         <div>
@@ -141,9 +152,11 @@ const CadastroAsk: React.FC = () => {
                                     </>
                                 )}
                             </div>
-
+                            </div>
+                            </form>
                             {showQuestionForm && (
-                                <form onSubmit={handleSubmitPergunta}>
+                                <form className='form-row3' onSubmit={handleSubmitPergunta}>
+                                    <div className='form-column3'>
                                     <h2 className='cadastrotitle' style={{marginTop: '10%',marginLeft:'2.5%'}}>Cadastro de Perguntas</h2>
                                     <div className='form-group-ask'>
                                         <p>Categoria da Pergunta:</p>
@@ -169,6 +182,7 @@ const CadastroAsk: React.FC = () => {
                                                             <textarea 
                                                                 id={`option${index + 1}`} 
                                                                 name={`option${index + 1}`} 
+                                                                onChange={(e) => handleOptionChange(index, e.target.value)}
                                                                 required={index < 2} 
                                                             />
                                                         </div>
@@ -181,6 +195,7 @@ const CadastroAsk: React.FC = () => {
                                                             <textarea 
                                                                 id={`option${index + 6}`} 
                                                                 name={`option${index + 6}`} 
+                                                                onChange={(e) => handleOptionChange(index + 5, e.target.value)}
                                                             />
                                                         </div>
                                                     ))}
@@ -196,10 +211,9 @@ const CadastroAsk: React.FC = () => {
                                     <button type="button" className="btn-clear" onClick={handleClear2}>
                                         Limpar
                                     </button>
+                                    </div>
                                 </form>
                             )}
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>

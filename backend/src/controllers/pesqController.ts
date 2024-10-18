@@ -19,10 +19,10 @@ export const cadastrarPesquisa = async (req: Request, res: Response) => {
     }
 };
 
-// Função para cadastrar perguntas e vincular à pesquisa
+/// Função para cadastrar perguntas e vincular à pesquisa
 export const cadastrarPergunta = async (req: Request, res: Response) => {
     try {
-        const { titlePes, tituloPergunta, sobrePergunta, formatoPergunta, categoriaPergunta } = req.body;
+        const { titlePes,categoriaPergunta, sobrePergunta, formatoPergunta, options } = req.body;
 
         // Buscar o ID da pesquisa pelo título
         const [rows]: [any[], any] = await pool.query('SELECT id FROM Pesquisas WHERE titulo = ?', [titlePes]);
@@ -35,12 +35,12 @@ export const cadastrarPergunta = async (req: Request, res: Response) => {
 
         // Inserir a pergunta no banco de dados e vincular à pesquisa
         await pool.query(
-            'INSERT INTO Perguntas (titulo, sobre, formato, cat_id) VALUES (?, ?, ?, ?)', 
-            [tituloPergunta, sobrePergunta, formatoPergunta, categoriaPergunta]  // Certifique-se que categoriaPergunta é o ID correto.
+            'INSERT INTO Perguntas (titulo, sobre, formato) VALUES (?, ?, ?)', 
+            [categoriaPergunta, sobrePergunta, formatoPergunta]  
         );
 
         // Buscar o ID da pergunta inserida
-        const [pergunta]: [any[], any] = await pool.query('SELECT id FROM Perguntas WHERE titulo = ?', [tituloPergunta]);
+        const [pergunta]: [any[], any] = await pool.query('SELECT id FROM Perguntas WHERE titulo = ?', [categoriaPergunta]);
 
         if (pergunta.length === 0) {
             return res.status(404).json({ message: 'Pergunta não encontrada após inserção.' });
@@ -53,6 +53,16 @@ export const cadastrarPergunta = async (req: Request, res: Response) => {
             'INSERT INTO Pesquisas_Perguntas (pes_id, per_id) VALUES (?, ?)', 
             [pesquisaId, perguntaId]
         );
+
+        // Inserir as opções, se houver
+        if (options && options.length > 0) {
+            for (const option of options) {
+                await pool.query(
+                    'INSERT INTO Opções (per_id, pes_id, texto) VALUES (?, ?, ?)',
+                    [perguntaId, pesquisaId, option]
+                );
+            }
+        }
 
         return res.status(201).json({ message: 'Pergunta cadastrada e vinculada à pesquisa com sucesso!' });
 
