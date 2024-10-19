@@ -30,6 +30,7 @@ const ExibeUser: React.FC = () => {
 
         fetchUsers();
     }, []);
+    
 
     const handleDelete = async (userId: number) => {
         const confirmDelete = window.confirm('Você realmente deseja apagar este usuário?');
@@ -77,11 +78,11 @@ const ExibeUser: React.FC = () => {
                                 <td data-label="Ações">
                                     {user.cargo !== 'Admin' && (
                                         <button onClick={() => handleDelete(user.id)} className='deleteButton'>
-                                            Deletar
+                                            Excluir
                                         </button>
                                     )}
                                     {user.cargo =='Admin' && (
-                                        <p style={{marginLeft: '45%'}}>X</p>
+                                        <p style={{marginLeft: '2%'}}>X</p>
                                     )}
                                 </td>
                             </tr>

@@ -80,82 +80,25 @@ VALUES ('Admin User', 'admin@email.com', '$2a$10$ddNpc6kVtPXVtsrnxYoTp.6mzgEuKGT
 INSERT INTO Users (nome, email, senha, cargo, lider_id, cpf)
 VALUES ('Liderado User', 'liderado@email.com', '$2a$10$I1QNViM5N1c8d3ro6uD4F.MaxZ0FBy59Ye1bjrs1TNtkA/1orKYIa', 'Liderado', NULL, '009.876.543-21');
 
--- Criar a pesquisa
-INSERT INTO Pesquisas (titulo, sobre, cat_pes)
-VALUES ('Pesquisa de Clima e Cultura', 'Avaliação do clima organizacional e liderança', 'Auto Avaliação');
+-- Inserir 15 Líderes
+INSERT INTO Users (nome, email, senha, cargo, lider_id, cpf) VALUES 
+('Líder 1', 'lider1@email.com', '$2a$10$H3wOxjpAFNHXtx5yqX.zUuRzNpzjdVIV4j8Eu4.JTGkaO/CGOYzzm', 'Líder', NULL, '111.111.111-11'),
+('Líder 2', 'lider2@email.com', '$2a$10$H3wOxjpAFNHXtx5yqX.zUuRzNpzjdVIV4j8Eu4.JTGkaO/CGOYzzm', 'Líder', NULL, '222.222.222-22'),
+('Líder 3', 'lider3@email.com', '$2a$10$H3wOxjpAFNHXtx5yqX.zUuRzNpzjdVIV4j8Eu4.JTGkaO/CGOYzzm', 'Líder', NULL, '333.333.333-33'),
+('Líder 4', 'lider4@email.com', '$2a$10$H3wOxjpAFNHXtx5yqX.zUuRzNpzjdVIV4j8Eu4.JTGkaO/CGOYzzm', 'Líder', NULL, '444.444.444-44'),
+('Líder 5', 'lider5@email.com', '$2a$10$H3wOxjpAFNHXtx5yqX.zUuRzNpzjdVIV4j8Eu4.JTGkaO/CGOYzzm', 'Líder', NULL, '555.555.555-55'),
+('Líder 6', 'lider6@email.com', '$2a$10$H3wOxjpAFNHXtx5yqX.zUuRzNpzjdVIV4j8Eu4.JTGkaO/CGOYzzm', 'Líder', NULL, '666.666.666-66'),
+('Líder 7', 'lider7@email.com', '$2a$10$H3wOxjpAFNHXtx5yqX.zUuRzNpzjdVIV4j8Eu4.JTGkaO/CGOYzzm', 'Líder', NULL, '777.777.777-77'),
+('Líder 8', 'lider8@email.com', '$2a$10$H3wOxjpAFNHXtx5yqX.zUuRzNpzjdVIV4j8Eu4.JTGkaO/CGOYzzm', 'Líder', NULL, '888.888.888-88'),
+('Líder 9', 'lider9@email.com', '$2a$10$H3wOxjpAFNHXtx5yqX.zUuRzNpzjdVIV4j8Eu4.JTGkaO/CGOYzzm', 'Líder', NULL, '999.999.999-99'),
+('Líder 10', 'lider10@email.com', '$2a$10$H3wOxjpAFNHXtx5yqX.zUuRzNpzjdVIV4j8Eu4.JTGkaO/CGOYzzm', 'Líder', NULL, '101.101.101-10'),
+('Líder 11', 'lider11@email.com', '$2a$10$H3wOxjpAFNHXtx5yqX.zUuRzNpzjdVIV4j8Eu4.JTGkaO/CGOYzzm', 'Líder', NULL, '202.202.202-20'),
+('Líder 12', 'lider12@email.com', '$2a$10$H3wOxjpAFNHXtx5yqX.zUuRzNpzjdVIV4j8Eu4.JTGkaO/CGOYzzm', 'Líder', NULL, '303.303.303-30'),
+('Líder 13', 'lider13@email.com', '$2a$10$H3wOxjpAFNHXtx5yqX.zUuRzNpzjdVIV4j8Eu4.JTGkaO/CGOYzzm', 'Líder', NULL, '404.404.404-40'),
+('Líder 14', 'lider14@email.com', '$2a$10$H3wOxjpAFNHXtx5yqX.zUuRzNpzjdVIV4j8Eu4.JTGkaO/CGOYzzm', 'Líder', NULL, '505.505.505-50'),
+('Líder 15', 'lider15@email.com', '$2a$10$H3wOxjpAFNHXtx5yqX.zUuRzNpzjdVIV4j8Eu4.JTGkaO/CGOYzzm', 'Líder', NULL, '606.606.606-60');
 
--- Inserir categorias de perguntas
-INSERT INTO Categoria_Perguntas (categoria) VALUES ('Desempenho'), ('Satisfação'), ('Desenvolvimento');
-
--- Pergunta 1: Texto Longo
-INSERT INTO Perguntas (titulo, sobre, formato, cat_id)
-VALUES ('Avaliação Geral', 'Descreva como você se sente em relação ao seu trabalho.', 'Texto Longo', 
-        (SELECT id FROM Categoria_Perguntas WHERE categoria = 'Desempenho'));
-
--- Pergunta 2: Escolha Única
-INSERT INTO Perguntas (titulo, sobre, formato, cat_id)
-VALUES ('Satisfação com o Ambiente', 'Escolha o nível de satisfação com o ambiente de trabalho.', 'Escolha Única', 
-        (SELECT id FROM Categoria_Perguntas WHERE categoria = 'Satisfação'));
-
--- Pergunta 3: Múltipla Escolha
-INSERT INTO Perguntas (titulo, sobre, formato, cat_id)
-VALUES ('Áreas de Desenvolvimento', 'Escolha as áreas em que gostaria de se desenvolver.', 'Múltipla Escolha', 
-        (SELECT id FROM Categoria_Perguntas WHERE categoria = 'Desenvolvimento'));
-
--- Associe as perguntas à pesquisa
-INSERT INTO Pesquisas_Perguntas (pes_id, per_id)
-VALUES 
-((SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'), (SELECT id FROM Perguntas WHERE titulo = 'Avaliação Geral')),
-((SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'), (SELECT id FROM Perguntas WHERE titulo = 'Satisfação com o Ambiente')),
-((SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'), (SELECT id FROM Perguntas WHERE titulo = 'Áreas de Desenvolvimento'));
-
--- Opções para a pergunta de Escolha Única
-INSERT INTO Opções (per_id, pes_id, texto)
-VALUES 
-((SELECT id FROM Perguntas WHERE titulo = 'Satisfação com o Ambiente'), (SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'), 'Muito Satisfeito'),
-((SELECT id FROM Perguntas WHERE titulo = 'Satisfação com o Ambiente'), (SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'), 'Satisfeito'),
-((SELECT id FROM Perguntas WHERE titulo = 'Satisfação com o Ambiente'), (SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'), 'Indiferente'),
-((SELECT id FROM Perguntas WHERE titulo = 'Satisfação com o Ambiente'), (SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'), 'Insatisfeito'),
-((SELECT id FROM Perguntas WHERE titulo = 'Satisfação com o Ambiente'), (SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'), 'Muito Insatisfeito');
-
--- Opções para a pergunta de Múltipla Escolha
-INSERT INTO Opções (per_id, pes_id, texto)
-VALUES 
-((SELECT id FROM Perguntas WHERE titulo = 'Áreas de Desenvolvimento'), (SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'), 'Comunicação'),
-((SELECT id FROM Perguntas WHERE titulo = 'Áreas de Desenvolvimento'), (SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'), 'Liderança'),
-((SELECT id FROM Perguntas WHERE titulo = 'Áreas de Desenvolvimento'), (SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'), 'Gestão de Tempo'),
-((SELECT id FROM Perguntas WHERE titulo = 'Áreas de Desenvolvimento'), (SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'), 'Trabalho em Equipe'),
-((SELECT id FROM Perguntas WHERE titulo = 'Áreas de Desenvolvimento'), (SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'), 'Inovação');
-
--- Resposta para Texto Longo
-INSERT INTO Respostas (user_id, per_id, pes_id, resp_texto)
-VALUES 
-((SELECT id FROM Users WHERE nome = 'Liderado User'), 
- (SELECT id FROM Perguntas WHERE titulo = 'Avaliação Geral'),
- (SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'),
- 'Estou satisfeito com o progresso, mas há pontos que podem ser melhorados.');
-
--- Resposta para Escolha Única
-INSERT INTO Respostas (user_id, per_id, pes_id, select_option_id)
-VALUES 
-((SELECT id FROM Users WHERE nome = 'Liderado User'), 
- (SELECT id FROM Perguntas WHERE titulo = 'Satisfação com o Ambiente'),
- (SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'),
- (SELECT id FROM Opções WHERE texto = 'Satisfeito'));
-
--- Resposta para Múltipla Escolha
-INSERT INTO Respostas (user_id, per_id, pes_id, select_option_id)
-VALUES 
-((SELECT id FROM Users WHERE nome = 'Liderado User'), 
- (SELECT id FROM Perguntas WHERE titulo = 'Áreas de Desenvolvimento'),
- (SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'),
- (SELECT id FROM Opções WHERE texto = 'Comunicação')),
-
-((SELECT id FROM Users WHERE nome = 'Liderado User'), 
- (SELECT id FROM Perguntas WHERE titulo = 'Áreas de Desenvolvimento'),
- (SELECT id FROM Pesquisas WHERE titulo = 'Pesquisa de Clima e Cultura'),
- (SELECT id FROM Opções WHERE texto = 'Trabalho em Equipe'));
-
-
-
+SELECT categoria FROM Categoria_Perguntas WHERE categoria LIKE 'sa';
 select * from Categoria_Perguntas;
+select * from Perguntas;
+

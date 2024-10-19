@@ -8,6 +8,7 @@ import ExibeUser from './pages/Admin/ExibeUser';
 import Unauthorized from './pages/Unauthorized';
 import CadastroAsk from './pages/Admin/CadastroAsk';
 import ExibePesq from './pages/Admin/ExibePesq';
+import VerPergs from './pages/Admin/verPergs';
 
 
 
@@ -24,6 +25,8 @@ const App: React.FC = () => {
                 <Route path="/exibe_user" element={<ExibeUser />} />
                 <Route path="/unauthorized" element={<Unauthorized />} />
                 <Route path="/exibe_search" element={<ExibePesq />} />
+                <Route path="/ver-Pergs" element={<VerPergs />} />
+                <Route path="/ver-Pergs/:id" element={<VerPergs />} />  {/* Rota com parâmetro */}
 
 
                 {}

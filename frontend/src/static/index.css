@@ -104,7 +104,7 @@ body {
     }
 
     .userTable td::before {
-        content: attr(data-label); 
+        content: attr(data-label);
         position: absolute;
         left: 10px;
         width: calc(50% - 20px);
@@ -112,6 +112,9 @@ body {
         font-weight: bold;
         text-align: left;
         height: auto;
+        box-sizing: border-box;
+        width: auto;
+        margin-bottom: 5px; /* Adiciona uma separação entre o rótulo e a informação */
     }
 }
 
@@ -161,20 +164,21 @@ body {
 }
 
 .deleteButton {
-    margin-left: 25%;
-    background-color: #ff6666;
-    color: white;
+    margin-left: 34.%;
+    padding: 5px 18px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #b70000;
     border: none;
     border-radius: 5px;
-    padding: 3px 6px;
     cursor: pointer;
-    font-size: 13px;
     transition: background-color 0.3s ease;
 }
 
 .deleteButton:hover {
-    background-color: #ff4d4d;
+    background-color: #4b0000;
 }
+
 
 @media(max-width:1060px){
     .deleteButton{

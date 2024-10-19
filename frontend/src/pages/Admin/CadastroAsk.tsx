@@ -6,20 +6,21 @@ import '../../static/CadastroPerguntas.css';
 import axios from 'axios';
 
 const CadastroAsk: React.FC = () => {
-    const [categoriasExistentes, setCategoriasExistentes] = useState<string[]>([]);
-    const [filteredCategories, setFilteredCategories] = useState<string[]>([]);
-    const [novaCategoria, setNovaCategoria] = useState(false);
     const [titlePes, setTitlePes] = useState('');
     const [sobrepesq, setSobrePesq] = useState('');
-    const [catpesq, setCatPesq] = useState('');
-    const [catperg, setCatPerg] = useState('');
-    const [sobreperg, setSobrePerg] = useState('');
+    const [catpesq,setCatPesq] = useState('');
+    const [catperg , setCatPerg] = useState('');
+    const [sobreperg , setSobrePerg] = useState('');
     const [options, setOptions] = useState<string[]>(['', '', '', '', '', '', '', '', '', '']);
     const [pergFormat, setPergFormat] = useState('');
     const [showQuestionForm, setShowQuestionForm] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [buttonsVisible, setButtonsVisible] = useState(true);
-    const [buttonEdit, setButtonEdit] = useState(false);
+    const [buttonEdit , setButtonEdit] = useState(false);
+
+    const [categoriasSugeridas, setCategoriasSugeridas] = useState<string[]>([]);
+    const [novaCategoriaInputVisible, setNovaCategoriaInputVisible] = useState(false);
+    const [novaCategoria, setNovaCategoria] = useState('');
 
     // Função move para fora do useEffect
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -37,36 +38,29 @@ const CadastroAsk: React.FC = () => {
         };
     }, [titlePes, sobrepesq, catpesq, catperg , sobreperg, pergFormat, showQuestionForm]);
 
-    const handleFormatChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setPergFormat(e.target.value);
-    };
-
     useEffect(() => {
-        const buscarCategorias = async () => {
-            if (catperg.trim() !== '') {
+        const timeoutId = setTimeout(async () => {
+            if (catperg.length >= 2) {
                 try {
                     const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/categorias`, {
                         params: { query: catperg }
                     });
-                    setFilteredCategories(response.data);
+                    setCategoriasSugeridas(response.data);
                 } catch (error) {
                     console.error('Erro ao buscar categorias:', error);
                 }
+            } else {
+                setCategoriasSugeridas([]);
             }
-        };
-
-        const fetchCategories = async () => {
-            try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/categorias`);
-                setCategoriasExistentes(response.data);
-            } catch (error) {
-                console.error('Erro ao buscar categorias:', error);
-            }
-        };
-
-        buscarCategorias();
-        fetchCategories();
+        }, 500);  // Delay de 500ms antes de realizar a busca
+    
+        return () => clearTimeout(timeoutId);  // Limpar timeout ao alterar o input
     }, [catperg]);
+
+    const handleFormatChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setPergFormat(e.target.value);
+        setCatPesq(e.target.value);
+    };
 
     const handleClear1 = () => {
         setTitlePes('');
@@ -77,10 +71,12 @@ const CadastroAsk: React.FC = () => {
         setButtonEdit(false);
     };
 
-    const handleClear2 = () => {
+    const handleClear2 =() =>{
         setSobrePerg('');
         setCatPerg('');
         setPergFormat('');
+        setOptions(['', '', '', '', '', '', '', '', '', '']); 
+        setCategoriasSugeridas([]); 
     };
 
     const handleSubmitPesquisa = async (e: React.FormEvent) => {
@@ -99,9 +95,10 @@ const CadastroAsk: React.FC = () => {
                     if (response.status === 201 || response.status === 200) {
                         alert('Pesquisa cadastrada com sucesso!');
 
+                        // Remove o listener após submissão
                         window.removeEventListener('beforeunload', handleBeforeUnload);
 
-                        handleClear1();
+                        handleClear2();
                         setShowQuestionForm(true);
                         setIsSubmitted(true);
                         setButtonsVisible(false);
@@ -148,159 +145,185 @@ const CadastroAsk: React.FC = () => {
         }
     };
 
-    const handleCategoriaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCatPerg(e.target.value);
-        setNovaCategoria(!categoriasExistentes.includes(e.target.value));
-    };
+// Função para buscar categorias conforme o usuário digita
+const handleCatPergChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setCatPerg(query);
 
-    const handleSelectCategory = (category: string) => {
-        setCatPerg(category);
-        setFilteredCategories([]);
-        setNovaCategoria(false);
-    };
-
-    const handleSubmitCategoria = async (e: React.FormEvent) => {
-        e.preventDefault();
+    if (query.length >= 2) {
         try {
-            if (novaCategoria) {
-                const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/cadastropergcategoria`, { catperg });
-                alert('Nova categoria cadastrada com sucesso!');
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/categorias`, {
+                params: { query }
+            });
+
+            const categorias = response.data;
+
+            // Verifica se o valor digitado já existe na lista de categorias
+            const categoriaJaExiste = categorias.some((categoria: any) => 
+                categoria.nome.toLowerCase() === query.toLowerCase()
+            );
+
+            // Se não existir uma correspondência exata, exibe as sugestões
+            if (!categoriaJaExiste) {
+                setCategoriasSugeridas(categorias);
             } else {
-                alert('Categoria selecionada!');
+                setCategoriasSugeridas([]); // Limpa sugestões se já houver uma correspondência exata
             }
         } catch (error) {
-            console.error('Erro ao cadastrar categoria:', error);
+            console.error('Erro ao buscar categorias:', error);
+        }
+    } else {
+        setCategoriasSugeridas([]);
+    }
+};
+
+    // Função para cadastrar nova categoria
+    const handleCadastrarNovaCategoria = async () => {
+        try {
+            if (novaCategoria) {
+                const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/cadastropergcategoria`, { categoria: novaCategoria });
+                
+                if (response.status === 201) {
+                    alert('Categoria cadastrada com sucesso!');
+                    setNovaCategoriaInputVisible(false);
+                    setNovaCategoria('');
+                }
+            } else {
+                setNovaCategoriaInputVisible(false);
+            }
+        } catch (error) {
+            console.error('Erro ao cadastrar nova categoria:', error);
+            alert('Erro ao cadastrar nova categoria.');
         }
     };
+
+
 
     return (
         <div>
             <RenderMenu />
             <div className='container3'>
                 <div className='Bordada3'>
-                    <h2 className='cadastrotitle' style={{ marginLeft: "7.5%", marginTop: '3%' }}>Cadastro de Pesquisas</h2>
+                    <h2 className='cadastrotitle' style={{marginLeft:"7.5%",marginTop:'3%'}}>Cadastro de Pesquisas</h2>
                     <form className='form-row3' onSubmit={handleSubmitPesquisa}>
                         <div className='form-column3'>
                             <div className='form-group-ask'>
                                 <p>Título da Pesquisa:</p>
-                                <input 
-                                    type='text' 
-                                    id='titlepes' 
-                                    name='titlepes'  
-                                    onChange={(e) => setTitlePes(e.target.value)} 
-                                    required 
-                                    value={titlePes} 
-                                    disabled={isSubmitted}
-                                />
+                                <input type='text' id='titlepes' name='titlepes' onChange={(e) => setTitlePes(e.target.value)} required value={titlePes} disabled={isSubmitted}/>
                             </div>
                             <div className='form-group-ask'>
                                 <p>Sobre a Pesquisa:</p>
-                                <textarea 
-                                    id='sobrepesq' 
-                                    name='sobrepesq' 
-                                    onChange={(e) => setSobrePesq(e.target.value)} 
-                                    required 
-                                    value={sobrepesq}  
-                                    disabled={isSubmitted}
-                                />
+                                <textarea id='sobrepesq' name='sobrepesq' onChange={(e) => setSobrePesq(e.target.value)} required value={sobrepesq} disabled={isSubmitted}/>
                             </div>
                             <div className='form-group-ask'>
                                 <p>Categoria da Pesquisa:</p>
-                                <select 
-                                    id="catpesq" 
-                                    name="catpesq" 
-                                    style={{ width: '100%', marginLeft: '4%' }} 
-                                    onChange={(e) => setCatPesq(e.target.value)} 
-                                    required 
-                                    value={catpesq}  
-                                    disabled={isSubmitted} 
-                                >
+                                <select id="catpesq" name="catpesq" style={{ width: '100%', marginLeft: '4%' }} onChange={(e) => setCatPesq(e.target.value)} required value={catpesq} disabled={isSubmitted}>
                                     <option value="" disabled hidden>Defina a Categoria da Pesquisa</option>
                                     <option value="Auto Avaliação">Auto-Avaliação</option>
                                     <option value="Avaliação de Liderado">Avaliação de Liderado</option>
                                     <option value="Avaliação de Líder">Avaliação de Líder</option>
                                 </select>
-
+    
                                 {buttonsVisible && (
                                     <>
-                                        <button className='btn-submit2' style={{ margin: '4%', marginTop: '6%' }} >Cadastrar Pesquisa</button>
-                                        <button type="button" className="btn-clear" onClick={handleClear1}> Limpar</button>
+                                        <button className='btn-submit2' style={{ margin: '4%', marginTop: '6%' }}>Cadastrar Pesquisa</button>
+                                        <button type="button" className="btn-clear2" onClick={handleClear1}>Limpar</button>
                                     </>
                                 )}
                             </div>
                         </div>
                     </form>
-                    
+    
                     {showQuestionForm && (
                         <form className='form-row3' onSubmit={handleSubmitPergunta}>
                             <div className='form-column3'>
-                                <h2 className='cadastrotitle' style={{ marginTop: '10%', marginLeft: '2.5%' }}>Cadastro de Perguntas</h2>
+                                <h2 className='cadastrotitle' style={{marginTop: '10%', marginLeft:'2.5%'}}>Cadastro de Perguntas</h2>
                                 <div className='form-group-ask'>
                                     <p>Categoria da Pergunta:</p>
                                     <input 
                                         type='text' 
                                         id='catperg' 
                                         name='catperg' 
-                                        onChange={handleCategoriaChange} 
+                                        onChange={handleCatPergChange} 
                                         required 
-                                        value={catperg} 
+                                        value={catperg}
                                     />
-                                    {filteredCategories.length > 0 && (
-                                        <div className="autocomplete-dropdown">
-                                            <ul>
-                                                {filteredCategories.map((category, index) => (
-                                                    <li key={index} onClick={() => handleSelectCategory(category)}>
-                                                        {category}
-                                                    </li>
-                                                ))}
-                                            </ul>
+                                    {/* Mostrar sugestões de categorias existentes */}
+                                    {categoriasSugeridas.length > 0 && (
+                                        <ul>
+                                            {categoriasSugeridas.map((categoria) => (
+                                                <li key={categoria} onClick={() => setCatPerg(categoria)}>
+                                                    {categoria}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+    
+                                    {/* Botão para adicionar nova categoria */}
+                                    <button type="button" className='btn-submit2' style={{ marginTop: '4%', marginLeft: '4%', marginBottom: '2%', fontSize: '13px', padding: '5px 10px ' }} onClick={() => setNovaCategoriaInputVisible(true)}>Adicionar nova categoria</button>
+                                    {novaCategoriaInputVisible && (
+                                        <div>
+                                            <input 
+                                                type='text' 
+                                                id = 'catperg'
+                                                value={novaCategoria} 
+                                                onChange={(e) => setNovaCategoria(e.target.value)} 
+                                                placeholder="Nova categoria"
+                                            />
+                                            <button type="button" className='btn-submit2' style={{marginTop: '1%', marginLeft: '4%', marginBottom: '2%', fontSize: '13px', padding: '5px 10px ' }} onClick={handleCadastrarNovaCategoria}>Cadastrar</button>
+                                            <button type="button" className='btn-clear2' style={{marginTop: '1%', marginLeft: '4%', marginBottom: '2%', fontSize: '13px', padding: '5px 10px ' }} onClick={() => setNovaCategoriaInputVisible(false)}>Fechar</button>
                                         </div>
                                     )}
-                                    {novaCategoria && <p>Nova categoria será criada.</p>}
                                 </div>
                                 <div className='form-group-ask'>
                                     <p>Sobre a Pergunta:</p>
-                                    <textarea 
-                                        id='sobreperg' 
-                                        name='sobreperg' 
-                                        onChange={(e) => setSobrePerg(e.target.value)} 
-                                        required 
-                                        value={sobreperg} 
-                                    />
+                                    <textarea id='textperg' name='sobreperg' onChange={(e) => setSobrePerg(e.target.value)} required value={sobreperg}/>
                                 </div>
                                 <div className='form-group-ask'>
                                     <p>Formato da Pergunta:</p>
-                                    <select 
-                                        id="format" 
-                                        name="format" 
-                                        onChange={handleFormatChange} 
-                                        required 
-                                        value={pergFormat}
-                                    >
-                                        <option value="" disabled hidden>Selecione o formato da pergunta</option>
-                                        <option value="Multipla Escolha">Múltipla Escolha</option>
-                                        <option value="Unica Escolha">Única Escolha</option>
-                                        <option value="Texto Longo">Texto Longo</option>
+                                    <select id='pergFormat' name='pergFormat' style={{ width: '90%', marginLeft: '5%' }} onChange={handleFormatChange} required value={pergFormat}>
+                                        <option value="" disabled hidden>Escolha o formato da pergunta</option>
+                                        <option value="Escolha Única">Escolha Única</option>
+                                        <option value="Múltipla Escolha">Múltipla Escolha</option>
+                                        <option value="Texto longo">Texto Longo</option>
                                     </select>
                                 </div>
-                                {pergFormat !== 'Texto Longo' && (
-                                    <div className='options'>
-                                        <p>Opções:</p>
-                                        {options.map((option, index) => (
-                                            <input
-                                                key={index}
-                                                type='text'
-                                                id={`option${index}`}
-                                                name={`option${index}`}
-                                                value={option}
-                                                onChange={(e) => handleOptionChange(index, e.target.value)}
-                                                placeholder={`Opção ${index + 1}`}
-                                            />
-                                        ))}
-                                    </div>
-                                )}
-                                <button className='btn-submit2'>Cadastrar Pergunta</button>
-                                <button type="button" className="btn-clear" onClick={handleClear2}> Limpar</button>
+    
+                                {(pergFormat === 'Escolha Única' || pergFormat === 'Múltipla Escolha') && (
+                                        <div style={{marginLeft:'4%'}}>
+                                            <h3>Opções:</h3>
+                                            <div className='options-row'>
+                                                <div className='options-column'>
+                                                    {[...Array(5)].map((_, index) => (
+                                                        <div className='form-group-ask-options' key={index}>
+                                                            <p>Opção {index + 1}:</p>
+                                                            <textarea 
+                                                                id={`option${index + 1}`} 
+                                                                name={`option${index + 1}`} 
+                                                                onChange={(e) => handleOptionChange(index, e.target.value)}
+                                                                required={index < 2} 
+                                                            />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <div className='options-column'>
+                                                    {[...Array(5)].map((_, index) => (
+                                                        <div className='form-group-ask-options' key={index + 5}>
+                                                            <p>Opção {index + 6}:</p>
+                                                            <textarea 
+                                                                id={`option${index + 6}`} 
+                                                                name={`option${index + 6}`} 
+                                                                onChange={(e) => handleOptionChange(index + 5, e.target.value)}
+                                                            />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+    
+                                <button className='btn-submit2' style={{ marginTop: '3%', marginLeft: '2%', marginRight: '38%'}}>Cadastrar Pergunta</button>
+                                <button type="button" className="btn-clear2" onClick={handleClear2}>Limpar</button>
                             </div>
                         </form>
                     )}

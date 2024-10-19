@@ -6,6 +6,6 @@ import { buscarCategorias, cadastrarCategoria } from '../controllers/catpergCont
 const router = express.Router();
 
 router.post('/cadastropergcategoria', cadastrarCategoria );
-router.post('/categorias', buscarCategorias)
+
 
 export default router;

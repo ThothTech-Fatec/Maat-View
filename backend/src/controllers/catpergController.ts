@@ -1,14 +1,18 @@
 import { Request, Response } from 'express';
 import pool from '../config/database.js';
 
-// Endpoint para buscar categorias existentes
 export const buscarCategorias = async (req: Request, res: Response) => {
+    console.log('Parâmetro recebido:', req.query); // Log para verificar o parâmetro recebido
     try {
-        const { query } = req.query;
+        const { query } = req.query; // Extrai o parâmetro query da requisição
+
+        if (!query) {
+            return res.status(400).json({ message: 'Parâmetro query é obrigatório.' });
+        }
 
         const [rows]: [any[], any] = await pool.query(
             'SELECT categoria FROM Categoria_Perguntas WHERE categoria LIKE ?',
-            [`%${query}%`]
+            [`${query}%`]  // Modificação para buscar categorias que começam com o que foi digitado
         );
 
         return res.status(200).json(rows.map(row => row.categoria));
