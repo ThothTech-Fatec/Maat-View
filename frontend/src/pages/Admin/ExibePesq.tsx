@@ -2,6 +2,7 @@
     import { Link } from 'react-router-dom'; // Importa Link do React Router
     import RenderMenu from '../../components/Render_Menu';
     import '../../static/ExibePesq.css';
+import AdminRole from '../../hocs/Hoc_Admin';
 
 
     interface Pesquisas {
@@ -93,4 +94,4 @@
         );
     };
 
-    export default ExibePesq;
+    export default AdminRole(ExibePesq);

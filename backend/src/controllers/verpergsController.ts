@@ -1,20 +1,20 @@
 import { Request, Response } from 'express';
 import mysql from 'mysql2';
 
+
 // Crie uma conexão com o banco de dados
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'fatec',
-    database: 'maatview'
+    host: `${process.env.DB_HOST}`,
+    user: `${process.env.DB_USER}`,
+    password: `${process.env.DB_PASSWORD}`,
+    database: `${process.env.DB_NAME}`
 });
-
 
 
 // Função para buscar perguntas por ID da pesquisa
 export const buscarPerguntasPorPesquisa = (req: Request, res: Response) => {
     const { id } = req.params; // Obtém o ID da pesquisa da URL
-    console.log('Buscando perguntas para a pesquisa com ID:', id); // Log do ID buscado
+    console.log('Buscando perguntas para a pesquisa com ID:', id); 
 
     // Consulta SQL para buscar perguntas, suas categorias e opções
     const query = `

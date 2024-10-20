@@ -58,18 +58,32 @@ body {
     border: 1px solid #ccc;
     word-wrap: break-word; 
     font-family: 'Outfit';
+    table-layout: fixed; 
+}
+
+.userTable {
+    width: 100%; 
+    max-width: 1250px;
+    border-collapse: collapse;
+    overflow-x: auto;
+    border: 1px solid #ccc;
+    word-wrap: break-word; 
+    font-family: 'Outfit';
 }
 
 .userTable th,
 .userTable td {
     border: 1px solid #ccc; 
     padding: 10px;
-    text-align: left;
+    text-align: center; 
     word-break: break-word; 
 }
 
 .userTable th {
-    background-color: #f0f0f0; 
+    text-align: center; 
+    padding: 10px; 
+    background-color: #333; 
+    color: white; 
 }
 
 @media (max-width: 768px) {
@@ -79,7 +93,7 @@ body {
         overflow-x: auto; 
         border: none;
         margin: 0 auto; 
-        margin-left: 35%;
+        margin-left: 3%;
     }
 
     .userTable thead {
@@ -90,7 +104,7 @@ body {
         display: block;
         margin-bottom: 10px;
         border: 1px solid #ccc;
-        width: 100%; 
+        width: 95%; 
     }
 
     .userTable td {
@@ -104,7 +118,7 @@ body {
     }
 
     .userTable td::before {
-        content: attr(data-label);
+        content: attr(data-label); 
         position: absolute;
         left: 10px;
         width: calc(50% - 20px);
@@ -112,21 +126,25 @@ body {
         font-weight: bold;
         text-align: left;
         height: auto;
-        box-sizing: border-box;
-        width: auto;
-        margin-bottom: 5px; /* Adiciona uma separação entre o rótulo e a informação */
+    }
+    tbody{
+        width: 100%;
     }
 }
 
 
 @media (max-width: 500px) {
     .userTable {
-        margin-left: 21%;
+        margin-left: 3%;
+        width: 100%;
     }
     .userTable td {
         padding-left: 40%;
+        width: 100%;
     }
-
+    .userTable tr {
+        width: 95%; 
+    }
     .userTable td::before {
         left: 5px;
         height: auto;

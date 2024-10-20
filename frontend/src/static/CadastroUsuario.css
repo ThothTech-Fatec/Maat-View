@@ -17,7 +17,6 @@ h2 {
     margin-bottom: 20px;
 }
 
-/* Layout das colunas usando Flexbox com mais espaçamento lateral */
 .form-row2 {
     display: flex;
     justify-content: space-between;
@@ -56,15 +55,15 @@ h2 {
     margin-right: 7%;
 }
 
-/* Estilos gerais dos campos de input e select */
+
 .form-group2 {
-    margin-bottom: 25px; /* Espaçamento entre os campos */
+    margin-bottom: 25px; 
 }
 
 .form-group2 label {
     font-weight: bold;
     display: block;
-    margin-bottom: 8px; /* Espaço entre o label e o campo */
+    margin-bottom: 8px; 
 }
 
 input, select {

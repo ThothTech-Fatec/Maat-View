@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import RenderMenu from '../../components/Render_Menu';
+import AdminRole from '../../hocs/Hoc_Admin';
 
 const VerPergs: React.FC = () => {
     const { id } = useParams<{ id: string }>(); // Obtém o ID da pesquisa da URL
     const [perguntas, setPerguntas] = useState<any[]>([]);
-    const [pesquisas, setPesquisas] = useState<any | null>(null); // Estado para armazenar dados da pesquisa
+    const [pesquisas, setPesquisas] = useState<any | null>(null); 
     const [error, setError] = useState<string | null>(null);
     const [pergunta, setPergunta] = useState<any | null>(null);
 
@@ -21,7 +22,7 @@ const VerPergs: React.FC = () => {
     useEffect(() => {
         const fetchPerguntas = async () => {
             try {
-                const url = `${process.env.REACT_APP_API_URL}/api/pesquisas/${id}/perguntas`; // URL para obter as perguntas
+                const url = `${process.env.REACT_APP_API_URL}/api/pesquisas/${id}/perguntas`;
                 const response = await fetch(url);
                 if (!response.ok) {
                     throw new Error(`Erro ao buscar perguntas: ${response.status} ${response.statusText}`);
@@ -30,7 +31,6 @@ const VerPergs: React.FC = () => {
                 setPerguntas(data);
             } catch (error) {
                 console.error('Erro:', error);
-                setError('Erro ao buscar perguntas.');
             }
         };
 
@@ -45,7 +45,7 @@ useEffect(() => {
         if (!id) return; // Verifica se o ID está disponível
 
         try {
-            const url = `${process.env.REACT_APP_API_URL}/api/perguntas/${id}`; // URL para obter a pesquisa
+            const url = `${process.env.REACT_APP_API_URL}/api/perguntas/${id}`; 
             const response = await fetch(url);
             if (!response.ok) {
                 throw new Error(`Erro ao buscar pesquisa: ${response.status} ${response.statusText}`);
@@ -64,34 +64,33 @@ useEffect(() => {
     return (
         <div>
             <RenderMenu />
-            <div className='content-container'>
+            <div className='content-container' style={{marginTop: '5%'}}>
                 <h1 style={{ fontFamily: 'Outfit' }}>Detalhes da Pesquisa</h1>
 
-                {/* Exibe as informações da pesquisa */}
                 {pesquisas ? (
-    <table className='userTable'>
-        <thead>
-            <tr>
-                <th>Título</th>
-                <th>Descrição</th>
-                <th>Categoria</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr key={pesquisas.id}>
-                <td data-label="Título" >{pesquisas.titulo}</td>
-                <td data-label="Sobre" >{pesquisas.sobre}</td>
-                <td data-label="Categoria">{pesquisas.categoria}</td>
-            </tr>
-        </tbody>
-    </table>
-) : (
-    <div>Carregando informações da pesquisa...</div>
-)}
+                <table className='userTable'>
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Descrição</th>
+                            <th>Categoria</th>
+                        </tr>
+                    </thead>
 
-                <h2 style={{ fontFamily: 'Outfit', marginTop: '20px' }}>Perguntas Cadastradas na Pesquisa {pesquisas?.titulo}</h2>
+                    <tr key={pesquisas.id}>
+                        <td data-label="Título" >{pesquisas.titulo}</td>
+                        <td data-label="Sobre" >{pesquisas.sobre}</td>
+                        <td data-label="Categoria">{pesquisas.categoria}</td>
+                    </tr>
 
-                {/* Exibe as perguntas */}
+                 </table>
+            ) : (
+                    <div>Carregando informações da pesquisa...</div>
+            )}
+            
+                <h2 style={{ fontFamily: 'Outfit', marginTop: '20px' }}>Perguntas Cadastradas na Pesquisa: {pesquisas?.titulo}</h2>
+
+
                 {error && <div className='error-message'>{error}</div>}
                 {perguntas.length > 0 ? (
                     <table className='userTable'>
@@ -103,13 +102,13 @@ useEffect(() => {
                                 <th>Opções</th>
                             </tr>
                         </thead>
-                        <tbody>
+
                             {perguntas.map(pergunta => (
                                 <tr key={pergunta.id}>
-                                    <td>{pergunta.sobre}</td>
-                                    <td>{pergunta.formato}</td>
-                                    <td>{pergunta.categoria}</td>
-                                    <td>
+                                    <td data-label="Sobre" >{pergunta.sobre}</td>
+                                    <td data-label="Formato">{pergunta.formato}</td>
+                                    <td data-label="Categoria">{pergunta.categoria}</td>
+                                    <td data-label="Opções">
                                         {pergunta.opcoes.length > 0 ? (
                                             <ul>
                                                 {pergunta.opcoes.map((opcao: string, index: number) => (
@@ -122,14 +121,12 @@ useEffect(() => {
                                     </td>
                                 </tr>
                             ))}
-                        </tbody>
                     </table>
                 ) : (
                     <div>Nenhuma pergunta encontrada.</div>
                 )}
             </div>
-        </div>
-    );
+        </div>);
 };
 
-export default VerPergs;
+export default AdminRole(VerPergs);
