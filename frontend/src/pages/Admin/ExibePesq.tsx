@@ -1,5 +1,8 @@
     import React, { useEffect, useState } from 'react';
+    import { Link } from 'react-router-dom'; // Importa Link do React Router
     import RenderMenu from '../../components/Render_Menu';
+    import '../../static/ExibePesq.css';
+
 
     interface Pesquisas {
         id: number; 
@@ -29,6 +32,7 @@
 
             fetchPesquisas();
         }, []);
+        
 
         const handleDelete = async (pes_id: number) => {
             const confirmDelete = window.confirm('Você realmente deseja apagar esta pesquisa?');
@@ -69,12 +73,17 @@
                         <tbody>
                             {pesquisas.map((pesquisas) => (
                                 <tr key={pesquisas.id}>
-                                    <td data-label="Título">{pesquisas.titulo}</td>
-                                    <td data-label="Sobre">{pesquisas.sobre}</td>
-                                    <td data-label="Categoria">{pesquisas.cat_pes}</td>
-                                    <td data-label="Exibir"></td>
-                                    <td data-label="Ações">
+                                    <td data-label="Título" >{pesquisas.titulo}</td>
+                                    <td data-label="Sobre" >{pesquisas.sobre}</td>
+                                    <td data-label="Categoria" >{pesquisas.cat_pes}</td>
+                                    <td data-label="Exibir"><Link to={ `/ver-Pergs/${pesquisas.id}`}>
+                                        <button className="verButton" >Ver</button>
+                                        </Link>
+                                        </td>
+                                    <td data-label="Ações" >
+                                    <button className='deleteButton2' onClick={() => handleDelete(pesquisas.id)} >Excluir</button>
                                     </td>
+              
                                 </tr>
                             ))}
                         </tbody>

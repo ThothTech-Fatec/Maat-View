@@ -21,9 +21,15 @@ export const cadastrarPergunta = async (req, res) => {
         if (rows.length === 0) {
             return res.status(404).json({ message: 'Pesquisa não encontrada!' });
         }
+        // Buscar o ID da pesquisa pelo título
+        const [categoriaPERG] = await pool.query('SELECT id FROM Categoria_Perguntas WHERE categoria = ?', [categoriaPergunta]);
+        if (categoriaPERG.length === 0) {
+            return res.status(404).json({ message: 'Categoria não encontrada!' });
+        }
         const pesquisaId = rows[0].id;
+        const categoriaId = categoriaPERG[0].id;
         // Inserir a pergunta no banco de dados e vincular à pesquisa
-        await pool.query('INSERT INTO Perguntas (cat_id, sobre, formato) VALUES (?, ?, ?)', [categoriaPergunta, sobrePergunta, formatoPergunta]);
+        await pool.query('INSERT INTO Perguntas ( sobre, formato, cat_id) VALUES (?, ?, ?)', [sobrePergunta, formatoPergunta, categoriaId]);
         // Buscar o ID da pergunta inserida
         const [pergunta] = await pool.query('SELECT id FROM Perguntas WHERE sobre = ?', [sobrePergunta]);
         if (pergunta.length === 0) {
@@ -43,5 +49,16 @@ export const cadastrarPergunta = async (req, res) => {
     catch (error) {
         console.error('Erro ao cadastrar pergunta:', error);
         return res.status(500).json({ message: 'Erro ao cadastrar pergunta.' });
+    }
+};
+export const buscarPergCat = async (req, res) => {
+    try {
+        const { categoriaPergunta } = req.body;
+        const [rows] = await pool.query('SELECT texto FROM Categoria_Perguntas WHERE texto = ?', [categoriaPergunta]);
+        return res.status(200).json(rows);
+    }
+    catch (error) {
+        console.error('Erro ao buscar categorias:', error);
+        return res.status(500).json({ message: 'Erro no servidor.' });
     }
 };

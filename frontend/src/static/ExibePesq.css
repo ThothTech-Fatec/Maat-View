@@ -1,0 +1,73 @@
+.userTable td.col-titulo {
+    width: 15%;
+     /* Defina a largura da coluna de título */
+}
+
+.userTable td.col-sobre {
+    width: 40%; /* Dê uma largura maior para a coluna de 'Sobre' */
+}
+
+.userTable td.col-categoria {
+    width: 15%; /* Defina a largura da coluna de categoria */
+}
+
+.userTable td.col-exibir, .userTable td.col-acoes {
+    width: 15%; /* Defina a largura da coluna de ações */
+}
+
+/* Ajustes para a tabela, se necessário */
+.userTable {
+    width: 100%; /* Ocupar todo o espaço disponível */
+    table-layout: fixed; /* Garantir que as larguras sejam respeitadas */
+}
+
+.userTable td {
+    padding: 10px; /* Espaçamento dentro das células */
+    text-align: left;
+    word-wrap: break-word; /* Para quebrar palavras longas */
+}
+
+.deleteButton2 {
+    margin-left: 2%;
+    padding: 5px 18px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #b70000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.deleteButton2:hover {
+    background-color: #4b0000;
+}
+
+.verButton {
+    margin-left: 1%;
+    padding: 5px 18px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #459EB5;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.verButton:hover {
+    background-color: #096E5F;
+}
+
+.userTable th {
+    text-align: center; 
+    padding: 10px; 
+    background-color: #333; 
+    color: white; 
+}
+
+.userTable td {
+    text-align: center; /* Centraliza o texto dentro das células */
+    padding: 10px;
+}
+

@@ -100,6 +100,8 @@ authRoutes.get('/pesquisas', async (_req: Request, res: Response) => {
     }
   });
 
+
+
 // Rota para buscar apenas os líderes
 authRoutes.get('/lideres', async (_req: Request, res: Response) => {
     try {

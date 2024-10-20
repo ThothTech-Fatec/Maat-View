@@ -61,6 +61,13 @@ textarea {
     }
 }
 
+@media (max-width: 560px){
+    .btn-clear2{
+        margin-left: 4%;
+        margin-top: 0%;
+    }
+}
+
 .form-row3 {
     display: flex;
     justify-content: space-between;
@@ -80,6 +87,25 @@ textarea {
     padding: 10px; 
     margin-left: 4%; 
     border-radius: 5px; 
+}
+
+.suggestions-dropdown {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 0.5rem;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    background-color: white;
+}
+
+.suggestion-item {
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
 }
 
 #textperg {
@@ -105,4 +131,19 @@ textarea {
 
 .btn-submit2:hover {
     background-color: #096E5F;
+}
+
+.btn-clear2 {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: rgb(120, 122, 122);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.btn-clear2:hover {
+    background-color: #CCCCCC;
 }
