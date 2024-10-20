@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import RenderMenu from '../../components/Render_Menu';
+import AdminRole from '../../hocs/Hoc_Admin';
 
 interface User {
     id: number; 
@@ -94,4 +95,4 @@ const ExibeUser: React.FC = () => {
     );
 };
 
-export default ExibeUser;
+export default AdminRole(ExibeUser);

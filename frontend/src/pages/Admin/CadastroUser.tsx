@@ -12,8 +12,8 @@ const CadastroUsuario: React.FC = () => {
     const [senha, setSenha] = useState('');
     const [confirmaSenha, setConfirmaSenha] = useState('');
     const [nivelAcesso, setNivelAcesso] = useState('');
-    const [lider, setLider] = useState(''); // Novo estado para armazenar o líder selecionado
-    const [lideres, setLideres] = useState([]); // Novo estado para armazenar a lista de líderes
+    const [lider, setLider] = useState(''); 
+    const [lideres, setLideres] = useState([]); 
 
     // Formatar CPF
     const formatCpf = (value: string) => {

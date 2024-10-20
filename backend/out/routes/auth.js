@@ -2,13 +2,13 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import cors from 'cors'; // Importando o pacote cors
+import cors from 'cors';
 import pool from '../config/database.js';
-dotenv.config(); // Carrega as variáveis de ambiente
+dotenv.config();
 const authRoutes = express.Router();
 const app = express();
-app.use(cors()); // Habilita CORS
-app.use(express.json()); // Para interpretar o corpo das requisições como JSON
+app.use(cors());
+app.use(express.json());
 // Rota de login
 authRoutes.post('/login', async (req, res) => {
     try {

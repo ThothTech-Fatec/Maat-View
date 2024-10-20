@@ -17,6 +17,8 @@ const CadastroAsk: React.FC = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [buttonsVisible, setButtonsVisible] = useState(true);
     const [buttonEdit , setButtonEdit] = useState(false);
+    const [perguntasCadastradas, setPerguntasCadastradas] = useState<any[]>([]);
+
 
     const [categoriasSugeridas, setCategoriasSugeridas] = useState<string[]>([]);
     const [novaCategoriaInputVisible, setNovaCategoriaInputVisible] = useState(false);
@@ -54,7 +56,7 @@ const CadastroAsk: React.FC = () => {
             }
         }, 500);  // Delay de 500ms antes de realizar a busca
     
-        return () => clearTimeout(timeoutId);  // Limpar timeout ao alterar o input
+        return () => clearTimeout(timeoutId);
     }, [catperg]);
 
     const handleFormatChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -136,6 +138,10 @@ const CadastroAsk: React.FC = () => {
     
             if (response.status === 201) {
                 alert('Pergunta cadastrada com sucesso!');
+                
+                // Adicionar a pergunta cadastrada na lista
+                setPerguntasCadastradas(prevPerguntas => [...prevPerguntas, pergunta]);
+   
                 handleClear2();
                 window.removeEventListener('beforeunload', handleBeforeUnload);
             }
@@ -144,6 +150,7 @@ const CadastroAsk: React.FC = () => {
             alert('Erro ao cadastrar a pergunta. Tente novamente.');
         }
     };
+   
 
 // Função para buscar categorias conforme o usuário digita
 const handleCatPergChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -167,7 +174,7 @@ const handleCatPergChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
             if (!categoriaJaExiste) {
                 setCategoriasSugeridas(categorias);
             } else {
-                setCategoriasSugeridas([]); // Limpa sugestões se já houver uma correspondência exata
+                setCategoriasSugeridas([]);
             }
         } catch (error) {
             console.error('Erro ao buscar categorias:', error);
@@ -326,10 +333,45 @@ const handleCatPergChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
                                 <button type="button" className="btn-clear2" onClick={handleClear2}>Limpar</button>
                             </div>
                         </form>
+                        
                     )}
+                    
                 </div>
+                <div className='Bordada3' style={{marginTop:'5%'}}>
+                {perguntasCadastradas.length > 0 && (
+                     <div className='form-column3' style={{ width:'100%'}}>
+                         <h3 style={{marginLeft:'4%'}}>Perguntas Cadastradas na Pesquisa "{titlePes}"</h3>
+                         <table className='userTable'>
+                             <thead>
+                                 <tr>
+                                     <th>Categoria</th>
+                                     <th>Sobre a Pergunta</th>
+                                     <th>Formato</th>
+                                     <th>Opções</th>
+                                 </tr>
+                             </thead>
+                             
+                                 {perguntasCadastradas.map((pergunta, index) => (
+                                     <tr key={index}>
+                                         <td data-label = 'Categoria'>{pergunta.categoriaPergunta}</td>
+                                         <td data-label = 'Sobre'>{pergunta.sobrePergunta}</td>
+                                         <td data-label = 'Formato'>{pergunta.formatoPergunta}</td>
+                                         <td data-label = 'Opções'>
+                                             {pergunta.options 
+                                                 ? pergunta.options.join(', ') 
+                                                 : 'N/A'}
+                                         </td>
+                                     </tr>
+                                 ))}
+                            
+                         </table>
+                     </div>
+                 )}
+                 </div>
             </div>
+            
         </div>
+        
     );
 };
 

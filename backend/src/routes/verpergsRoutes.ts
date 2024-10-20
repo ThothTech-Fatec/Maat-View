@@ -1,4 +1,3 @@
-// routes.ts
 import { Router } from 'express';
 import { buscarPerguntasPorPesquisa } from '../controllers/verpergsController.js';
 
