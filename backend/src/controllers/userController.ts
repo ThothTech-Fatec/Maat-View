@@ -8,7 +8,7 @@ pool
 // Função para cadastrar usuário
 export const cadastrarUsuario = async (req: Request, res: Response) => {
   try {
-    const { nome, email, senha, cpf, cargo, liderId } = req.body;
+    const { nome, email, senha, cpf, cargo, sub_cargo, liderId } = req.body;
 
     // Validação
     if (cargo != 'Liderado') {
@@ -28,8 +28,8 @@ export const cadastrarUsuario = async (req: Request, res: Response) => {
 
     // Inserir o usuário no banco de dados
     await pool.query(
-      'INSERT INTO Users (nome, email, senha, cpf, cargo, lider_id) VALUES (?, ?, ?, ?, ?, ?)', 
-      [nome, email, hashedPassword, cpf, cargo, liderId]
+      'INSERT INTO Users (nome, email, senha, cpf, cargo,sub_cargo, lider_id) VALUES (?, ?, ?, ?, ?, ?, ?)', 
+      [nome, email, hashedPassword, cpf, cargo, sub_cargo, liderId]
     );
 
     return res.status(201).json({ message: 'Usuário cadastrado com sucesso!' });

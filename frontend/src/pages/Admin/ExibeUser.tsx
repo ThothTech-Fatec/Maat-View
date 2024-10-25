@@ -6,6 +6,7 @@ interface User {
     id: number; 
     nome: string; 
     email: string; 
+    sub_cargo: string;
     cargo: string; 
     cpf: string;
 }
@@ -74,16 +75,18 @@ const ExibeUser: React.FC = () => {
                             <tr key={user.id}>
                                 <td data-label="Nome">{user.nome}</td>
                                 <td data-label="Email">{user.email}</td>
-                                <td data-label="Cargo">{user.cargo}</td>
+                                <td data-label="Cargo">
+                                    {user.sub_cargo ? `${user.cargo}, ${user.sub_cargo}` : user.cargo}
+                                </td>
                                 <td data-label="CPF">{user.cpf}</td>
+
                                 <td data-label="Ações">
-                                    {user.cargo !== 'Admin' && (
+                                    {user.cargo !== 'Admin' ? (
                                         <button onClick={() => handleDelete(user.id)} className='deleteButton'>
                                             Excluir
                                         </button>
-                                    )}
-                                    {user.cargo =='Admin' && (
-                                        <p style={{marginLeft: '2%'}}>X</p>
+                                    ) : (
+                                        <p style={{ marginLeft: '2%' }}>X</p>
                                     )}
                                 </td>
                             </tr>

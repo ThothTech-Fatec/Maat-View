@@ -41,7 +41,7 @@ authRoutes.post('/login', async (req, res) => {
 // Rota para obter todos os usuários
 authRoutes.get('/users', async (_req, res) => {
     try {
-        const [rows] = await pool.query('SELECT id, nome, email, cargo, cpf FROM Users');
+        const [rows] = await pool.query("SELECT id, nome, email, cargo, COALESCE(sub_cargo, '') as sub_cargo, cpf FROM Users");
         return res.status(200).json(rows);
     }
     catch (error) {

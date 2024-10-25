@@ -4,7 +4,7 @@ pool;
 // Função para cadastrar usuário
 export const cadastrarUsuario = async (req, res) => {
     try {
-        const { nome, email, senha, cpf, cargo, liderId } = req.body;
+        const { nome, email, senha, cpf, cargo, sub_cargo, liderId } = req.body;
         // Validação
         if (cargo != 'Liderado') {
             if (!nome || !email || !senha || !cpf || !cargo) {
@@ -19,7 +19,7 @@ export const cadastrarUsuario = async (req, res) => {
         // Criptografar a senha
         const hashedPassword = await bcrypt.hash(senha, 10);
         // Inserir o usuário no banco de dados
-        await pool.query('INSERT INTO Users (nome, email, senha, cpf, cargo, lider_id) VALUES (?, ?, ?, ?, ?, ?)', [nome, email, hashedPassword, cpf, cargo, liderId]);
+        await pool.query('INSERT INTO Users (nome, email, senha, cpf, cargo,sub_cargo, lider_id) VALUES (?, ?, ?, ?, ?, ?, ?)', [nome, email, hashedPassword, cpf, cargo, sub_cargo, liderId]);
         return res.status(201).json({ message: 'Usuário cadastrado com sucesso!' });
     }
     catch (error) {
