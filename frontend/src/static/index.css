@@ -151,6 +151,54 @@ body {
     }
 }
 
+.form-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    margin-left: 292px; 
+  }
+  
+  .pergunta {
+    margin-bottom: 20px;
+  }
+  
+  textarea {
+    width: 100%;
+  }
+  
+  button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    min-width: 300px;
+    margin-left: 292px;
+  }
+  
+
 .AutoCenter {
     flex-direction: column; 
     justify-content: center;
@@ -159,10 +207,79 @@ body {
 }
 
 .form-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
 }
+
+.pergunta {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    resize: vertical;
+}
+
+.buttonSubmitPerg {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.buttonSubmitPerg:hover {
+    background-color: #45a049;
+}
+
+/* Ajustes para telas menores */
+@media (max-width: 1195px) and (min-width: 768px) {
+    .form-container {
+
+        margin-left: 292px; 
+    }
+
+    h1 {
+        font-size: 1.5em;
+        text-align: center;
+    }
+
+    .pergunta h3 {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+
+    button {
+        
+        font-size: 1em;
+    }
+
+    textarea {
+        font-size: 1em;
+    }
+}
+@media (max-width: 768px){
+    .form-container {
+        width: 100%;
+        margin-left: 0;
+    }
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+        min-width: 300px;
+        margin-left: 0px;
+      }
+}
+
+
 
 .caixatexto {
     margin-bottom: 15px;
@@ -363,4 +480,14 @@ input {
     border: 1px solid #ccc; 
     border-radius: 4px; 
     margin-left: 4%; 
+}
+.option-label {
+    display: flex;
+    align-items: flex-start; /* Alinha o texto e o checkbox ao topo */
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.option-label input {
+    margin-left: 8px; /* Adiciona espaçamento entre o texto e o input */
 }

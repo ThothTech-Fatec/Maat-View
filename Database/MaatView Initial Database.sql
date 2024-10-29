@@ -77,9 +77,6 @@ INSERT INTO Users (nome, email, senha, cargo, lider_id, cpf)
 VALUES ('Admin User', 'admin@email.com', '$2a$10$ddNpc6kVtPXVtsrnxYoTp.6mzgEuKGTS4PdoRdtuY7vJea/2TJlyu', 'Admin', NULL, '123.456.789-00');
 
 
--- Inserir um Liderado
-INSERT INTO Users (nome, email, senha, cargo, lider_id, cpf)
-VALUES ('Liderado User', 'liderado@email.com', '$2a$10$I1QNViM5N1c8d3ro6uD4F.MaxZ0FBy59Ye1bjrs1TNtkA/1orKYIa', 'Liderado', NULL, '009.876.543-21');
 
 -- Inserir 15 Líderes
 INSERT INTO Users (nome, email, senha, cargo, lider_id, cpf) VALUES 
@@ -87,11 +84,17 @@ INSERT INTO Users (nome, email, senha, cargo, lider_id, cpf) VALUES
 ('Líder 2', 'lider2@email.com', '$2a$10$H3wOxjpAFNHXtx5yqX.zUuRzNpzjdVIV4j8Eu4.JTGkaO/CGOYzzm', 'Líder', NULL, '222.222.222-22'),
 ('Líder 3', 'lider3@email.com', '$2a$10$H3wOxjpAFNHXtx5yqX.zUuRzNpzjdVIV4j8Eu4.JTGkaO/CGOYzzm', 'Líder', NULL, '333.333.333-33');
 
+-- Inserir um Liderado
+INSERT INTO Users (nome, email, senha, cargo, lider_id, cpf)
+VALUES ('Liderado User', 'liderado@email.com', '$2a$10$I1QNViM5N1c8d3ro6uD4F.MaxZ0FBy59Ye1bjrs1TNtkA/1orKYIa', 'Liderado', 3, '009.876.543-21');
+
 SELECT categoria FROM Categoria_Perguntas WHERE categoria LIKE 'sa';
 select * from Categoria_Perguntas;
 select * from Perguntas;
 
 select * from Users;
+
+select * from Pesquisas;
 
 SELECT id, nome, email, cargo, sub_cargo, cpf FROM Users;
 

@@ -61,7 +61,7 @@ const CadastroUsuario: React.FC = () => {
             email,
             senha,
             cargo: nivelAcesso,
-            sub_cargo: subCargo,
+            sub_cargo: subCargo === 'Nulo' ? null : subCargo,
             liderId:
                 nivelAcesso === 'Liderado' || (nivelAcesso === 'Líder' && subCargo === 'Liderado')
                     ? lider

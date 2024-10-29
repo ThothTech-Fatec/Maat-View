@@ -70,7 +70,7 @@ const ExibeUser: React.FC = () => {
                             <th>Ações</th> 
                         </tr>
                     </thead>
-                    <tbody>
+                  
                         {users.map((user) => (
                             <tr key={user.id}>
                                 <td data-label="Nome">{user.nome}</td>
@@ -91,7 +91,7 @@ const ExibeUser: React.FC = () => {
                                 </td>
                             </tr>
                         ))}
-                    </tbody>
+                
                 </table>
             </div>
         </div>
