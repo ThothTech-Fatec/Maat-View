@@ -20,26 +20,28 @@ authRoutes.post('/login', async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
 
-        // Consulta o usuário no banco de dados pelo email
-        const [rows] = await pool.query('SELECT * FROM Users WHERE email = ?', [email]);
+        const [rows] = await pool.query('SELECT id, email, cargo, senha FROM Users WHERE email = ?', [email]);
+
         const user = (rows as any)[0];
 
         if (!user) {
             return res.status(401).json({ message: 'Credenciais inválidas.' });
         }
 
-        // Verifica se a senha informada corresponde à senha criptografada no banco
         const isPasswordValid = await bcrypt.compare(password, user.senha);
         if (!isPasswordValid) {
             return res.status(401).json({ message: 'Credenciais inválidas.' });
         }
 
         // Gera o token JWT
-        const token = jwt.sign({ email: user.email, role: user.cargo }, 'secreta', { expiresIn: '1h' });
+        const token = jwt.sign({ email: user.email, role: user.cargo, id: user.id }, 'secreta', { expiresIn: '1h' });
+
+        console.log('Usuário autenticado:', user); 
 
         return res.status(200).json({
             message: 'Autenticação bem-sucedida!',
             token,
+            id: user.id,
             email: user.email,
             role: user.cargo,
         });
@@ -52,7 +54,7 @@ authRoutes.post('/login', async (req: Request, res: Response) => {
 // Rota para obter todos os usuários
 authRoutes.get('/users', async (_req: Request, res: Response) => {
   try {
-      const [rows] = await pool.query('SELECT id, nome, email, cargo, cpf FROM Users'); 
+      const [rows] = await pool.query("SELECT id, nome, email, cargo, COALESCE(sub_cargo, '') as sub_cargo, cpf FROM Users"); 
       return res.status(200).json(rows);
   } catch (error) {
       console.error('Erro ao buscar usuários:', error);

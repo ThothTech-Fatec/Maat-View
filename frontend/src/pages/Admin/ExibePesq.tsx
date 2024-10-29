@@ -71,7 +71,7 @@ import AdminRole from '../../hocs/Hoc_Admin';
                                 <th>Ações</th>
                             </tr>
                         </thead>
-                        <tbody>
+
                             {pesquisas.map((pesquisas) => (
                                 <tr key={pesquisas.id}>
                                     <td data-label="Título" >{pesquisas.titulo}</td>
@@ -87,7 +87,6 @@ import AdminRole from '../../hocs/Hoc_Admin';
               
                                 </tr>
                             ))}
-                        </tbody>
                     </table>
                 </div>
             </div>

@@ -15,7 +15,7 @@ const Login: React.FC = () => {
         e.preventDefault();
         setLoading(true);
         setError('');
-
+    
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
                 method: 'POST',
@@ -24,22 +24,23 @@ const Login: React.FC = () => {
                 },
                 body: JSON.stringify({ email, password }),
             });
-
+    
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error('Erro do backend:', errorData);
                 setError(errorData.message || 'Falha na autenticação'); 
                 throw new Error('Falha na autenticação');
             }
-
+    
             const data = await response.json();
-            console.log('Token recebido:', data.token);
-
+            console.log('Dados do usuário:', data); 
+    
             // Armazena o token e as informações do usuário
             localStorage.setItem('authToken', data.token);
             localStorage.setItem('userEmail', data.email);
+            localStorage.setItem('user_Id', data.id); 
             localStorage.setItem('userRole', data.role); 
-
+    
             navigate('/minhas_info');
         } catch (err) {
             setError('Erro no login. Por favor, verifique suas credenciais.');

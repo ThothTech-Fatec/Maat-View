@@ -12,6 +12,7 @@ const CadastroUsuario: React.FC = () => {
     const [senha, setSenha] = useState('');
     const [confirmaSenha, setConfirmaSenha] = useState('');
     const [nivelAcesso, setNivelAcesso] = useState('');
+    const [subCargo, setSubCargo] = useState('');
     const [lider, setLider] = useState(''); 
     const [lideres, setLideres] = useState([]); 
 
@@ -34,27 +35,39 @@ const CadastroUsuario: React.FC = () => {
         }
     };
 
-    // Buscar líderes da API
     useEffect(() => {
-        if (nivelAcesso === 'Liderado') {
-            // Buscar todos os líderes da API quando o cargo selecionado for "Liderado"
+        if (nivelAcesso === 'Liderado' || (nivelAcesso === 'Líder' && subCargo === 'Liderado')) {
+            // Buscar todos os líderes da API quando o cargo selecionado for "Liderado" ou "Líder" com subcargo "Liderado"
             axios.get(`${process.env.REACT_APP_API_URL}/api/lideres`)
                 .then(response => setLideres(response.data))
                 .catch(error => console.error("Erro ao buscar líderes:", error));
         }
-    }, [nivelAcesso]);
+    }, [nivelAcesso, subCargo]);
+
 
     // Função para enviar o formulário
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+    
 
         if (senha !== confirmaSenha) {
             alert("As senhas não coincidem!");
             return;
         }
-
-        const usuario = { nome, cpf, email, senha, cargo: nivelAcesso, liderId: nivelAcesso === 'Liderado' ? lider : null };
-
+    
+        const usuario = {
+            nome,
+            cpf,
+            email,
+            senha,
+            cargo: nivelAcesso,
+            sub_cargo: subCargo === 'Nulo' ? null : subCargo,
+            liderId:
+                nivelAcesso === 'Liderado' || (nivelAcesso === 'Líder' && subCargo === 'Liderado')
+                    ? lider
+                    : null, // Atribui liderId caso seja Liderado ou Líder com subCargo de Liderado
+        };
+    
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/usuarios`, usuario);
             if (response.status === 201) {
@@ -66,6 +79,7 @@ const CadastroUsuario: React.FC = () => {
             alert("Erro ao cadastrar usuário. Tente novamente.");
         }
     };
+    
 
     const handleClear = () => {
         setNome('');
@@ -133,6 +147,40 @@ const CadastroUsuario: React.FC = () => {
                         </div>
 
                         {nivelAcesso === 'Liderado' && (
+                            <div className="form-group2">
+                                <label htmlFor="lider">Selecione o Líder:</label>
+                                <select
+                                    id="lider"
+                                    value={lider}
+                                    onChange={(e) => setLider(e.target.value)}
+                                    required
+                                    style={{ marginLeft: '4%', width: '80%', marginBottom: '3%' }}
+                                >
+                                    <option value="" disabled hidden>Escolha um líder</option>
+                                    {lideres.map((lider: any) => (
+                                        <option key={lider.id} value={lider.id}>
+                                            {lider.nome}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
+                        {nivelAcesso === 'Líder' && (
+                         <div className="form-group2">
+                            <label htmlFor="subCargo">Sub-Cargo:</label>
+                            <select
+                                id="subCargo"
+                                value={subCargo}
+                                onChange={(e) => setSubCargo(e.target.value)}
+                                style={{ marginLeft: '4%', width: '80%' }}
+                            >
+                                <option>Nulo</option>
+                                <option value="Liderado">Liderado</option>
+                                
+                            </select>
+                        </div>
+                        )}
+                        {subCargo === 'Liderado' && nivelAcesso === 'Líder' && (
                             <div className="form-group2">
                                 <label htmlFor="lider">Selecione o Líder:</label>
                                 <select

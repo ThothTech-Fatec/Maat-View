@@ -8,6 +8,7 @@ import catpergRoutes from './routes/catpergRoutes.js';
 import { buscarCategorias } from './controllers/catpergController.js';
 import { buscarPerguntasPorPesquisa } from './controllers/verpergsController.js';
 import { showPesquisas } from './controllers/showpesqController.js';
+import { getPesquisas, PerguntasPesquisas, SaveAnswer } from './controllers/suasAvaliaçõesController.js';
 const app = express();
 app.use(cors({
     origin: 'http://localhost:3000',
@@ -24,6 +25,9 @@ app.use('/api', catpergRoutes);
 app.get('/api/categorias', buscarCategorias);
 app.get('/api/pesquisas/:id/perguntas', buscarPerguntasPorPesquisa);
 app.get('/api/perguntas/:id', showPesquisas);
+app.use('/api/verpesquisas', getPesquisas);
+app.get('/api/verperguntas/:pesquisaId', PerguntasPesquisas);
+app.post('/api/enviarrespostas', SaveAnswer);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
