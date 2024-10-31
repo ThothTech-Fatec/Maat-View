@@ -42,10 +42,11 @@ const Login = () => {
                 throw new Error('Falha na autenticação');
             }
             const data = yield response.json();
-            console.log('Token recebido:', data.token);
+            console.log('Dados do usuário:', data);
             // Armazena o token e as informações do usuário
             localStorage.setItem('authToken', data.token);
             localStorage.setItem('userEmail', data.email);
+            localStorage.setItem('user_Id', data.id);
             localStorage.setItem('userRole', data.role);
             navigate('/minhas_info');
         }

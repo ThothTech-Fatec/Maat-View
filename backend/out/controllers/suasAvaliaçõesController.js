@@ -1,17 +1,47 @@
 import pool from '../config/database.js';
-// Função para buscar todas as pesquisas e suas categorias
+// Função para buscar todas as pesquisas, suas categorias e avaliações de liderados pendentes
 export const getPesquisas = async (req, res) => {
+    const userId = req.params.userId;
     try {
-        const [rows] = await pool.query(`
-      SELECT Pesquisas.id, Pesquisas.titulo, Pesquisas.sobre, Pesquisas.cat_pes
+        // Consulta 1: Pesquisas de Auto Avaliação que o usuário ainda não respondeu
+        const [autoAvaliacaoRows] = await pool.query(`
+      SELECT 
+        Pesquisas.id, 
+        Pesquisas.titulo, 
+        Pesquisas.sobre, 
+        Pesquisas.cat_pes,
+        Categoria_Perguntas.categoria AS categoria_nome
       FROM Pesquisas
       LEFT JOIN Categoria_Perguntas ON Categoria_Perguntas.id = Pesquisas.cat_pes
-    `);
-        res.json(rows);
+      LEFT JOIN Avaliacoes ON Avaliacoes.pes_id = Pesquisas.id 
+        AND Avaliacoes.user_id = ? -- Verifica se a avaliação pertence ao usuário
+      WHERE Pesquisas.cat_pes = 'Auto Avaliação'
+      GROUP BY Pesquisas.id, Categoria_Perguntas.categoria
+      HAVING COUNT(Avaliacoes.id) = 0 -- Somente pesquisas que não têm avaliações para o usuário
+    `, [userId]);
+        // Consulta 2: Pesquisas onde o usuário é o responsável pela avaliação
+        const [avaliacoesResponsavelRows] = await pool.query(`
+      SELECT 
+        Pesquisas.id, 
+        Pesquisas.titulo, 
+        Pesquisas.sobre, 
+        Pesquisas.cat_pes,
+        Categoria_Perguntas.categoria AS categoria_nome
+      FROM Pesquisas
+      LEFT JOIN Categoria_Perguntas ON Categoria_Perguntas.id = Pesquisas.cat_pes
+      INNER JOIN Avaliacoes ON Avaliacoes.pes_id = Pesquisas.id 
+        AND Avaliacoes.responsavel_id = ? -- Verifica se o usuário é o responsável pela avaliação
+      GROUP BY Pesquisas.id, Categoria_Perguntas.categoria
+    `, [userId]);
+        // Combina os resultados das duas consultas em um único objeto
+        res.json({
+            autoAvaliacao: autoAvaliacaoRows,
+            avaliacoesResponsavel: avaliacoesResponsavelRows
+        });
     }
     catch (error) {
-        console.error("Erro ao buscar pesquisas:", error);
-        res.status(500).json({ message: "Erro ao buscar pesquisas." });
+        console.error("Erro ao buscar pesquisas e avaliações do usuário:", error);
+        res.status(500).json({ message: "Erro ao buscar pesquisas e avaliações do usuário." });
     }
 };
 // Função para buscar perguntas de uma pesquisa específica e incluir opções para perguntas de escolha única/múltipla
@@ -45,34 +75,107 @@ export const PerguntasPesquisas = async (req, res) => {
         res.status(500).json({ message: 'Erro ao buscar perguntas.' });
     }
 };
-// Função para salvar as respostas dos usuários
 export const SaveAnswer = async (req, res) => {
-    const { respostas, userId } = req.body;
+    var _a, _b, _c, _d;
+    const { respostas, userId, pesquisaId } = req.body;
+    console.log('Dados recebidos no backend:', req.body);
     try {
-        // Verificar se o ID da pesquisa foi fornecido
-        if (!req.pesquisaId) {
-            return res.status(400).json({ message: 'ID da pesquisa não especificado.' });
-        }
-        // Validar as respostas
-        if (!Array.isArray(respostas) || respostas.length === 0) {
-            return res.status(400).json({ message: 'Respostas inválidas ou não fornecidas.' });
-        }
-        const insertPromises = respostas.map((resposta) => {
-            const { per_id, resp_texto, select_option_id } = resposta;
-            // Validar cada resposta
-            if (typeof per_id !== 'number') {
-                throw new Error(`ID da pergunta inválido: ${per_id}`);
+        // Obter as perguntas relacionadas à pesquisa específica
+        const [perguntasResult] = await pool.query('SELECT per_id FROM Pesquisas_Perguntas WHERE pes_id = ?', [pesquisaId]);
+        const perguntasIds = perguntasResult.map((pergunta) => pergunta.per_id);
+        // Salvar as respostas do usuário na tabela Respostas
+        for (let resposta of respostas) {
+            if (perguntasIds.includes(resposta.per_id)) {
+                if (Array.isArray(resposta.select_option_id)) {
+                    for (let optionId of resposta.select_option_id) {
+                        await pool.query('INSERT INTO Respostas (per_id, user_id, pes_id, select_option_id) VALUES (?, ?, ?, ?)', [resposta.per_id, userId, pesquisaId, optionId]);
+                    }
+                }
+                else {
+                    await pool.query('INSERT INTO Respostas (per_id, user_id, pes_id, resp_texto, select_option_id) VALUES (?, ?, ?, ?, ?)', [resposta.per_id, userId, pesquisaId, resposta.resp_texto, resposta.select_option_id]);
+                }
             }
-            return pool.query(`
-        INSERT INTO Respostas (user_id, per_id, pes_id, resp_texto, select_option_id)
-        VALUES (?, ?, ?, ?, ?)
-      `, [userId, per_id, req.pesquisaId, resp_texto, select_option_id]); // usar userId aqui
-        });
-        await Promise.all(insertPromises);
-        res.status(201).json({ message: 'Respostas salvas com sucesso!' });
+        }
+        // Obter o cargo do usuário para determinar o tipo de avaliação
+        const [userResult] = await pool.query('SELECT cargo, sub_cargo, lider_id, nome FROM Users WHERE id = ?', [userId]);
+        const user = userResult[0];
+        if (!user) {
+            return res.status(404).json({ message: 'Usuário não encontrado.' });
+        }
+        // Verificar a categoria da pesquisa
+        const [pesquisaResult] = await pool.query('SELECT cat_pes FROM Pesquisas WHERE id = ?', [pesquisaId]);
+        const pesquisa = pesquisaResult[0];
+        if (pesquisa && pesquisa.cat_pes === 'Auto Avaliação') {
+            // Se o usuário é um "Liderado", criar uma avaliação para o líder
+            if ((user.cargo === 'Liderado' || user.sub_cargo === 'Liderado') && user.lider_id) {
+                const [pesquisaOriginal] = await pool.query('SELECT titulo, sobre FROM Pesquisas WHERE id = ?', [pesquisaId]);
+                const tituloOriginal = ((_a = pesquisaOriginal[0]) === null || _a === void 0 ? void 0 : _a.titulo) || 'Avaliação';
+                const sobreOriginal = ((_b = pesquisaOriginal[0]) === null || _b === void 0 ? void 0 : _b.sobre) || 'Descrição padrão';
+                const novaPesquisaTitulo = `${tituloOriginal} - Avaliação de ${user.nome}`;
+                // Criar uma nova pesquisa para a Avaliação de Liderado
+                const novaPesquisaCategoria = 'Avaliação de Liderado';
+                const [novaPesquisaResult] = await pool.query('INSERT INTO Pesquisas (titulo, sobre, cat_pes) VALUES (?, ?, ?)', [novaPesquisaTitulo, sobreOriginal, novaPesquisaCategoria]);
+                const novaPesquisaId = novaPesquisaResult.insertId;
+                // Associar a nova pesquisa às perguntas existentes
+                for (const perId of perguntasIds) {
+                    await pool.query('INSERT INTO Pesquisas_Perguntas (pes_id, per_id) VALUES (?, ?)', [novaPesquisaId, perId]);
+                }
+                // Criar uma nova avaliação de liderado
+                const [avaliacaoResult] = await pool.query('INSERT INTO Avaliacoes (pes_id, user_id, responsavel_id) VALUES (?, ?, ?)', [novaPesquisaId, userId, user.lider_id]);
+                const avaliacaoId = avaliacaoResult.insertId;
+                // Duplicar respostas para a nova avaliação de liderado
+                for (let resposta of respostas) {
+                    if (perguntasIds.includes(resposta.per_id)) {
+                        if (Array.isArray(resposta.select_option_id)) {
+                            for (let optionId of resposta.select_option_id) {
+                                await pool.query('INSERT INTO Temp_Respostas (user_id, per_id, pes_id, select_option_id) VALUES (?, ?, ?, ?)', [user.lider_id, resposta.per_id, avaliacaoId, optionId]);
+                            }
+                        }
+                        else {
+                            await pool.query('INSERT INTO Temp_Respostas (user_id, per_id, pes_id, resp_texto, select_option_id) VALUES (?, ?, ?, ?, ?)', [user.lider_id, resposta.per_id, avaliacaoId, resposta.resp_texto, resposta.select_option_id]);
+                        }
+                    }
+                }
+            }
+            // Se o usuário é um "Líder", criar uma avaliação para cada liderado
+            if (user.cargo === 'Líder') {
+                const [lideradosResult] = await pool.query('SELECT id, nome FROM Users WHERE lider_id = ?', [userId]);
+                for (const liderado of lideradosResult) {
+                    const [pesquisaOriginal] = await pool.query('SELECT titulo, sobre FROM Pesquisas WHERE id = ?', [pesquisaId]);
+                    const tituloOriginal = ((_c = pesquisaOriginal[0]) === null || _c === void 0 ? void 0 : _c.titulo) || 'Avaliação';
+                    const sobreOriginal = ((_d = pesquisaOriginal[0]) === null || _d === void 0 ? void 0 : _d.sobre) || 'Descrição padrão';
+                    const novaPesquisaTitulo = `${tituloOriginal} - Avaliação de ${user.nome}`;
+                    // Criar uma nova pesquisa para a Avaliação de Líder
+                    const novaPesquisaCategoria = 'Avaliação de Líder';
+                    const [novaPesquisaResult] = await pool.query('INSERT INTO Pesquisas (titulo, sobre, cat_pes) VALUES (?, ?, ?)', [novaPesquisaTitulo, sobreOriginal, novaPesquisaCategoria]);
+                    const novaPesquisaId = novaPesquisaResult.insertId;
+                    // Associar a nova pesquisa às perguntas existentes
+                    for (const perId of perguntasIds) {
+                        await pool.query('INSERT INTO Pesquisas_Perguntas (pes_id, per_id) VALUES (?, ?)', [novaPesquisaId, perId]);
+                    }
+                    // Criar uma nova avaliação de líder com o liderado como responsável
+                    const [avaliacaoResult] = await pool.query('INSERT INTO Avaliacoes (pes_id, user_id, responsavel_id) VALUES (?, ?, ?)', [novaPesquisaId, userId, liderado.id]);
+                    const avaliacaoId = avaliacaoResult.insertId;
+                    // Duplicar respostas para a nova avaliação de líder
+                    for (let resposta of respostas) {
+                        if (perguntasIds.includes(resposta.per_id)) {
+                            if (Array.isArray(resposta.select_option_id)) {
+                                for (let optionId of resposta.select_option_id) {
+                                    await pool.query('INSERT INTO Temp_Respostas (user_id, per_id, pes_id, select_option_id) VALUES (?, ?, ?, ?)', [liderado.id, resposta.per_id, avaliacaoId, optionId]);
+                                }
+                            }
+                            else {
+                                await pool.query('INSERT INTO Temp_Respostas (user_id, per_id, pes_id, resp_texto, select_option_id) VALUES (?, ?, ?, ?, ?)', [liderado.id, resposta.per_id, avaliacaoId, resposta.resp_texto, resposta.select_option_id]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        res.status(200).json({ message: 'Respostas salvas com sucesso e avaliações criadas, se aplicável!' });
     }
     catch (error) {
-        console.error('Erro ao salvar respostas:', error);
-        res.status(500).json({ message: 'Erro ao salvar respostas.' });
+        console.error('Erro ao salvar respostas ou criar avaliação:', error);
+        res.status(500).json({ message: 'Erro ao salvar respostas ou criar avaliação.' });
     }
 };

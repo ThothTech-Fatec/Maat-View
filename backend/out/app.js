@@ -7,7 +7,7 @@ import pergRoutes from './routes/pergRoutes.js';
 import catpergRoutes from './routes/catpergRoutes.js';
 import { buscarCategorias } from './controllers/catpergController.js';
 import { buscarPerguntasPorPesquisa } from './controllers/verpergsController.js';
-import { showPesquisas } from './controllers/showpesqController.js';
+import { showPesquisas, VerificarPergPes } from './controllers/showpesqController.js';
 import { getPesquisas, PerguntasPesquisas, SaveAnswer } from './controllers/suasAvaliaçõesController.js';
 const app = express();
 app.use(cors({
@@ -28,6 +28,7 @@ app.get('/api/perguntas/:id', showPesquisas);
 app.use('/api/verpesquisas', getPesquisas);
 app.get('/api/verperguntas/:pesquisaId', PerguntasPesquisas);
 app.post('/api/enviarrespostas', SaveAnswer);
+app.get('/api/verpesquisas-nao-respondidas/:userId', VerificarPergPes);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);

@@ -8,9 +8,9 @@ import catpergRoutes from './routes/catpergRoutes.js';
 import { buscarCategorias } from './controllers/catpergController.js';
 import { buscarPerguntasPorPesquisa } from './controllers/verpergsController.js';
 import verpergsRoutes from './routes/verpergsRoutes.js';
-import { showPesquisas } from './controllers/showpesqController.js';
+import { showPesquisas, VerificarPergPes } from './controllers/showpesqController.js';
 import { getPesquisas, PerguntasPesquisas, SaveAnswer } from './controllers/suasAvaliaçõesController.js';
-import submitRespRoutes from './routes/submitRespRoutes.js';
+
 
 const app = express();
 
@@ -32,8 +32,9 @@ app.get('/api/categorias', buscarCategorias);
 app.get('/api/pesquisas/:id/perguntas', buscarPerguntasPorPesquisa);
 app.get('/api/perguntas/:id', showPesquisas);
 app.use('/api/verpesquisas', getPesquisas);
-app.get('/api/verperguntas/:pesquisaId', PerguntasPesquisas)
+app.get('/api/verperguntas/:pesquisaId', PerguntasPesquisas);
 app.post('/api/enviarrespostas', SaveAnswer);
+app.get('/api/verpesquisas-nao-respondidas/:userId', VerificarPergPes);
 
 
 

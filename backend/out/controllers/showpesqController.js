@@ -25,3 +25,32 @@ export const showPesquisas = async (req, res) => {
         return res.status(500).json({ message: 'Erro no servidor.' });
     }
 };
+export const VerificarPergPes = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        // Consulta 1: Pesquisas de Auto Avaliação não respondidas pelo usuário
+        const [autoAvaliacaoResults] = await pool.query(`
+      SELECT p.id, p.titulo, p.sobre, p.cat_pes
+      FROM Pesquisas p
+      LEFT JOIN Respostas r ON p.id = r.pes_id AND r.user_id = ?
+      WHERE r.id IS NULL AND p.cat_pes = 'Auto Avaliação';
+    `, [userId]);
+        // Consulta 2: Pesquisas onde o usuário é o responsável pela avaliação e ainda não foram respondidas
+        const [responsavelAvaliacoesResults] = await pool.query(`
+      SELECT p.id, p.titulo, p.sobre, p.cat_pes
+      FROM Pesquisas p
+      INNER JOIN Avaliacoes a ON p.id = a.pes_id
+      LEFT JOIN Respostas r ON p.id = r.pes_id AND r.user_id = ?
+      WHERE a.responsavel_id = ? AND r.id IS NULL;
+    `, [userId, userId]);
+        // Retornando as duas listas separadas em um único objeto
+        res.json({
+            autoAvaliacao: autoAvaliacaoResults,
+            avaliacoesResponsavel: responsavelAvaliacoesResults
+        });
+    }
+    catch (error) {
+        console.error("Erro ao buscar pesquisas e avaliações:", error);
+        res.status(500).send("Erro ao buscar pesquisas e avaliações.");
+    }
+};
