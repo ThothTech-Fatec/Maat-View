@@ -18,7 +18,7 @@ interface Opcao {
 interface Resposta {
   per_id: number;
   resp_texto: string | null;
-  select_option_id: number | null;
+  select_option_id: number[] | null;
 }
 
 const FormularioPesquisa: React.FC = () => {
@@ -37,7 +37,7 @@ const FormularioPesquisa: React.FC = () => {
         setRespostas(response.data.map((pergunta: Pergunta) => ({
           per_id: pergunta.id,
           resp_texto: pergunta.formato === 'Texto Longo' ? '' : null,
-          select_option_id: null,
+          select_option_id: pergunta.formato === 'Escolha Única' || pergunta.formato === 'Múltipla Escolha' ? [] : null,
         })));
       } catch (error) {
         console.error('Erro ao buscar perguntas:', error);
@@ -59,19 +59,32 @@ const FormularioPesquisa: React.FC = () => {
 
   const handleOptionChange = (id: number, optionId: number) => {
     setRespostas(prevRespostas =>
-      prevRespostas.map(resposta =>
-        resposta.per_id === id ? { ...resposta, select_option_id: optionId } : resposta
-      )
+      prevRespostas.map(resposta => {
+        if (resposta.per_id === id) {
+          const isMultipleChoice = Array.isArray(resposta.select_option_id);
+          if (isMultipleChoice) {
+            const optionExists = resposta.select_option_id?.includes(optionId);
+            return {
+              ...resposta,
+              select_option_id: optionExists
+                ? resposta.select_option_id?.filter(optId => optId !== optionId) || []
+                : [...(resposta.select_option_id || []), optionId],
+            };
+          } else {
+            return { ...resposta, select_option_id: [optionId] };
+          }
+        }
+        return resposta;
+      })
     );
   };
 
   const handleSubmit = async () => {
-    // Verificação simples para garantir que todas as perguntas tenham respostas
-    console.log({ respostas, userId });
-
     const allAnswered = respostas.every(resposta => 
-      resposta.resp_texto !== null || resposta.select_option_id !== null
+      resposta.resp_texto !== null || (resposta.select_option_id && resposta.select_option_id.length > 0)
     );
+
+    console.log(respostas)
 
     if (!allAnswered) {
       alert('Por favor, responda todas as perguntas.');
@@ -79,9 +92,13 @@ const FormularioPesquisa: React.FC = () => {
     }
 
     try {
-      await axios.post(`${process.env.REACT_APP_API_URL}/api/enviarrespostas`, { respostas, userId });
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/enviarrespostas`,
+        { respostas, userId, pesquisaId },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
       alert('Respostas enviadas com sucesso!');
-      navigate('/minhas_avaliacoes');
+      navigate('/minhas_avaliaçoes');
     } catch (error) {
       console.error('Erro ao enviar respostas:', error);
       alert('Ocorreu um erro ao enviar as respostas. Tente novamente.');
@@ -112,6 +129,11 @@ const FormularioPesquisa: React.FC = () => {
                         type={pergunta.formato === 'Escolha Única' ? 'radio' : 'checkbox'}
                         name={`pergunta_${pergunta.id}`}
                         value={opcao.id}
+                        checked={
+                          Array.isArray(respostas.find(resposta => resposta.per_id === pergunta.id)?.select_option_id)
+                            ? respostas.find(resposta => resposta.per_id === pergunta.id)?.select_option_id?.includes(opcao.id)
+                            : respostas.find(resposta => resposta.per_id === pergunta.id)?.select_option_id?.[0] === opcao.id
+                        }
                         onChange={() => handleOptionChange(pergunta.id, opcao.id)}
                       />
                     </label>

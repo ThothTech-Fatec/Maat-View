@@ -9,6 +9,7 @@ interface Pesquisa {
   titulo: string;
   sobre: string;
   cat_pes: string;
+  avaliacoes_pendentes: number;
 }
 
 const PesquisasPage: React.FC = () => {
@@ -16,22 +17,39 @@ const PesquisasPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [selectedPesquisa, setSelectedPesquisa] = useState<Pesquisa | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPesquisas = async () => {
+      const userId = localStorage.getItem('user_Id');
+      console.log(userId);
+      if (!userId) {
+        console.error("Usuário não logado.");
+        setLoading(false);
+        return;
+      }
+  
       try {
-        const response = await axios.get<Pesquisa[]>(`${process.env.REACT_APP_API_URL}/api/verpesquisas`);
-        setPesquisas(response.data);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/verpesquisas-nao-respondidas/${userId}`);
+        console.log("Resposta da API:", response.data);
+  
+        // Verificando a estrutura de resposta
+        if (response.data && typeof response.data === 'object' && 'autoAvaliacao' in response.data && 'avaliacoesResponsavel' in response.data) {
+          setPesquisas([...response.data.autoAvaliacao, ...response.data.avaliacoesResponsavel]);
+        } else {
+          console.error("Formato inesperado de resposta da API.", response.data);
+        }
       } catch (error) {
         console.error("Erro ao buscar pesquisas:", error);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchPesquisas();
   }, []);
+  
 
   const handlePesquisaClick = (pesquisa: Pesquisa) => {
     setSelectedPesquisa(pesquisa);
@@ -45,6 +63,7 @@ const PesquisasPage: React.FC = () => {
 
   const handleNavigate = () => {
     if (selectedPesquisa) {
+      console.log("Navegando para:", selectedPesquisa.id);
       navigate(`/pesquisa/${selectedPesquisa.id}`); 
       handleCloseModal();
     }
@@ -55,46 +74,54 @@ const PesquisasPage: React.FC = () => {
       <RenderMenu />
       <div className='content-container' style={{marginTop: '6%', fontFamily:'Outfit'}}>
         <div style={{width: '100%'}}>
-        <h1>Pesquisas Atuais</h1>
-        {loading ? (
-          <p>Carregando...</p>
-        ) : (
-          <div>
-            {pesquisas.map((pesquisa) => (
-              <div
-                key={pesquisa.id}
-                onClick={() => handlePesquisaClick(pesquisa)}
-                style={{
-                  cursor: 'pointer',
-                  padding: '10px',
-                  border: '1px solid #ccc',
-                  margin: '5px 0',
-                  borderRadius: '4px',
-                  backgroundColor: '#f9f9f9'
-                }}
-              >
-                <h3>{pesquisa.titulo}</h3>
-                <p>Categoria: {pesquisa.cat_pes}</p>
-                <p>Sobre: {pesquisa.sobre}</p>
-              </div>
-            ))}
-          </div>
-        )}
+          <h1>Pesquisas Atuais</h1>
+          {loading ? (
+            <p>Carregando...</p>
+          ) : (
+            <div>
+              {pesquisas.length > 0 ? (
+                pesquisas.map((pesquisa) => (
+                  <div
+                    key={pesquisa.id}
+                    onClick={() => handlePesquisaClick(pesquisa)}
+                    style={{
+                      cursor: 'pointer',
+                      padding: '10px',
+                      border: '1px solid #ccc',
+                      margin: '5px 0',
+                      borderRadius: '4px',
+                      backgroundColor: '#f9f9f9'
+                    }}
+                  >
+                    <h3>{pesquisa.titulo}</h3>
+                    <p>Categoria: {pesquisa.cat_pes}</p>
+                    <p>Sobre: {pesquisa.sobre}</p>
+                  </div>
+                ))
+              ) : (
+                <p>Nenhuma pesquisa disponível no momento.</p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
-      </div>
-      <div >
+
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         {selectedPesquisa && (
-          <div style={{ fontFamily:'Outfit'}}>
+          <div style={{ fontFamily: 'Outfit' }}>
             <h2>{selectedPesquisa.titulo}</h2>
             <p>Categoria: {selectedPesquisa.cat_pes}</p>
             <p>Sobre: {selectedPesquisa.sobre}</p>
-            <button className='buttonSubmitPerg' onClick={handleNavigate} style={{ fontFamily:'Outfit'}}>Ir para pesquisa</button>
+            <button
+              className='buttonSubmitPerg'
+              onClick={handleNavigate}
+              style={{ fontFamily: 'Outfit' }}
+            >
+              Ir para pesquisa
+            </button>
           </div>
-          
         )}
       </Modal>
-      </div>
     </>
   );
 };

@@ -32,7 +32,7 @@ export const cadastrarPergunta = async (req: Request, res: Response) => {
             return res.status(404).json({ message: 'Pesquisa não encontrada!' });
         }
 
-                // Buscar o ID da pesquisa pelo título
+        // Buscar o ID da pesquisa pelo título
         const [categoriaPERG]: [any[], any] = await pool.query('SELECT id FROM Categoria_Perguntas WHERE categoria = ?', [categoriaPergunta]);
 
         if (categoriaPERG.length === 0) {

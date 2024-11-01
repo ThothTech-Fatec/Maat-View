@@ -483,11 +483,11 @@ input {
 }
 .option-label {
     display: flex;
-    align-items: flex-start; /* Alinha o texto e o checkbox ao topo */
+    align-items: flex-start; 
     margin-right: 15px;
     cursor: pointer;
 }
 
 .option-label input {
-    margin-left: 8px; /* Adiciona espaçamento entre o texto e o input */
+    margin-left: 8px; 
 }

@@ -26,9 +26,24 @@ const PesquisasPage = () => {
     const navigate = (0, react_router_dom_1.useNavigate)();
     (0, react_1.useEffect)(() => {
         const fetchPesquisas = () => __awaiter(void 0, void 0, void 0, function* () {
+            const userId = localStorage.getItem('user_Id');
+            if (!userId) {
+                console.error("Usuário não logado.");
+                setLoading(false);
+                return;
+            }
             try {
-                const response = yield axios_1.default.get(`${process.env.REACT_APP_API_URL}/api/verpesquisas`);
-                setPesquisas(response.data);
+                const response = yield axios_1.default.get(`${process.env.REACT_APP_API_URL}/api/verpesquisas-nao-respondidas/${userId}`);
+                console.log("Resposta da API:", response.data); // Log completo para verificar o formato
+                // Verifique se a resposta tem a estrutura esperada, como { data: [...] } ou similar
+                const pesquisaArray = Array.isArray(response.data) ? response.data : response.data.data;
+                if (Array.isArray(pesquisaArray)) {
+                    setPesquisas(pesquisaArray);
+                }
+                else {
+                    console.error("Erro: Formato inesperado de resposta da API.", response.data);
+                    setPesquisas([]);
+                }
             }
             catch (error) {
                 console.error("Erro ao buscar pesquisas:", error);
@@ -49,17 +64,18 @@ const PesquisasPage = () => {
     };
     const handleNavigate = () => {
         if (selectedPesquisa) {
-            navigate(`/pesquisa/${selectedPesquisa.id}`); // Altere para a rota desejada
+            console.log("Navegando para:", selectedPesquisa.id); // Log para depuração
+            navigate(`/pesquisa/${selectedPesquisa.id}`);
             handleCloseModal();
         }
     };
-    return ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)(Render_Menu_1.default, {}), (0, jsx_runtime_1.jsx)("div", { className: 'content-container', children: (0, jsx_runtime_1.jsxs)("div", { style: { width: '100%' }, children: [(0, jsx_runtime_1.jsx)("h1", { children: "Pesquisas Atuais" }), loading ? ((0, jsx_runtime_1.jsx)("p", { children: "Carregando..." })) : ((0, jsx_runtime_1.jsx)("div", { children: pesquisas.map((pesquisa) => ((0, jsx_runtime_1.jsxs)("div", { onClick: () => handlePesquisaClick(pesquisa), style: {
+    return ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)(Render_Menu_1.default, {}), (0, jsx_runtime_1.jsx)("div", { className: 'content-container', style: { marginTop: '6%', fontFamily: 'Outfit' }, children: (0, jsx_runtime_1.jsxs)("div", { style: { width: '100%' }, children: [(0, jsx_runtime_1.jsx)("h1", { children: "Pesquisas Atuais" }), loading ? ((0, jsx_runtime_1.jsx)("p", { children: "Carregando..." })) : ((0, jsx_runtime_1.jsx)("div", { children: pesquisas.length > 0 ? (pesquisas.map((pesquisa) => ((0, jsx_runtime_1.jsxs)("div", { onClick: () => handlePesquisaClick(pesquisa), style: {
                                     cursor: 'pointer',
                                     padding: '10px',
                                     border: '1px solid #ccc',
                                     margin: '5px 0',
                                     borderRadius: '4px',
                                     backgroundColor: '#f9f9f9'
-                                }, children: [(0, jsx_runtime_1.jsx)("h3", { children: pesquisa.titulo }), (0, jsx_runtime_1.jsxs)("p", { children: ["Categoria: ", pesquisa.cat_pes] }), (0, jsx_runtime_1.jsxs)("p", { children: ["Sobre: ", pesquisa.sobre] })] }, pesquisa.id))) }))] }) }), (0, jsx_runtime_1.jsx)(Modal_1.default, { isOpen: isModalOpen, onClose: handleCloseModal, children: selectedPesquisa && ((0, jsx_runtime_1.jsxs)("div", { children: [(0, jsx_runtime_1.jsx)("h2", { children: selectedPesquisa.titulo }), (0, jsx_runtime_1.jsxs)("p", { children: ["Categoria: ", selectedPesquisa.cat_pes] }), (0, jsx_runtime_1.jsxs)("p", { children: ["Sobre: ", selectedPesquisa.sobre] }), (0, jsx_runtime_1.jsx)("button", { onClick: handleNavigate, children: "Ir para pesquisa" })] })) })] }));
+                                }, children: [(0, jsx_runtime_1.jsx)("h3", { children: pesquisa.titulo }), (0, jsx_runtime_1.jsxs)("p", { children: ["Categoria: ", pesquisa.cat_pes] }), (0, jsx_runtime_1.jsxs)("p", { children: ["Sobre: ", pesquisa.sobre] }), (0, jsx_runtime_1.jsxs)("p", { children: ["Avalia\u00E7\u00F5es Pendentes: ", pesquisa.avaliacoes_pendentes] })] }, pesquisa.id)))) : ((0, jsx_runtime_1.jsx)("p", { children: "Nenhuma pesquisa dispon\u00EDvel no momento." })) }))] }) }), (0, jsx_runtime_1.jsx)(Modal_1.default, { isOpen: isModalOpen, onClose: handleCloseModal, children: selectedPesquisa && ((0, jsx_runtime_1.jsxs)("div", { style: { fontFamily: 'Outfit' }, children: [(0, jsx_runtime_1.jsx)("h2", { children: selectedPesquisa.titulo }), (0, jsx_runtime_1.jsxs)("p", { children: ["Categoria: ", selectedPesquisa.cat_pes] }), (0, jsx_runtime_1.jsxs)("p", { children: ["Sobre: ", selectedPesquisa.sobre] }), (0, jsx_runtime_1.jsx)("button", { className: 'buttonSubmitPerg', onClick: handleNavigate, style: { fontFamily: 'Outfit' }, children: "Ir para pesquisa" })] })) })] }));
 };
 exports.default = PesquisasPage;
