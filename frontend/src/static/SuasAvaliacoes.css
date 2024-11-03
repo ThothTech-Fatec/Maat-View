@@ -1,0 +1,189 @@
+html {
+    height: 100%; 
+    margin: 0; 
+    overflow: auto;
+    font-family: 'Outfit';
+}/* Estilos gerais */
+body {
+    margin: 0;
+  }
+  
+  /* Container principal */
+  .content-container4 {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: flex-start;
+    margin-left: 292px; 
+    padding: 20px;
+    flex-grow: 1; 
+    box-sizing: border-box;
+    overflow: auto; 
+  }
+  
+  /* Título */
+  h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Contêiner de cartões */
+/* ... Seu código CSS anterior ... */
+
+/* Cartões de pesquisa */
+.pesquisa-card4 {
+    flex: 1 1 280px; /* Cada cartão terá uma base de 280px e crescerá para preencher o espaço */
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex; /* Ativa o flexbox no cartão */
+    flex-direction: column; /* Organiza os itens em coluna */
+    align-items: center; /* Centraliza os itens horizontalmente */
+    justify-content: center; /* Centraliza os itens verticalmente */
+    text-align: center; /* Centraliza o texto */
+}
+
+/* Títulos e parágrafos dentro do cartão */
+.pesquisa-titulo4 {
+    font-size: 1.2em; /* Tamanho do título */
+    font-weight: bold; /* Negrito para o título */
+    margin: 0 0 10px; /* Margem inferior para espaçamento */
+}
+
+.pesquisa-sobre4 {
+    flex-grow: 1; /* Faz o texto "sobre" crescer para ocupar espaço */
+    margin: 0 0 10px; /* Margem inferior */
+    color: #555; /* Cor do texto "sobre" */
+}
+
+.pesquisa-categoria4 {
+    font-style: italic; /* Estilo itálico para a categoria */
+    color: #777; /* Cor da categoria */
+    margin-bottom: 10px; /* Margem inferior */
+}
+
+/* ... seu código CSS anterior continua ... */
+
+  /* Cartões de pesquisa */
+  .pesquisa-card4 {
+    flex: 1 1 280px; /* Cada cartão terá uma base de 280px e crescerá para preencher o espaço */
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .pesquisa-card4:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Estilos do modal */
+  .modal-content4 {
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  /* Botão de navegação */
+  .buttonSubmitPerg4 {
+    background-color: #007bff; /* Azul */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.2s;
+  }
+  
+  .buttonSubmitPerg4:hover {
+    background-color: #0056b3; /* Azul escuro ao passar o mouse */
+  }
+  @media (max-width: 767px) {
+    .content-container4 {
+      margin-left: 0; /* Remove a margem esquerda */
+      padding: 10px; /* Ajusta o padding */
+      display: flex; /* Ativa flexbox */
+      flex-direction: column; /* Alinha itens verticalmente */
+      align-items: center; /* Centraliza o conteúdo */
+    }
+  
+    .card-container {
+      display: flex; 
+      flex-direction: column; /* Coloca os cartões em coluna */
+      align-items: center; /* Centraliza os cartões */
+      width: 100%; /* Garante que o contêiner ocupe 100% da largura */
+    }
+  
+    .pesquisa-card4 {
+      flex: 1 1 auto; /* Permite que os cartões ocupem a largura disponível */
+      max-width: 95%; /* Limita a largura máxima dos cartões */
+      width: 100%; /* Os cartões ocuparão toda a largura disponível */
+      margin: 10px 0; /* Adiciona margem entre os cartões */
+    }
+  }
+  @media (max-width: 365px) {
+    .content-container4 {
+      margin-left: 0; /* Remove a margem esquerda */
+      padding: 10px; /* Ajusta o padding */
+      display: flex; /* Ativa flexbox */
+      flex-direction: column; /* Alinha itens verticalmente */
+      align-items: center; /* Centraliza o conteúdo */
+    }
+  
+    h1 {
+      margin-top: 55px; /* Adiciona espaçamento acima do título */
+      text-align: center; /* Centraliza o texto */
+    }
+  
+    .card-container {
+      display: flex; 
+      flex-direction: column; /* Coloca os cartões em coluna */
+      align-items: center; /* Centraliza os cartões */
+      width: 100%; /* Garante que o contêiner ocupe 100% da largura */
+    }
+  
+    .pesquisa-card4 {
+      flex: 1 1 auto; /* Permite que os cartões ocupem a largura disponível */
+      max-width: 90%; /* Limita a largura máxima dos cartões */
+      width: 100%; /* Os cartões ocuparão toda a largura disponível */
+      margin: 15px; /* Adiciona margem entre os cartões */
+    }
+  }
+  @media (max-width: 507px) {
+    .content-container4 {
+      margin-left: 0; /* Remove a margem esquerda */
+      padding: 10px; /* Ajusta o padding */
+      display: flex; /* Ativa flexbox */
+      flex-direction: column; /* Alinha itens verticalmente */
+      align-items: center; /* Centraliza o conteúdo */
+      overflow-x: hidden; /* Esconde o excesso horizontal */
+    }
+  
+    .card-container {
+      display: flex; 
+      flex-direction: column; /* Coloca os cartões em coluna */
+      align-items: center; /* Centraliza os cartões */
+      width: 100%; /* Garante que o contêiner ocupe 100% da largura */
+      padding: 0 5%; /* Adiciona padding lateral para evitar overflow */
+    }
+  
+    .pesquisa-card4 {
+      flex: 1 1 auto; /* Permite que os cartões ocupem a largura disponível */
+      max-width: 99%; /* Limita a largura máxima dos cartões */
+      width: 100%; /* Os cartões ocuparão toda a largura disponível */
+      margin: 10px 0; /* Adiciona margem entre os cartões */
+      box-sizing: border-box; /* Inclui padding e border na largura total */
+    }
+  }
+  
