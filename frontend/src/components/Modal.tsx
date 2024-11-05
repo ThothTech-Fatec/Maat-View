@@ -12,7 +12,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button onClick={onClose} style={{fontFamily:'Outfit'}}>Fechar</button>
+        <span className="modal-close" onClick={onClose}>&times;</span>
         {children}
       </div>
     </div>

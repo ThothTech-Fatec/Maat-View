@@ -3,6 +3,7 @@ import axios from 'axios';
 import RenderMenu from '../components/Render_Menu';
 import Modal from '../components/Modal';
 import { useNavigate } from 'react-router-dom';
+import '../static/SuasAvaliacoes.css';
 
 interface Pesquisa {
   id: number;
@@ -72,7 +73,7 @@ const PesquisasPage: React.FC = () => {
   return (
     <>
       <RenderMenu />
-      <div className='content-container' style={{marginTop: '6%', fontFamily:'Outfit'}}>
+      <div className='content-container4' style={{marginTop: '1%'}}>
         <div style={{width: '100%'}}>
           <h1>Pesquisas Atuais</h1>
           {loading ? (
@@ -84,14 +85,7 @@ const PesquisasPage: React.FC = () => {
                   <div
                     key={pesquisa.id}
                     onClick={() => handlePesquisaClick(pesquisa)}
-                    style={{
-                      cursor: 'pointer',
-                      padding: '10px',
-                      border: '1px solid #ccc',
-                      margin: '5px 0',
-                      borderRadius: '4px',
-                      backgroundColor: '#f9f9f9'
-                    }}
+                    className="pesquisa-card4" 
                   >
                     <h3>{pesquisa.titulo}</h3>
                     <p>Categoria: {pesquisa.cat_pes}</p>
@@ -108,14 +102,13 @@ const PesquisasPage: React.FC = () => {
 
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         {selectedPesquisa && (
-          <div style={{ fontFamily: 'Outfit' }}>
+          <div className="modal-content4"> {/* Classe atualizada */}
             <h2>{selectedPesquisa.titulo}</h2>
             <p>Categoria: {selectedPesquisa.cat_pes}</p>
             <p>Sobre: {selectedPesquisa.sobre}</p>
             <button
-              className='buttonSubmitPerg'
+              className='buttonSubmitPerg4' 
               onClick={handleNavigate}
-              style={{ fontFamily: 'Outfit' }}
             >
               Ir para pesquisa
             </button>
