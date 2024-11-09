@@ -55,25 +55,28 @@ Imagine uma empresa que busca melhorar seu ambiente organizacional por meio de a
 | 2 | 4 | Eu como cliente, quero um sistema com nivel de Liderado, com acesso às próprias informações. | Níveis | 7h | :white_check_mark: | 5 |
 | 2 | 5 | Eu como cliente, quero um sistema que permita que o Admin cadastre perguntas nos formatos: Texto longo, Escolha Única (texto e número) e Múltipla Escolha. O Admin pode escolher em qual categoria a pergunta se enquadra. | Pesquisa | 14h | :white_check_mark: | 8 |
 | 2 | 6 | Eu como cliente, quero um sistema com um limite de inserção de 20 perguntas por Pesquisa, sendo 5 de cada formato, sendo possível inserir até 10 opções nos formatos de escolha múltipla e única. O Admin pode escolher se a pergunta deve aparecer na pesquisa de Autoavaliação, Avaliação de Liderança ou Avaliação de Liderado | Pesquisa | 8h | :white_check_mark: | 6 |
-| 3 | 7 | Eu como cliente, quero que caso o líder tenha um superior, ele poderá responder a pesquisa de Avaliação de Liderança, além de responder as pesquisas de Autoavaliação e Avaliação de Liderado | Pesquisa | 8h | ❌ | 6 |
-| 3 | 8 | Eu como cliente, quero que o liderado tenha acesso para responder as pesquisas e autoavaliações. | Pesquisa | 8h | ❌ | 6 |
-| 4 | 9 | Eu como cliente, quero um Dashboard Pessoal que deve se basear nas respostas dadas às perguntas de Autoavaliação, com as informações separadas de acordo com as categorias definidas pelo Admin. Todo usuário terá acesso ao próprio Dashboard Pessoal. | Dashboard | 6h | ❌ | 5 |
-| 4 | 10 | Eu como cliente, quero um Dashboard dos Liderados, que será apresentado para seus respectivos líderes e perfil Admin. Estes devem trazer as informações tanto de respostas fornecidas pelo liderado durante a Autoavaliação, quanto de respostas dadas pelo líder na Avaliação de Liderado, sobrepostas para comparação. | Dashboard | 10h | ❌ | 7 |
-| 4 | 11 | Eu como cliente, quero um Dashboard Geral que ficará disponível apenas para o perfil Admin, que terá acesso ao Dashboard com as informações que o usuário preencheu em sua Autoavaliação, Dashboard com as informações que o seu líder preencheu em Avaliação de Liderado e também o Dashboard com as informações que o liderado preencheu em Avaliação de Líder, sobrepostas para comparação. | Dashboard | 12h | ❌ | 8 |
+| 3 | 7 | Eu como cliente, quero que caso o líder tenha um superior, ele poderá responder a pesquisa de Avaliação de Liderança, além de responder as pesquisas de Autoavaliação e Avaliação de Liderado | Pesquisa | 8h |:white_check_mark:| 6 |
+| 3 | 8 | Eu como cliente, quero poder utilizar a plataforma RESPONSIVA em qualquer dispositivo. | Pesquisa | 8h | :white_check_mark: | 6 |
+| 3 | 9 | Eu como cliente, quero que o liderado tenha acesso para responder as pesquisas e autoavaliações. | Pesquisa | 6h | :white_check_mark: | 4 |
+| 3 | 10 | Eu como cliente, quero poder atualizar a senha de cadastro | Pesquisa | 3h | :white_check_mark: | 2 |
+| 4 | 11 | Eu como cliente, quero um Dashboard Pessoal que deve se basear nas respostas dadas às perguntas de Autoavaliação, com as informações separadas de acordo com as categorias definidas pelo Admin. Todo usuário terá acesso ao próprio Dashboard Pessoal. | Dashboard | 6h | ❌ | 5 |
+| 4 | 12 | Eu como cliente, quero um Dashboard dos Liderados, que será apresentado para seus respectivos líderes e perfil Admin. Estes devem trazer as informações tanto de respostas fornecidas pelo liderado durante a Autoavaliação, quanto de respostas dadas pelo líder na Avaliação de Liderado, sobrepostas para comparação. | Dashboard | 10h | ❌ | 7 |
+| 4 | 13| Eu como cliente, quero um Dashboard Geral que ficará disponível apenas para o perfil Admin, que terá acesso ao Dashboard com as informações que o usuário preencheu em sua Autoavaliação, Dashboard com as informações que o seu líder preencheu em Avaliação de Liderado e também o Dashboard com as informações que o liderado preencheu em Avaliação de Líder, sobrepostas para comparação. | Dashboard | 12h | ❌ | 8 |
 
 <span id="sprint">
     
 ## 🧷Sprints
 
+As entregas de valor de cada sprint estão mais detalhadas nos relatórios disponíveis nos links abaixo.
 
  
- ### <a href="./Relatórios/Sprint 1.md">1️⃣SPRINT 1 - 18/09/2024</a>
+ ### <a href="./Relatórios/Sprint 1.md">1️⃣SPRINT 1 - Entrega: 29/09/2024</a> :white_check_mark:
 
- ### <a href="./Relatórios/Sprint 2.md">2️⃣SPRINT 2 - 02/09/2024</a>
+ ### <a href="./Relatórios/Sprint 2.md">2️⃣SPRINT 2 - Entrega: 20/10/2024</a> :white_check_mark:
 
- ### <a href="./Relatórios/Sprint 3.md"> 3️⃣SPRINT 3 - 23/10/2024</a>
+ ### <a href="./Relatórios/Sprint 3.md">3️⃣SPRINT 3 - Entrega: 10/11/2024</a>
 
- ### <a href="./Relatórios/Sprint 4.md"> 4️⃣SPRINT 4 - 13/11/2024</a>
+ ### <a href="./Relatórios/Sprint 4.md">4️⃣SPRINT 4 - Entrega: 01/12/2024</a>
 
 
 <span id="tecnologias">
