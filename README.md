@@ -76,54 +76,73 @@ Imagine uma empresa que busca melhorar seu ambiente organizacional por meio de a
  ### <a href="./Relatórios/Sprint 4.md"> 4️⃣SPRINT 4 - 13/11/2024</a>
 
 
-<span id="tecnologia">
+<span id="tecnologias">
+
+## 🛠️ Tecnologias
+
+As seguintes ferramentas, linguagens, bibliotecas e tecnologias foram usadas na construção do projeto:
+
+<table>
+  <thead>
+    <th><img
+    src="https://user-images.githubusercontent.com/76211125/227502784-c94d5e2d-2e39-449b-ba85-053b9106b979.png"
+    alt="Alt text"
+    title="Figma"
+    style="display: inline-block; margin: 0 auto; width: 30px"></th>
+    <th><img
+    src="https://github.com/ThothTech-Fatec/Maat-View/blob/main/Static/Github.png"
+    alt="Alt text"
+    title="GitHub"
+    style="display: inline-block; margin: 0 auto; width: 40px"></th>
+    <th><img
+    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original-wordmark.svg" /></th>
+    <th><img
+    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg"
+    alt="Alt text"
+    title="React"
+    style="display: inline-block; margin: 0 auto; width: 60px"></th>
+    <th><img
+    src="https://user-images.githubusercontent.com/76211125/227505063-5839c5e0-9524-41ff-9d24-ce6cbaf217a6.png"
+    alt="Alt text"
+    title="VSCode"
+    style="display: inline-block; margin: 0 auto; width: 50px"></th>
+     <th><img
+    src="https://user-images.githubusercontent.com/89823203/190717820-53e9f06b-1aec-4e46-91e1-94ea2cf07100.svg"
+    alt="Alt text"
+    title="JavaScript"
+    style="display: inline-block; margin: 0 auto; width: 60px"></th>
+     <th><img
+    src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg"
+    alt="Alt text"
+    title="TypeScript"
+    style="display: inline-block; margin: 0 auto; width: 60px"></th>
+     <th><img
+    src="https://user-images.githubusercontent.com/76211125/227503111-49bb0b02-2f06-4696-82e6-fbd8d0daed21.png"
+    alt="Alt text"
+    title="HTML5"
+    style="display: inline-block; margin: 0 auto; width: 60px"></th>
+     <th><img
+    src="https://user-images.githubusercontent.com/76211125/227503103-bb7005d7-5f2f-46e4-adb5-92ef19ce677d.png"
+    alt="Alt text"
+    title="CSS3"
+    style="display: inline-block; margin: 0 auto; width: 60px"></th>
+  </thead>
+
+  <tbody>
+    <td>Figma</td>
+    <td>GitHub</td>
+    <td>MySQL</td>
+    <td>React</td>
+    <td>VSCode</td>
+    <td>JavaScript</td>
+    <td>Typescript</td>
+    <td>HTML5</td>
+    <td>CSS3</td>
+  </tbody>
+
+</table>
     
-<h2 aling="center"> 💻Tecnologias Utilizadas</h2>
-
- * <p>
-    <img align="left" title="figma-logo" height="30px" src="https://user-images.githubusercontent.com/76211125/227502784-c94d5e2d-2e39-449b-ba85-053b9106b979.png"/>  
-    Figma 
- </p>
-
- * <p>
-    <img align="left" title="github-dark" height="30px" src="https://github.com/ThothTech-Fatec/Maat-View/blob/main/Static/Github.png"/>
-    GitHub 
- </p>
- 
- * <p>
-    <img align="left" title="vscode" height="30px" src="https://user-images.githubusercontent.com/76211125/227505063-5839c5e0-9524-41ff-9d24-ce6cbaf217a6.png"/>
-    Visual Studio Code 
- </p>
- 
- * <p>
-    <img align="left" title="html5-logo" height="30px" src="https://user-images.githubusercontent.com/76211125/227503111-49bb0b02-2f06-4696-82e6-fbd8d0daed21.png"/>
-    HTML5 
- </p>
-
-  * <p>
-    <img align="left" title="css3-logo" height="30px" src="https://user-images.githubusercontent.com/76211125/227503103-bb7005d7-5f2f-46e4-adb5-92ef19ce677d.png"/>
-    CSS3 
- </p>
- 
- * <p>
-    <img align="left" title="figma-logo" height="30px" src="https://github.com/user-attachments/assets/98b7ce5f-9f1f-405a-94d8-fdf7a11ad6fd"/> 
-    JavaScript
- </p>
- 
-  * <p>
-    <img align="left" title="vscode" height="30px" src="https://github.com/ThothTech-Fatec/Maat-View/blob/main/TypeScript.png"/>
-    TypeScript 
- </p>
-
- * <p>
-    <img align="left" title="vscode" height="30px" src="https://github.com/ThothTech-Fatec/Maat-View/blob/main/Static/React.png"/>
-    React 
- </p>
- 
- * <p>
-    <img align="left" title="vscode" height="30px" src="https://github.com/tandpfun/skill-icons/raw/main/icons/MySQL-Dark.svg"/>
-    MySQL 
- </p>
+→ [Voltar ao topo](#topo)
 
 
 ## 🎓TIME
