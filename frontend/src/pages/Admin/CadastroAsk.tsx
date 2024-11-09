@@ -83,10 +83,9 @@ const CadastroAsk: React.FC = () => {
 
     const handleSubmitPesquisa = async (e: React.FormEvent) => {
         e.preventDefault();
-        const pesquisas = { titlePes, sobrepesq, catpesq };
-        
+        const pesquisas = { titlePes, sobrepesq}
         try {
-            if (titlePes && sobrepesq && catpesq) {
+            if (titlePes && sobrepesq) {
                 const userConfirmed = window.confirm(
                     "Deseja cadastrar a Pesquisa? Não será possível realizar alterações."
                 );
@@ -223,13 +222,6 @@ const handleCatPergChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
                                 <textarea id='sobrepesq' name='sobrepesq' onChange={(e) => setSobrePesq(e.target.value)} required value={sobrepesq} disabled={isSubmitted}/>
                             </div>
                             <div className='form-group-ask'>
-                                <p>Categoria da Pesquisa:</p>
-                                <select id="catpesq" name="catpesq" style={{ width: '100%', marginLeft: '4%' }} onChange={(e) => setCatPesq(e.target.value)} required value={catpesq} disabled={isSubmitted}>
-                                    <option value="" disabled hidden>Defina a Categoria da Pesquisa</option>
-                                    <option value="Auto Avaliação">Auto-Avaliação</option>
-                                    <option value="Avaliação de Liderado">Avaliação de Liderado</option>
-                                    <option value="Avaliação de Líder">Avaliação de Líder</option>
-                                </select>
     
                                 {buttonsVisible && (
                                     <>

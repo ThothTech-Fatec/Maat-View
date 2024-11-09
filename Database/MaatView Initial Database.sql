@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS Users (
 -- Tabela de Pesquisas
 CREATE TABLE IF NOT EXISTS Pesquisas (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    titulo VARCHAR(50) NOT NULL,
+    titulo VARCHAR(150) NOT NULL,
     sobre VARCHAR(255) NOT NULL,
     cat_pes ENUM('Auto Avaliação', 'Avaliação de Liderado', 'Avaliação de Líder') NOT NULL
 );
@@ -87,12 +87,12 @@ CREATE TABLE IF NOT EXISTS Temp_Respostas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     per_id INT,
-    pes_id INT,
+    ava_id INT,
     resp_texto VARCHAR(255),
     select_option_id INT,
     FOREIGN KEY (user_id) REFERENCES Users(id),
     FOREIGN KEY (per_id) REFERENCES Perguntas(id),
-    FOREIGN KEY (pes_id) REFERENCES Pesquisas(id),
+    FOREIGN KEY (ava_id) REFERENCES Avaliacoes(id),
     FOREIGN KEY (select_option_id) REFERENCES Opções(id)
 );
 
@@ -121,5 +121,7 @@ SELECT * FROM Users WHERE id = 3;
 
 select * from Respostas;
 select * from Temp_Respostas;
+
+
 
 
