@@ -75,3 +75,5 @@ Nesta sprint tivemos o foco em desenvolver as facilidades de lider/liderado e si
 -
 
 ## 👨‍💻Trabalho desenvolvido
+https://github.com/user-attachments/assets/823e928f-226f-40f2-b061-4bcabf4d07cc
+
