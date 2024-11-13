@@ -86,12 +86,15 @@ const PesquisasPage: React.FC = () => {
                     key={pesquisa.id}
                     onClick={() => handlePesquisaClick(pesquisa)}
                     className="pesquisa-card4" 
+                    style={{marginBottom: '5px'}}
                   >
                     <h3>{pesquisa.titulo}</h3>
                     <p>Categoria: {pesquisa.cat_pes}</p>
-                    <p>Sobre: {pesquisa.sobre}</p>
+                    <p >Sobre: {pesquisa.sobre}</p>
                   </div>
+                  
                 ))
+                
               ) : (
                 <p>Nenhuma pesquisa disponível no momento.</p>
               )}

@@ -32,10 +32,7 @@ const LiderResponsiveMenu: React.FC = () => {
                     <li><a href="/minhas_info" onClick={toggleMenu}>Minhas Informações</a></li>
                     <li><a href="/dashboard" onClick={toggleMenu}>Dashboard</a></li>
                     <li><a href="/minhas_avaliaçoes" onClick={toggleMenu}>Suas Avaliações</a></li>
-                    <li><a href="/avaliar_liderados" onClick={toggleMenu}>Avaliar Liderados</a></li>
                     <li><a href="/exibir_liderados" onClick={toggleMenu}>Exibe Liderados</a></li>
-                    <li><a href="/exibe_search" onClick={toggleMenu}>Exibe Pesquisas</a></li>
-                    <li><a href="/atualizar_senha" onClick={toggleMenu}>Atualizar Senha</a></li>
                 </ul>
                 <button className="logout-button" onClick={handleLogout}> 
                     Sair da Conta

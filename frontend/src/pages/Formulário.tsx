@@ -25,6 +25,7 @@ const FormularioPesquisa: React.FC = () => {
   const { pesquisaId } = useParams<{ pesquisaId: string }>();
   const [perguntas, setPerguntas] = useState<Pergunta[]>([]);
   const [respostas, setRespostas] = useState<Resposta[]>([]);
+  const [categoria, setCategoria] = useState<string>('');
   const navigate = useNavigate();
 
   const userId = localStorage.getItem('user_Id');
@@ -33,6 +34,10 @@ const FormularioPesquisa: React.FC = () => {
     const fetchPerguntas = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/verperguntas/${pesquisaId}`);
+        const categoriaResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/buscarcatpesq/${pesquisaId}`);
+        setCategoria(categoriaResponse.data.categoria[0].cat_pes);  // Acessa o primeiro item do array e pega o cat_pes
+        console.log(categoriaResponse.data.categoria[0].cat_pes)
+
         setPerguntas(response.data);
         setRespostas(response.data.map((pergunta: Pergunta) => ({
           per_id: pergunta.id,
@@ -47,7 +52,7 @@ const FormularioPesquisa: React.FC = () => {
     if (pesquisaId) {
       fetchPerguntas();
     }
-  }, [pesquisaId]);
+  }, [pesquisaId, userId]);
 
   const handleTextChange = (id: number, text: string) => {
     setRespostas(prevRespostas => 
@@ -110,15 +115,30 @@ const FormularioPesquisa: React.FC = () => {
       <RenderMenu />
       <div className="form-container" style={{ fontFamily: 'Outfit' }}>
         <h1>Pesquisa</h1>
+          {/* Exibir mensagem baseada na categoria */}
+        {categoria === 'Avaliação de Liderado' && (
+          <div className="categoria-message">
+            <p style={{width: '90%'}}>Essa avaliação é uma forma de avaliar o liderado, portanto todas as perguntas devem ser respondidas com base na sua opinião sobre o desempenho dele.</p>
+          </div>
+        )}
+
+        {categoria === 'Avaliação de Líder' && (
+          <div className="categoria-message">
+            <p style={{width: '90%'}}>Essa avaliação é uma forma de avaliar o líder, portanto todas as perguntas devem ser respondidas com base na sua opinião sobre o desempenho dele.</p>
+          </div>
+        )}
         {perguntas.length > 0 ? (
           perguntas.map(pergunta => (
             <div key={pergunta.id} className="pergunta">
-              <h3>{pergunta.sobre}</h3>
+              <h4 style={{ width: '80%', height: 'auto', wordWrap: 'break-word', whiteSpace: 'normal' }}>
+                {pergunta.sobre}
+              </h4>
               {pergunta.formato === 'Texto Longo' ? (
                 <textarea
                   value={respostas.find(resposta => resposta.per_id === pergunta.id)?.resp_texto || ''}
                   onChange={(e) => handleTextChange(pergunta.id, e.target.value)}
                   rows={4}
+                  style={{width:'90%'}}
                 />
               ) : (
                 <div>

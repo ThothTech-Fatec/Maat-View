@@ -11,6 +11,7 @@ import ExibePesq from './pages/Admin/ExibePesq';
 import VerPergs from './pages/Admin/verPergs';
 import PesquisasPage from './pages/SuasAvaliações';
 import FormularioPesquisa from './pages/Formulário';
+import ExibirLiderados from './pages/Líder/ExibirLiderados';
 
 
 
@@ -31,6 +32,7 @@ const App: React.FC = () => {
                 <Route path="/ver-Pergs/:id" element={<VerPergs />} />  {/* Rota com parâmetro */}
                 <Route path="/minhas_avaliaçoes" element={<PesquisasPage />} />
                 <Route path="/pesquisa/:pesquisaId" element={<FormularioPesquisa />} />
+                <Route path="/exibir_liderados" element={<ExibirLiderados />} />
 
 
 

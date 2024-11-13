@@ -39,7 +39,9 @@ const Login: React.FC = () => {
             localStorage.setItem('authToken', data.token);
             localStorage.setItem('userEmail', data.email);
             localStorage.setItem('user_Id', data.id); 
-            localStorage.setItem('userRole', data.role); 
+            localStorage.setItem('userRole', data.role);
+            localStorage.setItem('cpfUser', data.cpf); 
+            localStorage.setItem('nomeUser', data.nome); 
     
             navigate('/minhas_info');
         } catch (err) {
@@ -54,9 +56,10 @@ const Login: React.FC = () => {
         <body className='login-body'>
             <div className='container'>
                 <div style={{ marginBottom: 150 }}>
+                    <div className='form-container10'>
                     <img src={logo} alt="Logo" style={{ display: 'block', width: '250px' }} />
                     <h1 className='outfitTitle' style={{ alignItems: 'center', justifyContent: 'center', display: 'flex' }}>Maat-View</h1>
-                    <div className="form-container">
+                    <div className="form-container10">
                         <form onSubmit={handleSubmit}>
                             <div className='caixatexto'>
                                 <input
@@ -80,6 +83,7 @@ const Login: React.FC = () => {
                                 {loading ? 'Carregando...' : 'Entrar'}
                             </button>
                         </form>
+                    </div>
                     </div>
                     {error && <p className="error-message" style={{ marginTop: 10 }}>{error}</p>}
                 </div>

@@ -20,7 +20,7 @@ authRoutes.post('/login', async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
 
-        const [rows] = await pool.query('SELECT id, email, cargo, senha FROM Users WHERE email = ?', [email]);
+        const [rows] = await pool.query('SELECT id, nome, email, cargo, sub_cargo, cpf, senha FROM Users WHERE email = ?', [email]);
 
         const user = (rows as any)[0];
 
@@ -34,7 +34,7 @@ authRoutes.post('/login', async (req: Request, res: Response) => {
         }
 
         // Gera o token JWT
-        const token = jwt.sign({ email: user.email, role: user.cargo, id: user.id }, 'secreta', { expiresIn: '1h' });
+        const token = jwt.sign({ nome: user.nome, cpf: user.cpf ,email: user.email, role: user.cargo, id: user.id }, 'secreta', { expiresIn: '1h' });
 
         console.log('Usuário autenticado:', user); 
 
@@ -42,6 +42,8 @@ authRoutes.post('/login', async (req: Request, res: Response) => {
             message: 'Autenticação bem-sucedida!',
             token,
             id: user.id,
+            nome: user.nome,
+            cpf: user.cpf ,
             email: user.email,
             role: user.cargo,
         });

@@ -2,9 +2,9 @@ import pool from '../config/database.js';
 // Função para cadastrar pesquisa
 export const cadastrarPesquisa = async (req, res) => {
     try {
-        const { titlePes, sobrepesq, catpesq } = req.body;
+        const { titlePes, sobrepesq } = req.body;
         // Inserir a pesquisa no banco de dados
-        await pool.query('INSERT INTO Pesquisas (titulo, sobre, cat_pes) VALUES (?, ?, ?)', [titlePes, sobrepesq, catpesq]);
+        await pool.query('INSERT INTO Pesquisas (titulo, sobre, cat_pes) VALUES (?, ?, ?)', [titlePes, sobrepesq, 'Auto Avaliação']);
         return res.status(201).json({ message: 'Pesquisa cadastrada com sucesso!' });
     }
     catch (error) {

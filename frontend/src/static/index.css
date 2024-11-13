@@ -157,6 +157,14 @@ body {
     margin: 0 auto;
     margin-left: 292px; 
   }
+  .form-container10 {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
   
   .pergunta {
     margin-bottom: 20px;
@@ -228,6 +236,12 @@ textarea {
 
         margin-left: 292px; 
     }
+    .form-container10 {
+        padding: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+        margin-left: 0; 
+      }
 
     h1 {
         font-size: 1.5em;
@@ -257,8 +271,8 @@ textarea {
         background: white;
         padding: 20px;
         border-radius: 5px;
-        min-width: 300px;
         margin-left: 0px;
+        width: 50%;
       }
 }
 

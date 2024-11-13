@@ -18,7 +18,7 @@ export const showPesquisas = async (req, res) => {
             sobre: rows[0].pesquisa_sobre,
             categoria: rows[0].cat_pes,
         };
-        return res.status(200).json(pesquisa); // Retorna os detalhes da pesquisa
+        return res.status(200).json(pesquisa);
     }
     catch (error) {
         console.error('Erro ao buscar a pesquisa:', error);

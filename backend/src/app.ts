@@ -10,6 +10,8 @@ import { buscarPerguntasPorPesquisa } from './controllers/verpergsController.js'
 import verpergsRoutes from './routes/verpergsRoutes.js';
 import { showPesquisas, VerificarPergPes } from './controllers/showpesqController.js';
 import { getPesquisas, PerguntasPesquisas, SaveAnswer } from './controllers/suasAvaliaçõesController.js';
+import { buscarCategoriaPesquisa, buscarPerguntasTemporarias } from './controllers/buscarPergTemp.js';
+import { AtualizarSenha, listarLiderados } from './controllers/userController.js';
 
 
 const app = express();
@@ -35,6 +37,10 @@ app.use('/api/verpesquisas', getPesquisas);
 app.get('/api/verperguntas/:pesquisaId', PerguntasPesquisas);
 app.post('/api/enviarrespostas', SaveAnswer);
 app.get('/api/verpesquisas-nao-respondidas/:userId', VerificarPergPes);
+app.get('/api/buscarPerguntasTemporarias/:pesquisaId/:userId', buscarPerguntasTemporarias);
+app.get('/api/buscarcatpesq/:pesquisaId', buscarCategoriaPesquisa)
+app.post('/api/atualizarsenha', AtualizarSenha )
+app.use('/api/listarliderados/:userId', listarLiderados)
 
 
 

@@ -44,31 +44,62 @@ export const getPesquisas = async (req, res) => {
         res.status(500).json({ message: "Erro ao buscar pesquisas e avaliações do usuário." });
     }
 };
-// Função para buscar perguntas de uma pesquisa específica e incluir opções para perguntas de escolha única/múltipla
 export const PerguntasPesquisas = async (req, res) => {
     const { pesquisaId } = req.params;
     try {
         if (!pesquisaId) {
             return res.status(400).json({ message: "ID da pesquisa não fornecido." });
         }
-        const [perguntas] = await pool.query(`
+        // Verifica a categoria da pesquisa
+        const [pesquisaResult] = await pool.query(`
+      SELECT cat_pes 
+      FROM Pesquisas 
+      WHERE id = ?
+    `, [pesquisaId]);
+        const pesquisa = pesquisaResult; // Assegura que `pesquisaResult` é tratado como um array
+        if (pesquisa.length === 0) {
+            return res.status(404).json({ message: "Pesquisa não encontrada." });
+        }
+        const categoria = pesquisa[0].cat_pes;
+        // Busca as perguntas relacionadas à pesquisa
+        const [perguntasResult] = await pool.query(`
       SELECT p.id, p.sobre, p.formato
       FROM Perguntas p
       JOIN Pesquisas_Perguntas pp ON pp.per_id = p.id
       WHERE pp.pes_id = ?
     `, [pesquisaId]);
-        const perguntasComOpcoes = await Promise.all(perguntas.map(async (pergunta) => {
+        const perguntas = perguntasResult;
+        // Itera sobre as perguntas para incluir opções (se for o caso) e respostas (para categorias específicas)
+        const perguntasComRespostas = await Promise.all(perguntas.map(async (pergunta) => {
+            let opcoes = null;
+            let respostas = null;
+            // Inclui as opções para perguntas de escolha única ou múltipla escolha
             if (['Escolha Única', 'Múltipla Escolha'].includes(pergunta.formato)) {
-                const [opcoes] = await pool.query(`
+                const [optionsResult] = await pool.query(`
           SELECT id, texto 
           FROM Opções 
           WHERE per_id = ?
         `, [pergunta.id]);
-                return Object.assign(Object.assign({}, pergunta), { opcoes });
+                opcoes = optionsResult;
             }
-            return pergunta;
+            // Se a categoria for "Avaliação de Liderado" ou "Avaliação de Líder", busca as respostas do Temp_Respostas
+            if (['Avaliação de Liderado', 'Avaliação de Líder'].includes(categoria)) {
+                const [tempRespostasResult] = await pool.query(`
+          SELECT tr.resp_texto, tr.select_option_id 
+          FROM Temp_Respostas tr
+          WHERE tr.per_id = ? AND tr.ava_id = (
+            SELECT id 
+            FROM Avaliacoes 
+            WHERE pes_id = ? 
+            LIMIT 1
+          )
+        `, [pergunta.id, pesquisaId]);
+                respostas = tempRespostasResult;
+            }
+            // Retorna a pergunta com as opções e, se houver, as respostas
+            return Object.assign(Object.assign({}, pergunta), { opcoes, respostas });
         }));
-        res.json(perguntasComOpcoes);
+        res.json(perguntasComRespostas);
     }
     catch (error) {
         console.error('Erro ao buscar perguntas:', error);
@@ -128,11 +159,11 @@ export const SaveAnswer = async (req, res) => {
                     if (perguntasIds.includes(resposta.per_id)) {
                         if (Array.isArray(resposta.select_option_id)) {
                             for (let optionId of resposta.select_option_id) {
-                                await pool.query('INSERT INTO Temp_Respostas (user_id, per_id, pes_id, select_option_id) VALUES (?, ?, ?, ?)', [user.lider_id, resposta.per_id, avaliacaoId, optionId]);
+                                await pool.query('INSERT INTO Temp_Respostas (user_id, per_id, ava_id, select_option_id) VALUES (?, ?, ?, ?)', [user.lider_id, resposta.per_id, avaliacaoId, optionId]);
                             }
                         }
                         else {
-                            await pool.query('INSERT INTO Temp_Respostas (user_id, per_id, pes_id, resp_texto, select_option_id) VALUES (?, ?, ?, ?, ?)', [user.lider_id, resposta.per_id, avaliacaoId, resposta.resp_texto, resposta.select_option_id]);
+                            await pool.query('INSERT INTO Temp_Respostas (user_id, per_id, ava_id, resp_texto, select_option_id) VALUES (?, ?, ?, ?, ?)', [user.lider_id, resposta.per_id, avaliacaoId, resposta.resp_texto, resposta.select_option_id]);
                         }
                     }
                 }
@@ -161,11 +192,11 @@ export const SaveAnswer = async (req, res) => {
                         if (perguntasIds.includes(resposta.per_id)) {
                             if (Array.isArray(resposta.select_option_id)) {
                                 for (let optionId of resposta.select_option_id) {
-                                    await pool.query('INSERT INTO Temp_Respostas (user_id, per_id, pes_id, select_option_id) VALUES (?, ?, ?, ?)', [liderado.id, resposta.per_id, avaliacaoId, optionId]);
+                                    await pool.query('INSERT INTO Temp_Respostas (user_id, per_id, ava_id, select_option_id) VALUES (?, ?, ?, ?)', [liderado.id, resposta.per_id, avaliacaoId, optionId]);
                                 }
                             }
                             else {
-                                await pool.query('INSERT INTO Temp_Respostas (user_id, per_id, pes_id, resp_texto, select_option_id) VALUES (?, ?, ?, ?, ?)', [liderado.id, resposta.per_id, avaliacaoId, resposta.resp_texto, resposta.select_option_id]);
+                                await pool.query('INSERT INTO Temp_Respostas (user_id, per_id, ava_id, resp_texto, select_option_id) VALUES (?, ?, ?, ?, ?)', [liderado.id, resposta.per_id, avaliacaoId, resposta.resp_texto, resposta.select_option_id]);
                             }
                         }
                     }
