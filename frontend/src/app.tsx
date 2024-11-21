@@ -12,6 +12,7 @@ import VerPergs from './pages/Admin/verPergs';
 import PesquisasPage from './pages/SuasAvaliações';
 import FormularioPesquisa from './pages/Formulário';
 import ExibirLiderados from './pages/Líder/ExibirLiderados';
+import DashboardLR from './pages/Liderado/DashboardLR';
 
 
 
@@ -33,6 +34,7 @@ const App: React.FC = () => {
                 <Route path="/minhas_avaliaçoes" element={<PesquisasPage />} />
                 <Route path="/pesquisa/:pesquisaId" element={<FormularioPesquisa />} />
                 <Route path="/exibir_liderados" element={<ExibirLiderados />} />
+                <Route path="/dashboardlr" element={<DashboardLR />} />
 
 
 
