@@ -210,8 +210,8 @@ export const SaveAnswer = async (req: Request, res: Response) => {
 
         // Criar uma nova avaliação de liderado
         const [avaliacaoResult]: any = await pool.query(
-          'INSERT INTO Avaliacoes (pes_id, user_id, responsavel_id) VALUES (?, ?, ?)',
-          [novaPesquisaId, userId, user.lider_id]
+          'INSERT INTO Avaliacoes (original_pes_id, pes_id, user_id, responsavel_id) VALUES (?,?, ?, ?)',
+          [pesquisaId,novaPesquisaId, userId, user.lider_id,]
         );
 
         const avaliacaoId = avaliacaoResult.insertId;
@@ -271,8 +271,8 @@ export const SaveAnswer = async (req: Request, res: Response) => {
 
           // Criar uma nova avaliação de líder com o liderado como responsável
           const [avaliacaoResult]: any = await pool.query(
-            'INSERT INTO Avaliacoes (pes_id, user_id, responsavel_id) VALUES (?, ?, ?)',
-            [novaPesquisaId, userId, liderado.id]
+            'INSERT INTO Avaliacoes (original_pes_id, pes_id, user_id, responsavel_id) VALUES (?,?, ?, ?)',
+            [pesquisaId, novaPesquisaId, userId, liderado.id]
           );
 
           const avaliacaoId = avaliacaoResult.insertId;

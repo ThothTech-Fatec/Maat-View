@@ -152,7 +152,7 @@ export const SaveAnswer = async (req, res) => {
                     await pool.query('INSERT INTO Pesquisas_Perguntas (pes_id, per_id) VALUES (?, ?)', [novaPesquisaId, perId]);
                 }
                 // Criar uma nova avaliação de liderado
-                const [avaliacaoResult] = await pool.query('INSERT INTO Avaliacoes (pes_id, user_id, responsavel_id) VALUES (?, ?, ?)', [novaPesquisaId, userId, user.lider_id]);
+                const [avaliacaoResult] = await pool.query('INSERT INTO Avaliacoes (original_pes_id, pes_id, user_id, responsavel_id) VALUES (?,?, ?, ?)', [pesquisaId, novaPesquisaId, userId, user.lider_id,]);
                 const avaliacaoId = avaliacaoResult.insertId;
                 // Duplicar respostas para a nova avaliação de liderado
                 for (let resposta of respostas) {
@@ -185,7 +185,7 @@ export const SaveAnswer = async (req, res) => {
                         await pool.query('INSERT INTO Pesquisas_Perguntas (pes_id, per_id) VALUES (?, ?)', [novaPesquisaId, perId]);
                     }
                     // Criar uma nova avaliação de líder com o liderado como responsável
-                    const [avaliacaoResult] = await pool.query('INSERT INTO Avaliacoes (pes_id, user_id, responsavel_id) VALUES (?, ?, ?)', [novaPesquisaId, userId, liderado.id]);
+                    const [avaliacaoResult] = await pool.query('INSERT INTO Avaliacoes (original_pes_id, pes_id, user_id, responsavel_id) VALUES (?,?, ?, ?)', [pesquisaId, novaPesquisaId, userId, liderado.id]);
                     const avaliacaoId = avaliacaoResult.insertId;
                     // Duplicar respostas para a nova avaliação de líder
                     for (let resposta of respostas) {

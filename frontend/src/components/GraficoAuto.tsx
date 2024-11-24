@@ -26,6 +26,9 @@ const DashboardAutoavaliacao: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalContent, setModalContent] = useState<string>('');
+    const [selectedPesquisaId, setSelectedPesquisaId] = useState<string | null>(null); // Estado para armazenar o ID da pesquisa clicada
+    const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false); // Controle para o modal de detalhes
+    const [detailsContent, setDetailsContent] = useState<string>('');
     const [dateFilter, setDateFilter] = useState<string>('week');
 
     useEffect(() => {
@@ -75,6 +78,46 @@ const DashboardAutoavaliacao: React.FC = () => {
         fetchProgresso();
     }, [dateFilter]);
 
+    const fetchPerguntasRespostas = async (pesquisaId: number) => {
+        const userId = localStorage.getItem('user_Id');
+    
+        if (!userId) {
+            setError('ID do usuário não encontrado.');
+            return;
+        }
+    
+        try {
+            if (!process.env.REACT_APP_API_URL) {
+                throw new Error('URL da API não configurada.');
+            }
+    
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/autoavaliacao/perguntas-respostas/${userId}/${pesquisaId}`);
+            const data = await response.json();
+            console.log(data);
+    
+            if (response.ok) {
+                const content = data.perguntas
+                    .map((p: { pergunta: string; respostas: string[] | null }) => {
+                        const respostasFormatadas = p.respostas && p.respostas.length > 0 
+                            ? p.respostas.join(', ') // Junta todas as respostas em uma string separada por vírgulas
+                            : 'Não respondida'; // Caso não haja respostas
+                        return `<strong>${p.pergunta}</strong>: ${respostasFormatadas}`;
+                    })
+                    .join('<br/>'); // Adiciona quebras de linha entre perguntas
+                setDetailsContent(content);
+            } else {
+                setDetailsContent(data.message || 'Erro ao buscar perguntas e respostas.');
+            }
+            setIsDetailsModalOpen(true);
+        } catch (error) {
+            console.error('Erro ao buscar perguntas e respostas:', error);
+            setDetailsContent('Erro ao buscar perguntas e respostas.');
+            setIsDetailsModalOpen(true);
+        }
+    };
+    
+    
+
     const handleOpenModal = (content: string) => {
         setModalContent(content);
         setIsModalOpen(true);
@@ -83,6 +126,12 @@ const DashboardAutoavaliacao: React.FC = () => {
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setModalContent('');
+    };
+    
+
+    const handlePesquisaClick = (id: string) => {
+        setSelectedPesquisaId(id);
+        console.log('ID da pesquisa clicada:', id); // Realize alguma ação com este ID
     };
 
     const handlePieClick = (event: React.MouseEvent<HTMLCanvasElement>, elements: any[]) => {
@@ -140,6 +189,10 @@ const DashboardAutoavaliacao: React.FC = () => {
             },
         },
     };
+    const handleCloseDetailsModal = () => {
+        setIsDetailsModalOpen(false);
+        setDetailsContent('');
+    };
     
 
     // Função para gerar o PDF e realizar o download
@@ -160,7 +213,7 @@ const DashboardAutoavaliacao: React.FC = () => {
         doc.text(`Data de Criação: ${currentDate}`, 20, 40);
     
         // Adicionar informações dos gráficos
-        doc.text(`Progresso: ${progresso.answered} perguntas respondidas, ${progresso.remaining} restantes`, 20, 50);
+        doc.text(`Progresso: ${progresso.answered} perguntas de auto-avaliação respondidas, ${progresso.remaining} restantes`, 20, 50);
         doc.text(`Autoavaliações Respondidas: ${progressoRespondido.autoavaliacoesRespondidas}`, 20, 60);
         doc.text(`Avaliações Respondidas: ${progressoRespondido.avaliacoesRespondidas}`, 20, 70);
     
@@ -180,17 +233,18 @@ const DashboardAutoavaliacao: React.FC = () => {
                 <h2>Dashboard Autoavaliação</h2>
                 <label htmlFor="dateFilter">Filtrar por:</label>
                 <select
-                    id="dateFilter"
-                    value={dateFilter}
-                    onChange={(e) => setDateFilter(e.target.value)}
-                >
-                    <option value="week">Última Semana</option>
-                    <option value="month">Último Mês</option>
-                    <option value="year">Último Ano</option>
-                </select>
+                id="dateFilter"
+                value={dateFilter}
+                onChange={(e) => setDateFilter(e.target.value)} // Atualiza o valor de dateFilter
+            >
+                <option value="week">Última Semana</option>
+                <option value="month">Último Mês</option>
+                <option value="year">Último Ano</option>
+            </select>
+
 
                 <div className="pie-chart-container">
-                    <h3>Perguntas Respondidas</h3>
+                    <h3>Perguntas de Auto-Avaliação Respondidas</h3>
                     <div className="pie-chart">
                         <Pie data={pieChartData} options={{ responsive: true, maintainAspectRatio: false, onClick: (event: any, elements: any[]) => handlePieClick(event, elements) }} />
                     </div>
@@ -200,7 +254,7 @@ const DashboardAutoavaliacao: React.FC = () => {
                         <p>Restantes: {progresso.remaining}</p>
                     </div>
                 </div>
-                <h3> Respondidas</h3>
+                <h3>Pesquisas Respondidas</h3>
                 <div className="bar-chart-container">
                     <div className="bar-chart" style={{ width: '100%', height: '400px' }}> {/* Ajuste no estilo */}
                         <Bar 
@@ -215,15 +269,28 @@ const DashboardAutoavaliacao: React.FC = () => {
                     </div>
                 </div>
 
-                <button onClick={generatePDF}>Gerar PDF</button>
+                <button onClick={generatePDF} style={{ borderRadius:'5px',}}>Gerar PDF</button>
 
 
             </div>
             <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-                <div>
-                    <h3>Pesquisas Respondidas</h3>
-                    <div dangerouslySetInnerHTML={{ __html: modalContent }} />
-                </div>
+            <div>
+                <h3>Pesquisas Respondidas</h3>
+                <ul>
+                    {pesquisasRespondidas.map((pesquisa) => (
+                        <li
+                            key={pesquisa.id}
+                            style={{ cursor: 'pointer', textDecoration: 'underline', color: 'blue' }}
+                            onClick={() => fetchPerguntasRespostas(pesquisa.id)}
+                        >
+                            {pesquisa.titulo}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            </Modal>
+            <Modal isOpen={isDetailsModalOpen} onClose={handleCloseDetailsModal}>
+                <div dangerouslySetInnerHTML={{ __html: detailsContent }} style={{margin:'20px'}} />
             </Modal>
         </div>
     );

@@ -3,6 +3,7 @@ export const getAutoavaliacoesRespondidas = async (req, res) => {
     var _a, _b;
     const { userId } = req.params;
     const { startDate, endDate, dateFilter } = req.query; // Incluído o filtro de data
+    const { dateFilterLid } = req.query; // Filtro de data do liderado
     // Mapear filtros para intervalos de data
     let dateCondition = '';
     if (dateFilter === 'week') {
@@ -13,6 +14,20 @@ export const getAutoavaliacoesRespondidas = async (req, res) => {
     }
     else if (dateFilter === 'year') {
         dateCondition = `AND p.data_criacao >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)`;
+    }
+    // Adicionar a lógica para usar dateFilterLid caso dateFilter seja nulo
+    if (!dateFilter && dateFilterLid === 'week') {
+        dateCondition = `AND p.data_criacao >= DATE_SUB(CURDATE(), INTERVAL 1 WEEK)`;
+    }
+    else if (!dateFilter && dateFilterLid === 'month') {
+        dateCondition = `AND p.data_criacao >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)`;
+    }
+    else if (!dateFilter && dateFilterLid === 'year') {
+        dateCondition = `AND p.data_criacao >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)`;
+    }
+    // Se dateFilterLid não for nulo, mas dateFilter for, ele será ignorado no filtro de pesquisa
+    if (dateFilterLid && !dateFilter) {
+        dateCondition = `AND p.data_criacao >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)`; // Ou o intervalo desejado
     }
     try {
         // Validar os parâmetros de data (opcional)
@@ -27,7 +42,7 @@ export const getAutoavaliacoesRespondidas = async (req, res) => {
             SELECT COUNT(DISTINCT r.pes_id) AS autoavaliacoes_respondidas
             FROM Respostas r
             JOIN Pesquisas p ON r.pes_id = p.id
-            WHERE r.user_id = ?
+            WHERE r.user_id = ? 
               AND p.cat_pes = 'Auto Avaliação'
               ${startDate ? 'AND r.data_resposta >= ?' : ''}
               ${endDate ? 'AND r.data_resposta <= ?' : ''}
@@ -58,7 +73,7 @@ export const getAutoavaliacoesRespondidas = async (req, res) => {
             SELECT COUNT(DISTINCT r.pes_id) AS avaliacoes_respondidas
             FROM Respostas r
             JOIN Pesquisas p ON r.pes_id = p.id
-            WHERE r.user_id = ?
+            WHERE r.user_id = ? 
               AND p.cat_pes IN ('Avaliação de Líder', 'Avaliação de Liderado')
               ${startDate ? 'AND r.data_resposta >= ?' : ''}
               ${endDate ? 'AND r.data_resposta <= ?' : ''}
