@@ -1,0 +1,111 @@
+/* styles.css */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza horizontalmente */
+    justify-content: center; /* Centraliza verticalmente */
+    text-align: center;
+    padding: 20px;
+    margin: auto;
+    width: 90%; /* Ajustável para caber melhor na tela */
+    max-width: 800px; /* Limita o tamanho máximo */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-container h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.dashboard-container label {
+    font-weight: bold;
+    margin-right: 10px;
+    color: #555;
+}
+
+.dashboard-container select {
+    padding: 5px 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.dashboard-container div {
+    margin: 20px 0;
+}
+
+.dashboard-container p {
+    font-size: 1rem;
+    color: #666;
+    margin: 5px 0;
+}
+
+/* Bar chart styling */
+.dashboard-container .bar-chart {
+    margin: 20px 0;
+    width: 100%; /* Para que se ajuste ao container */
+  /* Limita o tamanho máximo */
+    height: 400px; /* Defina uma altura fixa para o gráfico de barras */
+}
+
+.pie-chart-container {
+    text-align: center;
+    margin: 20px auto;
+    width: 100%;
+}
+
+.pie-chart {
+    position: relative;
+    width: 100%; /* Ajusta o gráfico para 100% do contêiner */
+    max-width: 800px; /* Define um limite para o tamanho máximo */
+    height: 400px; /* Aumenta a altura do gráfico */
+    margin: 0 auto;
+}
+
+.bar-chart-container {
+
+    width: 100%; /* Para garantir que a largura seja total */
+    height: auto; /* Ajuste a altura conforme necessário */
+}
+
+.bar-chart {
+    margin-left: 5%;
+    width: 100%;  /* Faz o gráfico ocupar 100% da largura do contêiner */
+    height: 100%; /* Ajuste a altura para preencher o contêiner */
+}
+
+
+.progress-info {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.progress-info p {
+    font-size: 1rem;
+    color: #555;
+    margin: 5px 0;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    .dashboard-container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .dashboard-container .bar-chart {
+        max-width: 100%;
+        margin: 15px 0;
+        height: 300px; /* Reduz a altura em telas menores */
+    }
+
+    .dashboard-container .pie-chart {
+        margin: 15px auto; /* Ajusta a margem para telas menores */
+        max-width: 100%; /* Garante que ocupe a largura disponível */
+    }
+}

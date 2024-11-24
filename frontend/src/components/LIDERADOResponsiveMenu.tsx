@@ -30,7 +30,7 @@ const LideradoResponsiveMenu: React.FC = () => {
                 )}
                 <ul>
                     <li><a href="/minhas_info" onClick={toggleMenu}>Minhas Informações</a></li>
-                    <li><a href="/dashboard" onClick={toggleMenu}>Dashboard</a></li>
+                    <li><a href="/dashboardlr" onClick={toggleMenu}>Dashboard</a></li>
                     <li><a href="/minhas_avaliaçoes" onClick={toggleMenu}>Suas Avaliações</a></li>
                 </ul>
                 <button className="logout-button" onClick={handleLogout}> 

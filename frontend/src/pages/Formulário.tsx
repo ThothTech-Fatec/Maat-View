@@ -18,7 +18,7 @@ interface Opcao {
 interface Resposta {
   per_id: number;
   resp_texto: string | null;
-  select_option_id: number[] | null;
+  select_option_id: number[] | null;  // Correção para permitir null ou array de números
 }
 
 const FormularioPesquisa: React.FC = () => {
@@ -35,9 +35,7 @@ const FormularioPesquisa: React.FC = () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/verperguntas/${pesquisaId}`);
         const categoriaResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/buscarcatpesq/${pesquisaId}`);
-        setCategoria(categoriaResponse.data.categoria[0].cat_pes);  // Acessa o primeiro item do array e pega o cat_pes
-        console.log(categoriaResponse.data.categoria[0].cat_pes)
-
+        setCategoria(categoriaResponse.data.categoria[0].cat_pes);
         setPerguntas(response.data);
         setRespostas(response.data.map((pergunta: Pergunta) => ({
           per_id: pergunta.id,
@@ -66,17 +64,19 @@ const FormularioPesquisa: React.FC = () => {
     setRespostas(prevRespostas =>
       prevRespostas.map(resposta => {
         if (resposta.per_id === id) {
-          const isMultipleChoice = Array.isArray(resposta.select_option_id);
-          if (isMultipleChoice) {
-            const optionExists = resposta.select_option_id?.includes(optionId);
-            return {
-              ...resposta,
-              select_option_id: optionExists
-                ? resposta.select_option_id?.filter(optId => optId !== optionId) || []
-                : [...(resposta.select_option_id || []), optionId],
-            };
-          } else {
-            return { ...resposta, select_option_id: [optionId] };
+          const pergunta = perguntas.find(p => p.id === id); // Encontrar a pergunta correspondente
+          if (pergunta) {
+            if (pergunta.formato === 'Escolha Única' && Array.isArray(resposta.select_option_id)) {
+              return { ...resposta, select_option_id: [optionId] }; // Para "Escolha Única", substituímos o array
+            } else if (pergunta.formato === 'Múltipla Escolha' && Array.isArray(resposta.select_option_id)) {
+              const optionExists = resposta.select_option_id?.includes(optionId);
+              return {
+                ...resposta,
+                select_option_id: optionExists
+                  ? resposta.select_option_id.filter(optId => optId !== optionId) || []
+                  : [...resposta.select_option_id, optionId],
+              };
+            }
           }
         }
         return resposta;
@@ -88,8 +88,6 @@ const FormularioPesquisa: React.FC = () => {
     const allAnswered = respostas.every(resposta => 
       resposta.resp_texto !== null || (resposta.select_option_id && resposta.select_option_id.length > 0)
     );
-
-    console.log(respostas)
 
     if (!allAnswered) {
       alert('Por favor, responda todas as perguntas.');
@@ -115,30 +113,37 @@ const FormularioPesquisa: React.FC = () => {
       <RenderMenu />
       <div className="form-container" style={{ fontFamily: 'Outfit' }}>
         <h1>Pesquisa</h1>
-          {/* Exibir mensagem baseada na categoria */}
+
+        {/* Exibir mensagem baseada na categoria */}
         {categoria === 'Avaliação de Liderado' && (
           <div className="categoria-message">
-            <p style={{width: '90%'}}>Essa avaliação é uma forma de avaliar o liderado, portanto todas as perguntas devem ser respondidas com base na sua opinião sobre o desempenho dele.</p>
+            <p style={{ width: '90%' }}>
+              Essa avaliação é uma forma de avaliar o liderado, portanto todas as perguntas devem ser respondidas com base na sua opinião sobre o desempenho dele.
+            </p>
           </div>
         )}
 
         {categoria === 'Avaliação de Líder' && (
           <div className="categoria-message">
-            <p style={{width: '90%'}}>Essa avaliação é uma forma de avaliar o líder, portanto todas as perguntas devem ser respondidas com base na sua opinião sobre o desempenho dele.</p>
+            <p style={{ width: '90%' }}>
+              Essa avaliação é uma forma de avaliar o líder, portanto todas as perguntas devem ser respondidas com base na sua opinião sobre o desempenho dele.
+            </p>
           </div>
         )}
+
         {perguntas.length > 0 ? (
           perguntas.map(pergunta => (
             <div key={pergunta.id} className="pergunta">
               <h4 style={{ width: '80%', height: 'auto', wordWrap: 'break-word', whiteSpace: 'normal' }}>
                 {pergunta.sobre}
               </h4>
+
               {pergunta.formato === 'Texto Longo' ? (
                 <textarea
                   value={respostas.find(resposta => resposta.per_id === pergunta.id)?.resp_texto || ''}
                   onChange={(e) => handleTextChange(pergunta.id, e.target.value)}
                   rows={4}
-                  style={{width:'90%'}}
+                  style={{ width: '90%' }}
                 />
               ) : (
                 <div>
@@ -147,10 +152,10 @@ const FormularioPesquisa: React.FC = () => {
                       <div style={{ width: '90%' }}>{opcao.texto}</div>
                       <input
                         type={pergunta.formato === 'Escolha Única' ? 'radio' : 'checkbox'}
-                        name={`pergunta_${pergunta.id}`}
+                        name={`pergunta_${pergunta.id}`} // Assegura agrupamento correto
                         value={opcao.id}
                         checked={
-                          Array.isArray(respostas.find(resposta => resposta.per_id === pergunta.id)?.select_option_id)
+                          Array.isArray(respostas.find(resposta => resposta.per_id === pergunta.id)?.select_option_id) 
                             ? respostas.find(resposta => resposta.per_id === pergunta.id)?.select_option_id?.includes(opcao.id)
                             : respostas.find(resposta => resposta.per_id === pergunta.id)?.select_option_id?.[0] === opcao.id
                         }
@@ -165,6 +170,7 @@ const FormularioPesquisa: React.FC = () => {
         ) : (
           <p>Carregando perguntas...</p>
         )}
+        
         <button onClick={handleSubmit} className='buttonSubmitPerg'>Enviar Respostas</button>
       </div>
     </div>

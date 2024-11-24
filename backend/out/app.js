@@ -11,6 +11,10 @@ import { showPesquisas, VerificarPergPes } from './controllers/showpesqControlle
 import { getPesquisas, PerguntasPesquisas, SaveAnswer } from './controllers/suasAvaliaçõesController.js';
 import { buscarCategoriaPesquisa, buscarPerguntasTemporarias } from './controllers/buscarPergTemp.js';
 import { AtualizarSenha, listarLiderados } from './controllers/userController.js';
+import { getAutoavaliacaoProgresso } from './controllers/graficoAuto.js';
+import { getAutoavaliacoesRespondidas } from './controllers/graficoAutoeAva.js';
+import getPesquisasRespondidas from './controllers/pegarPesquisasResp.js';
+import { getPerguntasERespostas } from './controllers/PegarPergERes.js';
 const app = express();
 app.use(cors({
     origin: 'http://localhost:3000',
@@ -35,6 +39,10 @@ app.get('/api/buscarPerguntasTemporarias/:pesquisaId/:userId', buscarPerguntasTe
 app.get('/api/buscarcatpesq/:pesquisaId', buscarCategoriaPesquisa);
 app.post('/api/atualizarsenha', AtualizarSenha);
 app.use('/api/listarliderados/:userId', listarLiderados);
+app.get('/api/autoavaliacao/progresso/:userId', getAutoavaliacaoProgresso);
+app.get('/api/autoavaliacoes/respondidas/:userId', getAutoavaliacoesRespondidas);
+app.get('/api/autoavaliacao/respondida/:userId', getPesquisasRespondidas);
+app.get('/api/autoavaliacao/perguntas-respostas/:userId/:pesquisaId', getPerguntasERespostas);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
