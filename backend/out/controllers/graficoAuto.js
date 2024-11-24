@@ -15,53 +15,35 @@ export const getAutoavaliacaoProgresso = async (req, res) => {
         dateCondition = `AND p.data_criacao >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)`;
     }
     try {
-        // Total de perguntas gerais para Auto Avaliação e Avaliações onde o usuário é responsável
+        // Total de perguntas de autoavaliação
         const [totalQuestionsRows] = await pool.execute(`SELECT COUNT(DISTINCT pp.per_id) AS total
              FROM Pesquisas p
              JOIN Pesquisas_Perguntas pp ON pp.pes_id = p.id
-             LEFT JOIN Avaliacoes a ON a.pes_id = p.id
-             WHERE (p.cat_pes = 'Auto Avaliação' 
-                    OR (p.cat_pes IN ('Avaliação de Liderado', 'Avaliação de Líder') 
-                        AND a.responsavel_id = ?))
-             ${dateCondition}`, [userId]);
+             WHERE p.cat_pes = 'Auto Avaliação'
+             ${dateCondition}`, []);
         const totalQuestions = totalQuestionsRows;
-        // Total de respostas já respondidas pelo usuário (únicas por pergunta)
+        // Total de perguntas respondidas pelo usuário em autoavaliações
         const [answeredQuestionsRows] = await pool.execute(`SELECT COUNT(DISTINCT r.per_id) AS answered
              FROM Respostas r
              JOIN Pesquisas p ON r.pes_id = p.id
-             LEFT JOIN Avaliacoes a ON a.pes_id = p.id
              WHERE r.user_id = ? 
-                   AND (p.cat_pes = 'Auto Avaliação' 
-                        OR (p.cat_pes IN ('Avaliação de Liderado', 'Avaliação de Líder') 
-                            AND a.responsavel_id = ?))
-             ${dateCondition}`, [userId, userId]);
+               AND p.cat_pes = 'Auto Avaliação'
+             ${dateCondition}`, [userId]);
         const answeredQuestions = answeredQuestionsRows;
-        // Progresso geral
+        // Total e restantes
         const total = ((_a = totalQuestions[0]) === null || _a === void 0 ? void 0 : _a.total) || 0;
         const answered = ((_b = answeredQuestions[0]) === null || _b === void 0 ? void 0 : _b.answered) || 0;
         const remaining = total - answered;
-        // Progresso por categoria
-        const [categoryProgressRows] = await pool.execute(`SELECT 
-                p.cat_pes AS categoria,
-                COUNT(DISTINCT pp.per_id) AS total,
-                SUM(CASE WHEN r.user_id = ? THEN 1 ELSE 0 END) AS answered
+        // Perguntas não respondidas pelo usuário
+        const [unansweredQuestionsRows] = await pool.execute(`SELECT DISTINCT pp.per_id, pe.sobre AS pergunta, p.titulo, p.sobre
              FROM Pesquisas p
-             LEFT JOIN Pesquisas_Perguntas pp ON pp.pes_id = p.id
+             JOIN Pesquisas_Perguntas pp ON pp.pes_id = p.id
+             JOIN Perguntas pe ON pe.id = pp.per_id
              LEFT JOIN Respostas r ON r.per_id = pp.per_id AND r.user_id = ?
-             LEFT JOIN Avaliacoes a ON a.pes_id = p.id
-             WHERE 1=1 ${dateCondition} 
-               AND (p.cat_pes = 'Auto Avaliação' 
-                    OR (p.cat_pes IN ('Avaliação de Liderado', 'Avaliação de Líder') 
-                        AND a.responsavel_id = ?))
-             GROUP BY p.cat_pes`, [userId, userId, userId]);
-        const categoryProgress = categoryProgressRows || [];
-        // Calcular restantes por categoria
-        const categories = categoryProgress.map((cat) => ({
-            categoria: cat.categoria,
-            total: cat.total || 0,
-            answered: cat.answered || 0,
-            remaining: (cat.total || 0) - (cat.answered || 0),
-        }));
+             WHERE p.cat_pes = 'Auto Avaliação'
+               AND r.id IS NULL
+             ${dateCondition}`, [userId]);
+        const unansweredQuestions = unansweredQuestionsRows;
         // Retornar resposta
         return res.status(200).json({
             progresso: {
@@ -69,7 +51,7 @@ export const getAutoavaliacaoProgresso = async (req, res) => {
                 answered,
                 remaining,
             },
-            categorias: categories.length > 0 ? categories : [], // Garante que seja um array vazio caso não haja categorias
+            perguntasNaoRespondidas: unansweredQuestions,
         });
     }
     catch (error) {

@@ -13,6 +13,7 @@ import PesquisasPage from './pages/SuasAvaliações';
 import FormularioPesquisa from './pages/Formulário';
 import ExibirLiderados from './pages/Líder/ExibirLiderados';
 import DashboardLR from './pages/Liderado/DashboardLR';
+import DashboardLD from './pages/Líder/DashboardLD';
 
 
 
@@ -35,6 +36,7 @@ const App: React.FC = () => {
                 <Route path="/pesquisa/:pesquisaId" element={<FormularioPesquisa />} />
                 <Route path="/exibir_liderados" element={<ExibirLiderados />} />
                 <Route path="/dashboardlr" element={<DashboardLR />} />
+                <Route path="/dashboardld" element={<DashboardLD />} />
 
 
 

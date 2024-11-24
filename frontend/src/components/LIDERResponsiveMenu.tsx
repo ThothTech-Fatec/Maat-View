@@ -30,7 +30,7 @@ const LiderResponsiveMenu: React.FC = () => {
                 )}
                 <ul>
                     <li><a href="/minhas_info" onClick={toggleMenu}>Minhas Informações</a></li>
-                    <li><a href="/dashboard" onClick={toggleMenu}>Dashboard</a></li>
+                    <li><a href="/dashboardld" onClick={toggleMenu}>Dashboard</a></li>
                     <li><a href="/minhas_avaliaçoes" onClick={toggleMenu}>Suas Avaliações</a></li>
                     <li><a href="/exibir_liderados" onClick={toggleMenu}>Exibe Liderados</a></li>
                 </ul>

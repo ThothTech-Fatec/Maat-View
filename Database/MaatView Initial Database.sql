@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS Pesquisas (
     id INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(150) NOT NULL,
     sobre VARCHAR(255) NOT NULL,
+    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
     cat_pes ENUM('Auto Avaliação', 'Avaliação de Liderado', 'Avaliação de Líder') NOT NULL
 );
 
@@ -104,6 +105,23 @@ INSERT INTO Users (nome, email, senha, cargo, lider_id, cpf) VALUES
 ('Líder 1', 'lider1@email.com', '$2a$10$ddNpc6kVtPXVtsrnxYoTp.6mzgEuKGTS4PdoRdtuY7vJea/2TJlyu', 'Líder', NULL, '111.111.111-11'),
 ('Liderado User', 'liderado@email.com', '$2a$10$I1QNViM5N1c8d3ro6uD4F.MaxZ0FBy59Ye1bjrs1TNtkA/1orKYIa', 'Liderado', 2, '009.876.543-21');
 
+INSERT INTO Pesquisas (titulo, sobre, data_criacao, cat_pes) 
+VALUES ('Seila q Seila Oq', 'Um Sobre daora', '2024-09-12 17:37:37', 'Auto Avaliação');
+INSERT INTO Categoria_Perguntas (categoria) VALUES(
+'Teste');
+Insert INTO Perguntas(sobre,formato,cat_id) VALUES
+('Teste Pergunta','Texto Longo', 1);
+Insert Into Pesquisas_Perguntas(pes_id, per_id) VALUES
+(1,1);
+
+INSERT INTO Pesquisas (titulo, sobre, cat_pes) 
+VALUES ('Seila 2', 'Um Sobre daora', 'Auto Avaliação');
+INSERT INTO Categoria_Perguntas (categoria) VALUES(
+'Teste');
+Insert INTO Perguntas(sobre,formato,cat_id) VALUES
+('Teste Pergunta','Texto Longo', 1);
+Insert Into Pesquisas_Perguntas(pes_id, per_id) VALUES
+(2,2);
 -- Exemplo de chamada do procedimento ao completar uma autoavaliação
 -- Aqui, o usuário com id 3 (Liderado) completou a pesquisa de autoavaliação com id 1.
 
@@ -117,11 +135,9 @@ WHERE a.responsavel_id = 2;
 -- Teste de verificação
 SELECT * FROM Avaliacoes;
 SELECT * FROM Pesquisas;
-SELECT * FROM Users WHERE id = 3;
+SELECT * FROM Perguntas;
+SELECT * FROM Users;
 
 select * from Respostas;
 select * from Temp_Respostas;
-
-
-
 
