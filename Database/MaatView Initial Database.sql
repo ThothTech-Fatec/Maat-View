@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS Perguntas (
     id INT PRIMARY KEY AUTO_INCREMENT,
     sobre VARCHAR(255) NOT NULL,
     formato ENUM('Texto Longo', 'Escolha Única', 'Múltipla Escolha') NOT NULL,
+	data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
     cat_id INT,
     FOREIGN KEY (cat_id) REFERENCES Categoria_Perguntas(id)
 );
@@ -65,6 +66,7 @@ CREATE TABLE IF NOT EXISTS Respostas (
     per_id INT,
     pes_id INT,
     resp_texto VARCHAR(255),
+    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
     select_option_id INT,
     FOREIGN KEY (pes_id) REFERENCES Pesquisas(id),
     FOREIGN KEY (per_id) REFERENCES Perguntas(id),
@@ -119,8 +121,6 @@ Insert Into Pesquisas_Perguntas(pes_id, per_id) VALUES
 
 INSERT INTO Pesquisas (titulo, sobre, cat_pes) 
 VALUES ('Seila 2', 'Um Sobre daora', 'Auto Avaliação');
-INSERT INTO Categoria_Perguntas (categoria) VALUES(
-'Teste');
 Insert INTO Perguntas(sobre,formato,cat_id) VALUES
 ('Teste Pergunta','Texto Longo', 1);
 Insert Into Pesquisas_Perguntas(pes_id, per_id) VALUES
@@ -143,7 +143,5 @@ SELECT * FROM Users;
 
 select * from Respostas;
 select * from Temp_Respostas;
-
-
 
 
