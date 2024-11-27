@@ -75,9 +75,11 @@ CREATE TABLE IF NOT EXISTS Respostas (
 -- Tabela de Avaliações Direcionadas
 CREATE TABLE IF NOT EXISTS Avaliacoes (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    original_pes_id INT,
     pes_id INT,
     user_id INT, -- Quem será avaliado (liderado ou líder)
     responsavel_id INT, -- Quem deve responder a avaliação (o líder ou liderado correspondente)
+	FOREIGN KEY (original_pes_id) REFERENCES Pesquisas(id),
     FOREIGN KEY (pes_id) REFERENCES Pesquisas(id),
     FOREIGN KEY (user_id) REFERENCES Users(id),
     FOREIGN KEY (responsavel_id) REFERENCES Users(id)
@@ -96,6 +98,7 @@ CREATE TABLE IF NOT EXISTS Temp_Respostas (
     FOREIGN KEY (ava_id) REFERENCES Avaliacoes(id),
     FOREIGN KEY (select_option_id) REFERENCES Opções(id)
 );
+
 
 
 
@@ -140,4 +143,7 @@ SELECT * FROM Users;
 
 select * from Respostas;
 select * from Temp_Respostas;
+
+
+
 

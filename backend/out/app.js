@@ -17,6 +17,10 @@ import getPesquisasRespondidas from './controllers/pegarPesquisasResp.js';
 import { getPerguntasERespostas } from './controllers/PegarPergERes.js';
 import { BuscarUserLiderado } from './controllers/buscarIdbyCpf.js';
 import { buscarPerguntasERespostasLider } from './controllers/buscarAvaCorrespondente.js';
+import { BuscarUserLider } from './controllers/buscarLider.js';
+import { BuscarTodosUsers } from './controllers/buscarTodos.js';
+import { getEvaluationCounts, getUserActivityByMonth } from './controllers/contarAutoEAvaPes.js';
+import contarPerguntasGeraisComData from './controllers/contarAutoEAvaPes.js';
 const app = express();
 app.use(cors({
     origin: 'http://localhost:3000',
@@ -47,6 +51,11 @@ app.get('/api/autoavaliacao/respondida/:userId', getPesquisasRespondidas);
 app.get('/api/autoavaliacao/perguntas-respostas/:userId/:pesquisaId', getPerguntasERespostas);
 app.get('/api/id-by-cpf/:cpf/:liderId', BuscarUserLiderado);
 app.get('/api/buscaravapergs/:userId/:pesquisaId', buscarPerguntasERespostasLider);
+app.get('/api/liderid-by-cpf/:cpf', BuscarUserLider);
+app.get('/api/todosuserid-by-cpf/:cpf', BuscarTodosUsers);
+app.get('/api/pegartodaspes', getEvaluationCounts);
+app.get('/api/pegarmediarespostas', getUserActivityByMonth);
+app.get('/api/pegarpergrestanteconcluida', contarPerguntasGeraisComData);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);

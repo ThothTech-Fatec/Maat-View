@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
-import Dashboard from './pages/Admin/Dashboard';
 import MinhasInfo from './pages/MinhasInfo';
 import CadastroUser from './pages/Admin/CadastroUser';
 import ExibeUser from './pages/Admin/ExibeUser';
@@ -14,6 +13,7 @@ import FormularioPesquisa from './pages/Formulário';
 import ExibirLiderados from './pages/Líder/ExibirLiderados';
 import DashboardLR from './pages/Liderado/DashboardLR';
 import DashboardLD from './pages/Líder/DashboardLD';
+import DashboardADM from './pages/Admin/DashboardADM';
 
 
 
@@ -23,7 +23,6 @@ const App: React.FC = () => {
             <Routes>
                 <Route path="/" element={<Navigate to="/login" />} />  {}
                 <Route path="/login" element={<Login />} />
-                <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/minhas_info" element={<MinhasInfo />} />
                 <Route path="/cadastro_de_user" element={<CadastroUser />} />
                 <Route path="/cadastro_de_ask" element={<CadastroAsk />} />
@@ -37,6 +36,7 @@ const App: React.FC = () => {
                 <Route path="/exibir_liderados" element={<ExibirLiderados />} />
                 <Route path="/dashboardlr" element={<DashboardLR />} />
                 <Route path="/dashboardld" element={<DashboardLD />} />
+                <Route path="/dashboardadm" element={<DashboardADM />} />
 
 
 
