@@ -68,7 +68,10 @@ authRoutes.delete('/users/:id', async (req, res) => {
 });
 authRoutes.get('/pesquisas', async (_req, res) => {
     try {
-        const [rows] = await pool.query('SELECT id, titulo, sobre, cat_pes FROM Pesquisas');
+        const [rows] = await pool.query(`
+        SELECT id, titulo, DATE_FORMAT(data_criacao, '%Y-%m-%d') AS data_criacao_formatada, sobre, cat_pes 
+        FROM Pesquisas
+      `);
         return res.status(200).json(rows);
     }
     catch (error) {
@@ -77,17 +80,34 @@ authRoutes.get('/pesquisas', async (_req, res) => {
     }
 });
 authRoutes.delete('/pesquisas/:id', async (req, res) => {
-    const pes_id = req.params.id; // Pega o ID do usuário da URL
+    const pes_id = req.params.id;
+    const connection = await pool.getConnection();
     try {
-        const [result] = await pool.query('DELETE FROM Pesquisas WHERE id = ?', [pes_id]);
+        // Inicia uma transação
+        await connection.beginTransaction();
+        // Deleta registros dependentes em ordem reversa
+        await connection.query('DELETE FROM Temp_Respostas WHERE ava_id IN (SELECT id FROM Avaliacoes WHERE pes_id = ?)', [pes_id]);
+        await connection.query('DELETE FROM Respostas WHERE pes_id = ?', [pes_id]);
+        await connection.query('DELETE FROM Opções WHERE pes_id = ?', [pes_id]);
+        await connection.query('DELETE FROM Pesquisas_Perguntas WHERE pes_id = ?', [pes_id]);
+        await connection.query('DELETE FROM Avaliacoes WHERE pes_id = ?', [pes_id]);
+        // Deleta a pesquisa
+        const [result] = await connection.query('DELETE FROM Pesquisas WHERE id = ?', [pes_id]);
         if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'Pesquisa não encontrado.' });
+            await connection.rollback();
+            return res.status(404).json({ message: 'Pesquisa não encontrada.' });
         }
-        return res.status(200).json({ message: 'Pesquisa deletado com sucesso.' });
+        // Confirma a transação
+        await connection.commit();
+        return res.status(200).json({ message: 'Pesquisa deletada com sucesso.' });
     }
     catch (error) {
+        await connection.rollback();
         console.error('Erro ao deletar pesquisa:', error);
         return res.status(500).json({ message: 'Erro no servidor.' });
+    }
+    finally {
+        connection.release();
     }
 });
 // Rota para buscar apenas os líderes

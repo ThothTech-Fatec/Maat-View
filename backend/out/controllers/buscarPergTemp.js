@@ -31,7 +31,6 @@ export const buscarPerguntasTemporarias = async (req, res) => {
     }
 };
 // Função para buscar a categoria da pesquisa com base no pesquisaId
-// No backend
 export const buscarCategoriaPesquisa = async (req, res) => {
     try {
         const pesquisaId = parseInt(req.params.pesquisaId);

@@ -7,6 +7,7 @@ import AdminRole from '../../hocs/Hoc_Admin';
 
     interface Pesquisas {
         id: number; 
+        data_criacao_formatada: string;
         titulo: string; 
         sobre: string; 
         cat_pes: string; 
@@ -24,6 +25,7 @@ import AdminRole from '../../hocs/Hoc_Admin';
                         throw new Error('Erro ao buscar pesquisas');
                     }
                     const data = await response.json();
+                    console.log(data)
                     setPesquisas(data); 
                 } catch (error) {
                     console.error('Erro:', error);
@@ -67,6 +69,7 @@ import AdminRole from '../../hocs/Hoc_Admin';
                                 <th>Título</th>
                                 <th>Sobre</th>
                                 <th>Categoria</th>
+                                <th>Data</th>
                                 <th>Exibir</th> 
                                 <th>Ações</th>
                             </tr>
@@ -77,6 +80,7 @@ import AdminRole from '../../hocs/Hoc_Admin';
                                     <td data-label="Título" >{pesquisas.titulo}</td>
                                     <td data-label="Sobre" >{pesquisas.sobre}</td>
                                     <td data-label="Categoria" >{pesquisas.cat_pes}</td>
+                                    <td data-label="Data">{pesquisas.data_criacao_formatada}</td>
                                     <td data-label="Exibir"><Link to={ `/ver-Pergs/${pesquisas.id}`}>
                                         <button className="verButton" >Ver</button>
                                         </Link>

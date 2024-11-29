@@ -5,6 +5,7 @@ import Modal from '../../components/Modal';
 import { useNavigate } from 'react-router-dom';
 import '../../static/SuasAvaliacoes.css';
 import DashboardLider from '../../components/GraficoLider';
+import LiderRole from '../../hocs/Hoc_Lider';
 
 interface Pesquisa {
   id: number;
@@ -84,4 +85,4 @@ const DashboardLD: React.FC = () => {
   );
 };
 
-export default DashboardLD;
+export default LiderRole(DashboardLD);

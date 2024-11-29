@@ -8,6 +8,7 @@ import '../static/SuasAvaliacoes.css';
 interface Pesquisa {
   id: number;
   titulo: string;
+  data_criacao: string;
   sobre: string;
   cat_pes: string;
   avaliacoes_pendentes: number;
@@ -91,6 +92,8 @@ const PesquisasPage: React.FC = () => {
                     <h3>{pesquisa.titulo}</h3>
                     <p>Categoria: {pesquisa.cat_pes}</p>
                     <p >Sobre: {pesquisa.sobre}</p>
+                    <br></br>
+                    <p>Data: {pesquisa.data_criacao}</p>
                   </div>
                   
                 ))

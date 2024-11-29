@@ -12,7 +12,7 @@ export const showPesquisas = async (req: Request, res: Response) => {
     try {
         // Busca informações da pesquisa usando o ID da pesquisa
         const query = `
-            SELECT r.id AS pes_id, r.titulo, r.sobre AS pesquisa_sobre, r.cat_pes
+            SELECT r.id AS pes_id,DATE_FORMAT(r.data_criacao, '%Y-%m-%d'), r.titulo, r.sobre AS pesquisa_sobre, r.cat_pes
             FROM Pesquisas r
             WHERE r.id = ?`;
 
@@ -25,6 +25,7 @@ export const showPesquisas = async (req: Request, res: Response) => {
         // Retorna os detalhes da pesquisa
         const pesquisa = {
             id: rows[0].pes_id,
+            dataCriacao: rows[0].data_criacao,
             titulo: rows[0].titulo,
             sobre: rows[0].pesquisa_sobre,
             categoria: rows[0].cat_pes,
@@ -37,14 +38,13 @@ export const showPesquisas = async (req: Request, res: Response) => {
     }
 };
 
-
 export const VerificarPergPes = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
 
     // Consulta 1: Pesquisas de Auto Avaliação não respondidas pelo usuário
     const [autoAvaliacaoResults] = await pool.query(`
-      SELECT p.id, p.titulo, p.sobre, p.cat_pes
+      SELECT p.id, p.titulo, p.sobre, DATE_FORMAT(p.data_criacao, '%Y-%m-%d') AS data_criacao, p.cat_pes
       FROM Pesquisas p
       LEFT JOIN Respostas r ON p.id = r.pes_id AND r.user_id = ?
       WHERE r.id IS NULL AND p.cat_pes = 'Auto Avaliação';
@@ -52,7 +52,7 @@ export const VerificarPergPes = async (req: Request, res: Response) => {
 
     // Consulta 2: Pesquisas onde o usuário é o responsável pela avaliação e ainda não foram respondidas
     const [responsavelAvaliacoesResults] = await pool.query(`
-      SELECT p.id, p.titulo, p.sobre, p.cat_pes
+      SELECT p.id, p.titulo, p.sobre, DATE_FORMAT(p.data_criacao, '%Y-%m-%d') AS data_criacao, p.cat_pes
       FROM Pesquisas p
       INNER JOIN Avaliacoes a ON p.id = a.pes_id
       LEFT JOIN Respostas r ON p.id = r.pes_id AND r.user_id = ?
@@ -69,4 +69,5 @@ export const VerificarPergPes = async (req: Request, res: Response) => {
     res.status(500).send("Erro ao buscar pesquisas e avaliações.");
   }
 };
+
 
