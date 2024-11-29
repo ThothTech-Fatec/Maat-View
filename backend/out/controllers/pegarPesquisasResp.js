@@ -2,7 +2,7 @@ import pool from '../config/database.js'; // Aqui você importa sua conexão com
 // Função para pegar todas as pesquisas de autoavaliação respondidas por um usuário
 const getPesquisasRespondidas = async (req, res) => {
     const userId = parseInt(req.params.userId); // Obtém o ID do usuário
-    const dateFilter = req.query.dateFilter || 'all'; // Filtro de data (sem filtro será 'all')
+    const dateFilter = req.query.dateFilter;
     try {
         // Montando a query com base no filtro de data
         let query = `

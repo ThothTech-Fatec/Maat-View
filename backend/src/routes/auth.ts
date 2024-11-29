@@ -81,27 +81,51 @@ authRoutes.delete('/users/:id', async (req: Request, res: Response) => {
 
 authRoutes.get('/pesquisas', async (_req: Request, res: Response) => {
     try {
-        const [rows] = await pool.query('SELECT id, titulo, sobre, cat_pes FROM Pesquisas'); 
-        return res.status(200).json(rows);
+      const [rows] = await pool.query(`
+        SELECT id, titulo, DATE_FORMAT(data_criacao, '%Y-%m-%d') AS data_criacao_formatada, sobre, cat_pes 
+        FROM Pesquisas
+      `); 
+      return res.status(200).json(rows);
     } catch (error) {
-        console.error('Erro ao buscar pesquisas:', error);
-        return res.status(500).json({ message: 'Erro no servidor.' });
+      console.error('Erro ao buscar pesquisas:', error);
+      return res.status(500).json({ message: 'Erro no servidor.' });
     }
   });
+  
 
   authRoutes.delete('/pesquisas/:id', async (req: Request, res: Response) => {
-    const pes_id = req.params.id; // Pega o ID do usuário da URL
+    const pes_id = req.params.id;
+    const connection = await pool.getConnection();
     try {
-        const [result] = await pool.query<mysql.ResultSetHeader>('DELETE FROM Pesquisas WHERE id = ?', [pes_id]);
+        // Inicia uma transação
+        await connection.beginTransaction();
+
+        // Deleta registros dependentes em ordem reversa
+        await connection.query('DELETE FROM Temp_Respostas WHERE ava_id IN (SELECT id FROM Avaliacoes WHERE pes_id = ?)', [pes_id]);
+        await connection.query('DELETE FROM Respostas WHERE pes_id = ?', [pes_id]);
+        await connection.query('DELETE FROM Opções WHERE pes_id = ?', [pes_id]);
+        await connection.query('DELETE FROM Pesquisas_Perguntas WHERE pes_id = ?', [pes_id]);
+        await connection.query('DELETE FROM Avaliacoes WHERE pes_id = ?', [pes_id]);
+
+        // Deleta a pesquisa
+        const [result] = await connection.query<mysql.ResultSetHeader>('DELETE FROM Pesquisas WHERE id = ?', [pes_id]);
+
         if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'Pesquisa não encontrado.' });
+            await connection.rollback();
+            return res.status(404).json({ message: 'Pesquisa não encontrada.' });
         }
-        return res.status(200).json({ message: 'Pesquisa deletado com sucesso.' });
+
+        // Confirma a transação
+        await connection.commit();
+        return res.status(200).json({ message: 'Pesquisa deletada com sucesso.' });
     } catch (error) {
+        await connection.rollback();
         console.error('Erro ao deletar pesquisa:', error);
         return res.status(500).json({ message: 'Erro no servidor.' });
+    } finally {
+        connection.release();
     }
-  });
+});
 
 
 

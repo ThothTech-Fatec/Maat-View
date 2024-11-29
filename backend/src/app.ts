@@ -27,7 +27,7 @@ import contarPerguntasGeraisComData from './controllers/contarAutoEAvaPes.js';
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:3000', 
+    origin: process.env.origin, 
     methods: ['GET', 'POST', 'DELETE'],
     credentials: true,
 }));

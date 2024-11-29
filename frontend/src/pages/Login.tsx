@@ -85,6 +85,7 @@ const Login: React.FC = () => {
                         </form>
                     </div>
                     </div>
+
                     {error && <p className="error-message" style={{ marginTop: 10 }}>{error}</p>}
                 </div>
             </div>
