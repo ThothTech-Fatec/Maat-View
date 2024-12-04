@@ -6,8 +6,8 @@ Nesta sprint tivemos o foco em desenvolver as facilidades do dashboad.
 ## Frontend
 
 <ul>
-    <li>layout Dashboard</li>
-    <li>gráficos correspondentes </li>
+    <li>Layout Dashboard</li>
+    <li>Gráficos correspondentes </li>
     <li>Páginas de dashboard lider/liderado/admin</li>
 </ul>
 
@@ -16,8 +16,8 @@ Nesta sprint tivemos o foco em desenvolver as facilidades do dashboad.
 <ul>
     <li>Coletar respostas de avaliação Lider</li>
     <li>Coletar respostas de avaliação Liderado</li>
-    <li>pesquisa liderado<li>
-    <li>pesquisa lider<li>
+    <li>Pesquisa liderado</li>
+    <li>Pesquisa lider</li>
 </ul>
 
 <h2 aling="center"> 💻Tecnologias Utilizadas na Quarta Sprint </h2>
