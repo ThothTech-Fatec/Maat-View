@@ -6,7 +6,7 @@ Nesta sprint tivemos o foco em desenvolver as facilidades de lider/liderado e si
 ## Frontend
 
 <ul>
-    <li>função avaliar liderado</li>
+    <li>Função avaliar liderado</li>
     <li>Página de pesquisa/formulário</li>
     <li>Página de avaliações</li>
 </ul>
@@ -16,7 +16,7 @@ Nesta sprint tivemos o foco em desenvolver as facilidades de lider/liderado e si
 <ul>
     <li>Requisição do banco de dados: correlacionar todos os dados referente a pesquisa</li>
     <li>Requisição para verificar as pesquisar disponíveis do usuário</li>
-    <li>Atualizar o código para: quando o liderado/líder concluir uma autoavaliação automaticamente é criado uma avaliação liderado/líder<li>
+    <li>Atualizar o código para: quando o liderado/líder concluir uma autoavaliação automaticamente é criado uma avaliação liderado/líder</li>
 </ul>
 
 <h2 aling="center"> 💻Tecnologias Utilizadas na Segunda Sprint </h2>
